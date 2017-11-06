@@ -32,6 +32,7 @@ export class DistroLifetimeProcess extends LifetimeProcess{
       return (target.energy < target.energyCapacity)
     })
 
+
     if(deliverTargets.length === 0){
       targets = [].concat(
         <never[]>this.kernel.data.roomData[creep.room.name].labs,
@@ -44,6 +45,17 @@ export class DistroLifetimeProcess extends LifetimeProcess{
         }else{
           return (target.energy < target.energyCapacity)
         }
+      })
+    }
+
+    if(deliverTargets.length === 0 && creep.room.storage)
+    {
+      let targets = [].concat(
+        <never[]>[creep.room.storage]
+      );
+
+      deliverTargets = _.filter(targets, (t) => {
+        return (_.sum(t.store))
       })
     }
 

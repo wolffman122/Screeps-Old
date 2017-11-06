@@ -37,9 +37,6 @@ interface RoomData{
   sourceContainers: StructureContainer[]
   sourceContainerMaps: {[id: string]: StructureContainer}
   towers: StructureTower[]
-  sourceLinks: StructureLink[]
-  sourceLinksMaps: {[id: string]: StructureLink}
-  centralLinks: StructureLink[]
 }
 
 interface IPCMessage{

@@ -17,7 +17,7 @@ export class MoveProcess extends Process{
   run(){
 
     let creep = Game.creeps[this.metaData.creep]
-    console.log('Run Move Process: ', creep.name)
+
     if(!creep || !this.metaData.pos){
       this.completed = true
       this.resumeParent()

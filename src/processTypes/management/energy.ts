@@ -26,12 +26,10 @@ export class EnergyManagementProcess extends Process{
 
     if(!this.kernel.data.roomData[this.metaData.roomName])
     {
-      console.log("Energy Process Done to soon");
       this.completed = true
       return
     }
 
-    console.log("Energy Process Running");
     let proc = this
     let sources = this.kernel.data.roomData[this.metaData.roomName].sources
 
@@ -71,14 +69,10 @@ export class EnergyManagementProcess extends Process{
       })
     })
 
-    console.log("Energy Process Running 1 :", this.kernel.data.roomData[this.metaData.roomName].sourceContainers);
     _.forEach(this.kernel.data.roomData[this.metaData.roomName].sourceContainers, function(container){
-      console.log('Inside the for loop', proc.metaData.distroCreeps[container.id])
       if(proc.metaData.distroCreeps[container.id])
       {
-        console.log('Inside the for loop 2')
         let creep = Game.creeps[proc.metaData.distroCreeps[container.id]]
-        console.log('container 1');
         if(!creep){
           delete proc.metaData.distroCreeps[container.id]
           return
@@ -86,7 +80,6 @@ export class EnergyManagementProcess extends Process{
       }
       else
       {
-        console.log('container 2');
         let creepName = 'em-m-' + proc.metaData.roomName + '-' + Game.time
         let spawned = Utils.spawn(
           proc.kernel,
@@ -97,7 +90,6 @@ export class EnergyManagementProcess extends Process{
         )
 
         if(spawned){
-          console.log('container 3');
           proc.metaData.distroCreeps[container.id] = creepName
           proc.kernel.addProcess(DistroLifetimeProcess, 'dlp-' + creepName, 48, {
             sourceContainer: container.id,
@@ -107,7 +99,6 @@ export class EnergyManagementProcess extends Process{
       }
     })
 
-    console.log("Energy Process Running 2");
     this.metaData.upgradeCreeps = Utils.clearDeadCreeps(this.metaData.upgradeCreeps)
 
     if(this.metaData.upgradeCreeps.length < 2 && this.kernel.data.roomData[this.metaData.roomName].generalContainers.length > 0){

@@ -11,15 +11,16 @@ import {MoveProcess} from '../processTypes/creepActions/move'
 import {RoomDataProcess} from '../processTypes/roomData'
 import {UpgradeProcess} from '../processTypes/creepActions/upgrade'
 import {UpgraderLifetimeProcess} from '../processTypes/lifetimes/upgrader'
-
-/*import {BuildProcess} from '../processTypes/creepActions/build'
+import {BuildProcess} from '../processTypes/creepActions/build'
 import {BuilderLifetimeProcess} from '../processTypes/lifetimes/builder'
-import {ClaimProcess} from '../processTypes/empireActions/claim'
-import {CollectProcess} from '../processTypes/creepActions/collect'
-import {DeliverProcess} from '../processTypes/creepActions/deliver'
-import {DistroLifetimeProcess} from '../processTypes/lifetimes/distro'
-import {EnergyManagementProcess} from '../processTypes/management/energy'
+import {RepairProcess} from '../processTypes/creepActions/repair'
+import {RepairerLifetimeProcess} from '../processTypes/lifetimes/repairer'
+import {StructureManagementProcess} from '../processTypes/management/structure'
+import {TowerDefenseProcess} from '../processTypes/buildingProcesses/towerDefense'
+import {TowerRepairProcess} from '../processTypes/buildingProcesses/towerRepair'
+import {SuspensionProcess} from '../processTypes/system/suspension'
 
+/*import {ClaimProcess} from '../processTypes/empireActions/claim'
 import {HoldRoomProcess} from '../processTypes/empireActions/hold'
 import {HoldProcess} from '../processTypes/creepActions/hold'
 import {MineralHarvestProcess} from '../processTypes/creepActions/mineralHarvest'
@@ -28,15 +29,11 @@ import {MineralManagementProcess} from '../processTypes/management/mineral'
 import {RemoteBuilderLifetimeProcess} from '../processTypes/lifetimes/remoteBuilder'
 import {RemoteMinerLifetimeProcess} from '../processTypes/lifetimes/remoteMiner'
 import {RemoteMiningManagementProcess} from '../processTypes/management/remoteMining'
-import {RepairProcess} from '../processTypes/creepActions/repair'
-import {RepairerLifetimeProcess} from '../processTypes/lifetimes/repairer'
 import {RoomLayoutProcess} from '../processTypes/management/roomLayout'
-import {StructureManagementProcess} from '../processTypes/management/structure'
-import {SuspensionProcess} from '../processTypes/system/suspension'
-import {TowerDefenseProcess} from '../processTypes/buildingProcesses/towerDefense'
+*/
 
 
-import {Stats} from '../lib/stats'*/
+import {Stats} from '../lib/stats'
 
 const processTypes = <{[type: string]: any}>{
   'harvest': HarvestProcess,
@@ -48,9 +45,16 @@ const processTypes = <{[type: string]: any}>{
   'move': MoveProcess,
   'roomData': RoomDataProcess,
   'upgrade': UpgradeProcess,
-  'ulf': UpgraderLifetimeProcess
-  /*'build': BuildProcess,
+  'ulf': UpgraderLifetimeProcess,
+  'build': BuildProcess,
   'blf': BuilderLifetimeProcess,
+  'repair': RepairProcess,
+  'rlf': RepairerLifetimeProcess,
+  'sm': StructureManagementProcess,
+  'suspend': SuspensionProcess,
+  'td': TowerDefenseProcess,
+  'tr': TowerRepairProcess
+  /*
   'claim': ClaimProcess,
 
 
@@ -63,13 +67,10 @@ const processTypes = <{[type: string]: any}>{
   'rblf': RemoteBuilderLifetimeProcess,
   'rmlf': RemoteMinerLifetimeProcess,
   'rmmp': RemoteMiningManagementProcess,
-  'repair': RepairProcess,
-  'rlf': RepairerLifetimeProcess,
+
 
   'roomLayout': RoomLayoutProcess,
-  'sm': StructureManagementProcess,
-  'suspend': SuspensionProcess,
-  'td': TowerDefenseProcess,
+
   */
 }
 
@@ -149,7 +150,7 @@ export class Kernel{
     //  console.log(this.execOrder.length)
     //}
 
-    //Stats.build(this)
+    Stats.build(this)
 
     Memory.wolffOS.processTable = list
   }
@@ -168,8 +169,6 @@ export class Kernel{
     let process = this.getHighestProcess()
     let cpuUsed = Game.cpu.getUsed()
     let faulted = false
-
-    console.log("Got to Run Process");
 
     try{
       process.run(this)

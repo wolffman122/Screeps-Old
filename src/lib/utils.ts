@@ -51,7 +51,8 @@ export const Utils = {
       <never[]>proc.kernel.data.roomData[creep.room.name].generalContainers
     )
 
-    if(creep.room.storage){
+    if(creep.room.storage)
+    {
       withdraws = [].concat(
         withdraws,
         <never[]>[creep.room.storage]
@@ -64,6 +65,10 @@ export const Utils = {
         return (spawn.energy > 250 && spawn.room.energyAvailable > (spawn.room.energyCapacityAvailable - 50))
       })
     }
+
+    withdraws = _.filter(withdraws, (w) => {
+      return (w.store[RESOURCE_ENERGY] > creep.carryCapacity);
+    });
 
     return <Structure>creep.pos.findClosestByRange(withdraws)
   },

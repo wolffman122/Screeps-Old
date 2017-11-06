@@ -3,6 +3,7 @@ import {Process} from '../../os/process'
 import {RoomDataProcess} from '../roomData'
 import {EnergyManagementProcess} from '../management/energy'
 import {SuspensionProcess} from './suspension'
+import {StructureManagementProcess} from '../management/structure'
 /*
 import {FlagWatcherProcess} from '../flagWatcher'
 
@@ -38,9 +39,9 @@ export class InitProcess extends Process{
       }
 
       if(!proc.kernel.hasProcess('sm-' + room.name)){
-        /*proc.kernel.addProcess(StructureManagementProcess, 'sm-' + room.name, 48, {
+        proc.kernel.addProcess(StructureManagementProcess, 'sm-' + room.name, 48, {
           roomName: room.name
-        })*/
+        })
       }
     })
 

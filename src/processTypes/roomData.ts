@@ -4,6 +4,7 @@ import {Process} from '../os/process'
 //import {RoomLayoutProcess} from './management/roomLayout'
 //import {SpawnRemoteBuilderProcess} from './system/spawnRemoteBuilder'
 import {TowerDefenseProcess} from './buildingProcesses/towerDefense'
+import {TowerRepairProcess} from './buildingProcesses/towerRepair'
 
 interface RoomDataMeta{
   roomName: string
@@ -52,6 +53,7 @@ export class RoomDataProcess extends Process{
     }
 
     this.enemyDetection(room)
+    this.repairDetection(room);
 
     this.completed = true
   }
@@ -288,7 +290,8 @@ export class RoomDataProcess extends Process{
   }
 
   /** Find enemies in the room */
-  enemyDetection(room: Room){
+  enemyDetection(room: Room)
+  {
     let enemies = <Creep[]>room.find(FIND_HOSTILE_CREEPS)
 
     if(enemies.length > 0 && !this.kernel.hasProcess('td-' + this.metaData.roomName)){
@@ -297,4 +300,22 @@ export class RoomDataProcess extends Process{
       })
     }
   }
+
+  /** Find repairs need in the room */
+  repairDetection(room: Room)
+  {
+    let structures = <Structure[]>room.find(FIND_STRUCTURES);
+
+    let repairTargets = <Structure[]> _.filter(structures, (s) => {
+      return (s.structureType != STRUCTURE_WALL && s.hits < s.hitsMax);
+    });
+
+    if(repairTargets.length > 0 && !this.kernel.hasProcess('tr-' + this.metaData.roomName))
+    {
+      this.kernel.addProcess(TowerRepairProcess, 'tr-' + this.metaData.roomName, 80, {
+        roomName: this.metaData.roomName
+      });
+    }
+  }
+
 }
