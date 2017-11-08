@@ -4,6 +4,7 @@ import {RoomDataProcess} from '../roomData'
 import {EnergyManagementProcess} from '../management/energy'
 import {SuspensionProcess} from './suspension'
 import {StructureManagementProcess} from '../management/structure'
+import {DefenseManagementProcess} from '../management/defense'
 /*
 import {FlagWatcherProcess} from '../flagWatcher'
 
@@ -40,6 +41,13 @@ export class InitProcess extends Process{
 
       if(!proc.kernel.hasProcess('sm-' + room.name)){
         proc.kernel.addProcess(StructureManagementProcess, 'sm-' + room.name, 48, {
+          roomName: room.name
+        })
+      }
+
+      if(!proc.kernel.hasProcess('dm-' + room.name))
+      {
+        proc.kernel.addProcess(DefenseManagementProcess, 'dm-' + room.name, 70, {
           roomName: room.name
         })
       }

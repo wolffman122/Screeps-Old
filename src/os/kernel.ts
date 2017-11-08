@@ -19,6 +19,9 @@ import {StructureManagementProcess} from '../processTypes/management/structure'
 import {TowerDefenseProcess} from '../processTypes/buildingProcesses/towerDefense'
 import {TowerRepairProcess} from '../processTypes/buildingProcesses/towerRepair'
 import {SuspensionProcess} from '../processTypes/system/suspension'
+import {DefenseManagementProcess} from '../processTypes/management/defense'
+import {DefenderLifetimeProcess} from '../processTypes/lifetimes/defender'
+import {DefendProcess} from '../processTypes/creepActions/defend'
 
 /*import {ClaimProcess} from '../processTypes/empireActions/claim'
 import {HoldRoomProcess} from '../processTypes/empireActions/hold'
@@ -53,7 +56,10 @@ const processTypes = <{[type: string]: any}>{
   'sm': StructureManagementProcess,
   'suspend': SuspensionProcess,
   'td': TowerDefenseProcess,
-  'tr': TowerRepairProcess
+  'tr': TowerRepairProcess,
+  'dm': DefenseManagementProcess,
+  'deflf': DefenderLifetimeProcess,
+  'defend': DefendProcess
   /*
   'claim': ClaimProcess,
 
