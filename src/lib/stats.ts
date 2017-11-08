@@ -33,16 +33,19 @@ export const Stats = {
       Memory.stats['processes.types.' + execed.type] += execed.cpu
     })
 
-    _.forEach(Game.rooms, (room) => {
-      Memory.stats['roomSummary'] = room.name;
-      Memory.stats['controller_level'] = room.controller.level
-      Memory.stats['controller_progress'] = room.controller.progress
-      Memory.stats['controller_needed'] = room.controller.progressTotal
-      Memory.stats['controller_downgrade'] = room.controller.ticksToDowngrade
-      Memory.stats['controller_safemode'] = room.controller.safeMode
-      Memory.stats['controller_safemode_avail'] = room.controller.safeModeAvailable
-      Memory.stats['energy_avail'] = room.energyAvailable
-      Memory.stats['energy_cap'] = room.energyCapacityAvailable
-     })
+    _.forEach(Object.keys(kernel.data.roomData), function(roomName){
+      let room = Game.rooms[roomName]
+
+      if(room.controller && room.controller.my){
+        Memory.stats['rooms.' + roomName + '.rcl.level'] = room.controller.level
+        Memory.stats['rooms.' + roomName + '.rcl.progress'] = room.controller.progress
+        Memory.stats['rooms.' + roomName + '.rcl.progressTotal'] = room.controller.progressTotal
+        //Memory.stats['rooms.' + roomName + '.ramparts.target'] = Utils.rampartHealth(kernel, roomName)
+
+        if(room.storage){
+          Memory.stats['rooms.' + roomName + '.storage.energy'] = room.storage.store.energy
+        }
+      }
+    })
   }
 }
