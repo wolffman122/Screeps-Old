@@ -10,7 +10,7 @@ export class TowerRepairProcess extends Process
     let structures = <Structure[]>room.find(FIND_STRUCTURES);
 
     let repairStructures = <Structure[]> _.filter(structures, (s) => {
-      return (s.structureType == STRUCTURE_RAMPART && s.hits < 360000)
+      return (s.structureType == STRUCTURE_RAMPART && s.hits < 20000)
              ||
              (s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART && s.hits < s.hitsMax * 0.8);
     });

@@ -76,7 +76,8 @@ export const CreepBuilder = {
     'harvester': [WORK, WORK, CARRY, MOVE],
     'hold': [CLAIM, CLAIM, MOVE, MOVE],
     'mover': [CARRY, MOVE],
-    'worker': [WORK, CARRY, MOVE, MOVE]
+    'worker': [WORK, CARRY, MOVE, MOVE],
+    'defender': [MOVE,MOVE,ATTACK,ATTACK]
   },
 
   typeExtends: <PartList>{
@@ -85,7 +86,8 @@ export const CreepBuilder = {
     'hold': [],
     'mover': [CARRY, MOVE],
     //'worker': [WORK, CARRY, MOVE, MOVE]
-    'worker': [CARRY, WORK, MOVE, MOVE]
+    'worker': [CARRY, WORK, MOVE, MOVE],
+    'defender': [MOVE,MOVE,ATTACK,ATTACK]
   },
 
   typeLengths: <{[name: string]: number}>{
@@ -93,6 +95,7 @@ export const CreepBuilder = {
     'harvester': 12,
     'hold': 4,
     'mover': 10,
-    'worker': 16
+    'worker': 16,
+    'defender': 8
   }
 }
