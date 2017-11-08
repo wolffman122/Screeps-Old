@@ -14,7 +14,6 @@ export class BuilderLifetimeProcess extends LifetimeProcess{
 
     if(_.sum(creep.carry) === 0){
       let target = Utils.withdrawTarget(creep, this)
-
       if(target){
         this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
           creep: creep.name,
@@ -24,7 +23,14 @@ export class BuilderLifetimeProcess extends LifetimeProcess{
 
         return
       }else{
-        this.suspend = 10
+        if(creep.room.controller.level <= 2)
+        {
+          this.suspend = 2
+        }
+        else
+        {
+          this.suspend = 10
+        }
         return
       }
     }

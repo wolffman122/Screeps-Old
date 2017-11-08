@@ -68,7 +68,8 @@ export class DistroLifetimeProcess extends LifetimeProcess{
         resource: RESOURCE_ENERGY
       })
     }else{
-      this.suspend = 20
+      //this.suspend = 20
+      this.suspend = 5
     }
   }
 }

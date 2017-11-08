@@ -13,8 +13,7 @@ export class UpgraderLifetimeProcess extends LifetimeProcess{
 
     if(_.sum(creep.carry) === 0){
       let targets = <DeliveryTarget[]>[].concat(
-        <never[]>this.kernel.data.roomData[creep.room.name].generalContainers,
-        creep.room.storage
+        <never[]>this.kernel.data.roomData[creep.room.name].generalContainers
       )
 
       let capacity = creep.carryCapacity

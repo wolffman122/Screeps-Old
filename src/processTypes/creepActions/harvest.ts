@@ -30,7 +30,7 @@ export class HarvestProcess extends Process{
       targetRange = 0
     }
 
-    if(!creep.pos.isNearTo(targetPos)){
+    if(!creep.pos.inRangeTo(targetPos, targetRange)){
       console.log('Harvest Move Process')
       this.kernel.addProcess(MoveProcess, creep.name + '-harvest-move', this.priority + 1, {
         creep: creep.name,

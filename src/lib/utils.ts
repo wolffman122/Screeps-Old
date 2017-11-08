@@ -62,12 +62,21 @@ export const Utils = {
     if(withdraws.length === 0){
       withdraws = <never[]>proc.kernel.data.roomData[creep.room.name].spawns
       withdraws = <never[]>_.filter(withdraws, function(spawn: StructureSpawn){
-        return (spawn.energy > 250 && spawn.room.energyAvailable > (spawn.room.energyCapacityAvailable - 50))
+        let ret = (spawn.energy > 250 && spawn.room.energyAvailable > (spawn.room.energyCapacityAvailable - 50))
+        console.log('Spawn check', ret)
+        return ret;
       })
     }
 
     withdraws = _.filter(withdraws, (w) => {
-      return (w.store[RESOURCE_ENERGY] > creep.carryCapacity);
+      if(w.store)
+      {
+        return (w.store[RESOURCE_ENERGY] > creep.carryCapacity);
+      }
+      else
+      {
+        return (w.energy > creep.carryCapacity);
+      }
     });
 
     return <Structure>creep.pos.findClosestByRange(withdraws)

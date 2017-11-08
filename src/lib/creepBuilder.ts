@@ -84,7 +84,8 @@ export const CreepBuilder = {
     'harvester': [WORK, MOVE],
     'hold': [],
     'mover': [CARRY, MOVE],
-    'worker': [WORK, CARRY, MOVE, MOVE]
+    //'worker': [WORK, CARRY, MOVE, MOVE]
+    'worker': [CARRY, WORK, MOVE, MOVE]
   },
 
   typeLengths: <{[name: string]: number}>{
