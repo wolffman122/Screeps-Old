@@ -20,7 +20,7 @@ export class DefenderLifetimeProcess extends LifetimeProcess
     let room = Game.rooms[creep.room.name];
     let enemies = <Creep[]>room.find(FIND_HOSTILE_CREEPS);
 
-    if(enemies.length)
+    if(enemies.length > 0)
     {
       console.log('Lifetime found enemies');
       let enemy = creep.pos.findClosestByRange(enemies);
@@ -32,7 +32,8 @@ export class DefenderLifetimeProcess extends LifetimeProcess
     }
     else
     {
-      this.suspend = 20;
+      console.log('Lifetime did not find enemies1');
+      this.suspend = 10;
     }
   }
 }
