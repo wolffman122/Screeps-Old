@@ -19,9 +19,12 @@ import {StructureManagementProcess} from '../processTypes/management/structure'
 import {TowerDefenseProcess} from '../processTypes/buildingProcesses/towerDefense'
 import {TowerRepairProcess} from '../processTypes/buildingProcesses/towerRepair'
 import {SuspensionProcess} from '../processTypes/system/suspension'
+
 import {DefenseManagementProcess} from '../processTypes/management/defense'
 import {DefenderLifetimeProcess} from '../processTypes/lifetimes/defender'
 import {DefendProcess} from '../processTypes/creepActions/defend'
+
+import {RemoteMinerLifetimeProcess} from '../processTypes/lifetimes/remoteMiner'
 
 /*import {ClaimProcess} from '../processTypes/empireActions/claim'
 import {HoldRoomProcess} from '../processTypes/empireActions/hold'
@@ -30,7 +33,7 @@ import {MineralHarvestProcess} from '../processTypes/creepActions/mineralHarvest
 import {MineralharvesterLifetimeProcess} from '../processTypes/lifetimes/mineralHarvester'
 import {MineralManagementProcess} from '../processTypes/management/mineral'
 import {RemoteBuilderLifetimeProcess} from '../processTypes/lifetimes/remoteBuilder'
-import {RemoteMinerLifetimeProcess} from '../processTypes/lifetimes/remoteMiner'
+
 import {RemoteMiningManagementProcess} from '../processTypes/management/remoteMining'
 import {RoomLayoutProcess} from '../processTypes/management/roomLayout'
 */
@@ -59,7 +62,8 @@ const processTypes = <{[type: string]: any}>{
   'tr': TowerRepairProcess,
   'dm': DefenseManagementProcess,
   'deflf': DefenderLifetimeProcess,
-  'defend': DefendProcess
+  'defend': DefendProcess,
+  'rmlf': RemoteMinerLifetimeProcess,
   /*
   'claim': ClaimProcess,
 
@@ -71,7 +75,7 @@ const processTypes = <{[type: string]: any}>{
   'mineralManagement': MineralManagementProcess,
 
   'rblf': RemoteBuilderLifetimeProcess,
-  'rmlf': RemoteMinerLifetimeProcess,
+
   'rmmp': RemoteMiningManagementProcess,
 
 
