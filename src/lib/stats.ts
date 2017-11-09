@@ -1,25 +1,29 @@
 import {Kernel} from '../os/kernel'
+//import {Utils} from '../lib/utils'
+
 
 export const Stats = {
   build(kernel: Kernel){
     if(!Memory.stats){ Memory.stats = {}}
 
-    Memory.stats['tick'] = Game.time
     Memory.stats['gcl.progress'] = Game.gcl.progress
     Memory.stats['gcl.progressTotal'] = Game.gcl.progressTotal
     Memory.stats['gcl.level'] = Game.gcl.level
-    Memory.stats['cpu.used'] = Game.cpu.getUsed()
+    Memory.stats['cpu.getUsed'] = Game.cpu.getUsed()
     Memory.stats['cpu.limit'] = Game.cpu.limit
     Memory.stats['cpu.bucket'] = Game.cpu.bucket
     Memory.stats['cpu.kernelLimit'] = kernel.limit
-    Memory.stats['memory.used'] = RawMemory.get().length
+    Memory.stats['memory.size'] = RawMemory.get().length
     Memory.stats['market.credits'] = Game.market.credits
-    Memory.stats['market.orders'] = Game.market.orders
 
     Memory.stats['processes.counts.total'] = Object.keys(kernel.processTable).length
     Memory.stats['processes.counts.run'] = kernel.execOrder.length
     Memory.stats['processes.counts.suspend'] = kernel.suspendCount
     Memory.stats['processes.counts.missed'] = (Object.keys(kernel.processTable).length - kernel.execOrder.length - kernel.suspendCount)
+
+    if(Memory.stats['processes.counts.missed'] < 0){
+      Memory.stats['processes.counts.missed'] = 0
+    }
 
     _.forEach(Object.keys(kernel.processTypes), function(type){
       Memory.stats['processes.types.' + type] = 0
@@ -33,16 +37,37 @@ export const Stats = {
       Memory.stats['processes.types.' + execed.type] += execed.cpu
     })
 
-    _.forEach(Game.rooms, (room) => {
-      Memory.stats['roomSummary'] = room.name;
-      Memory.stats['controller_level'] = room.controller.level
-      Memory.stats['controller_progress'] = room.controller.progress
-      Memory.stats['controller_needed'] = room.controller.progressTotal
-      Memory.stats['controller_downgrade'] = room.controller.ticksToDowngrade
-      Memory.stats['controller_safemode'] = room.controller.safeMode
-      Memory.stats['controller_safemode_avail'] = room.controller.safeModeAvailable
-      Memory.stats['energy_avail'] = room.energyAvailable
-      Memory.stats['energy_cap'] = room.energyCapacityAvailable
-     })
+    _.forEach(Object.keys(kernel.data.roomData), function(roomName){
+      let room = Game.rooms[roomName]
+
+      if(room.controller && room.controller.my){
+        Memory.stats['rooms.' + roomName + '.rcl.level'] = room.controller.level
+        Memory.stats['rooms.' + roomName + '.rcl.progress'] = room.controller.progress
+        Memory.stats['rooms.' + roomName + '.rcl.progressTotal'] = room.controller.progressTotal
+        Memory.stats['rooms.' + roomName + '.rcl.ticksToDowngrade'] = room.controller.ticksToDowngrade
+
+        //Memory.stats['rooms.' + roomName + '.ramparts.target'] = Utils.rampartHealth(kernel, roomName)
+        let creeps = <Creep[]>_.filter(Game.creeps, c => {
+          return (c.pos.roomName === room.name && c.my);
+        });
+        Memory.stats['rooms.' + roomName + '.num_creeps'] = creeps ? creeps.length : 0;
+
+        const enemyCreeps = room.find(FIND_HOSTILE_CREEPS);
+        Memory.stats['rooms.' + roomName + '.num_enemy_creeps'] = enemyCreeps ? enemyCreeps.length : 0;
+
+        const towers = <StructureTower[]>room.find(FIND_STRUCTURES, { filter: s =>  s.structureType == STRUCTURE_TOWER});
+        Memory.stats['rooms.' + roomName + '.tower_energy'] = _.sum(towers, t => t.energy);
+
+        const const_sites = <ConstructionSite[]>room.find(FIND_CONSTRUCTION_SITES, { filter: cs => cs.my});
+        Memory.stats['rooms.' + roomName + '.construction_sites'] = const_sites.length;
+
+
+
+        if(room.storage){
+          Memory.stats['rooms.' + roomName + '.storage.energy'] = room.storage.store.energy
+          Memory.stats['rooms.' + roomName + '.storage.minerals'] = _.sum(room.storage.store) - room.storage.store.energy;
+        }
+      }
+    })
   }
 }
