@@ -25,6 +25,7 @@ import {DefenderLifetimeProcess} from '../processTypes/lifetimes/defender'
 import {DefendProcess} from '../processTypes/creepActions/defend'
 
 import {RemoteMinerLifetimeProcess} from '../processTypes/lifetimes/remoteMiner'
+import {RemoteMiningManagementProcess} from '../processTypes/management/remoteMining'
 
 /*import {ClaimProcess} from '../processTypes/empireActions/claim'
 import {HoldRoomProcess} from '../processTypes/empireActions/hold'
@@ -34,7 +35,7 @@ import {MineralharvesterLifetimeProcess} from '../processTypes/lifetimes/mineral
 import {MineralManagementProcess} from '../processTypes/management/mineral'
 import {RemoteBuilderLifetimeProcess} from '../processTypes/lifetimes/remoteBuilder'
 
-import {RemoteMiningManagementProcess} from '../processTypes/management/remoteMining'
+
 import {RoomLayoutProcess} from '../processTypes/management/roomLayout'
 */
 
@@ -64,6 +65,8 @@ const processTypes = <{[type: string]: any}>{
   'deflf': DefenderLifetimeProcess,
   'defend': DefendProcess,
   'rmlf': RemoteMinerLifetimeProcess,
+  'rmmp': RemoteMiningManagementProcess,
+
   /*
   'claim': ClaimProcess,
 
@@ -76,7 +79,7 @@ const processTypes = <{[type: string]: any}>{
 
   'rblf': RemoteBuilderLifetimeProcess,
 
-  'rmmp': RemoteMiningManagementProcess,
+
 
 
   'roomLayout': RoomLayoutProcess,

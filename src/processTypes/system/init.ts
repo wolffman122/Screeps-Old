@@ -5,8 +5,10 @@ import {EnergyManagementProcess} from '../management/energy'
 import {SuspensionProcess} from './suspension'
 import {StructureManagementProcess} from '../management/structure'
 import {DefenseManagementProcess} from '../management/defense'
-/*
 import {FlagWatcherProcess} from '../flagWatcher'
+
+/*
+
 
 import {StructureManagementProcess} from '../management/structure'
 import {SuspensionProcess} from './suspension'
@@ -54,7 +56,7 @@ export class InitProcess extends Process{
     })
 
     this.kernel.addProcess(SuspensionProcess, 'suspension-master', 99, {master: true})
-    //this.kernel.addProcess(FlagWatcherProcess, 'flag-watcher', 98, {})
+    this.kernel.addProcess(FlagWatcherProcess, 'flag-watcher', 98, {})
 
     this.completed = true
   }

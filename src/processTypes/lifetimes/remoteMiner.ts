@@ -22,10 +22,10 @@ export class RemoteMinerLifetimeProcess extends LifetimeProcess
       this.completed = true;
       return;
     }
-    
+
     if(_.sum(creep.carry) === 0)
     {
-      this.fork(HarvestProcess, 'harves-' + creep.name, this.priority - 1, {
+      this.fork(HarvestProcess, 'harvest-' + creep.name, this.priority - 1, {
         source: flag.memory.source,
         creep: creep.name
       });
