@@ -63,6 +63,19 @@ export class RemoteMinerLifetimeProcess extends LifetimeProcess
 
     if(Game.rooms[this.metaData.deliverRoom].storage)
     {
+      if(creep.pos.roomName == flag.pos.roomName)
+      {
+        let enemies = flag.room.find(FIND_HOSTILE_CREEPS)
+        if(enemies.length > 1)
+        {
+          flag.memory.enemies = true;
+        }
+        else if (enemies.length == 0)
+        {
+          flag.memory.enemies = false;
+        }
+      }
+
       this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
         creep: creep.name,
         target: Game.rooms[this.metaData.deliverRoom].storage!.id,
