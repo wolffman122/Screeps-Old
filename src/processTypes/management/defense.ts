@@ -31,8 +31,6 @@ export class DefenseManagementProcess extends Process
       return
     }
 
-    console.log('Defense Management ', this.metaData.roomName);
-
     this.metaData.defenderCreeps = Utils.clearDeadCreeps(this.metaData.defenderCreeps);
 
     let room = Game.rooms[this.metaData.roomName]
@@ -42,11 +40,14 @@ export class DefenseManagementProcess extends Process
     {
       let creepName = 'dm-' + this.metaData.roomName + '-' + Game.time;
       let spawned = Utils.spawn(this.kernel, this.metaData.roomName, 'defender', creepName, {});
+
+      let flagName = 'Defense-' + this.metaData.roomName;
       if(spawned)
       {
         this.metaData.defenderCreeps.push(creepName);
         this.kernel.addProcess(DefenderLifetimeProcess, 'deflf-' + creepName, 60, {
-          creep: creepName
+          creep: creepName,
+          flagName: flagName
         });
       }
     }

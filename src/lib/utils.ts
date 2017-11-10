@@ -63,7 +63,6 @@ export const Utils = {
       withdraws = <never[]>proc.kernel.data.roomData[creep.room.name].spawns
       withdraws = <never[]>_.filter(withdraws, function(spawn: StructureSpawn){
         let ret = (spawn.energy > 250 && spawn.room.energyAvailable > (spawn.room.energyCapacityAvailable - 50))
-        console.log('Spawn check', ret)
         return ret;
       })
     }

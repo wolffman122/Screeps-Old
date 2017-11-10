@@ -9,9 +9,11 @@ export class TowerDefenseProcess extends Process{
 
     if(enemies.length > 0){
       _.forEach(this.kernel.data.roomData[this.metaData.roomName].towers, function(tower){
-        let enemy = tower.pos.findClosestByRange(enemies)
-
-        tower.attack(enemy)
+        let rangedEnemies = tower.pos.findInRange(enemies,20)
+        if(rangedEnemies.length > 0)
+        {
+          tower.attack(rangedEnemies[0]);
+        }
       })
     }else{
       this.completed = true

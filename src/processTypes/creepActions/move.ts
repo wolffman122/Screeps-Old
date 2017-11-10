@@ -29,7 +29,6 @@ export class MoveProcess extends Process{
     if(creep.fatigue == 0){
       if(creep.pos.inRangeTo(target, this.metaData.range)){
         this.completed = true
-        console.log('Finish Move Process: ', creep.name)
         this.resumeParent()
       }else{
         creep.moveTo(target)

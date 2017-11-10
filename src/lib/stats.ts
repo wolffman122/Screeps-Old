@@ -46,6 +46,8 @@ export const Stats = {
         Memory.stats['rooms.' + roomName + '.rcl.progressTotal'] = room.controller.progressTotal
         Memory.stats['rooms.' + roomName + '.rcl.ticksToDowngrade'] = room.controller.ticksToDowngrade
 
+        Memory.stats['rooms.' + roomName + '.energy_available'] = room.energyAvailable
+        Memory.stats['rooms.' + roomName + '.energy_capacity_available'] = room.energyCapacityAvailable
         //Memory.stats['rooms.' + roomName + '.ramparts.target'] = Utils.rampartHealth(kernel, roomName)
         let creeps = <Creep[]>_.filter(Game.creeps, c => {
           return (c.pos.roomName === room.name && c.my);

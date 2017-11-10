@@ -14,7 +14,6 @@ export class DefendProcess extends Process
 
   run()
   {
-    console.log('Defend code running');
     let creep = Game.creeps[this.metaData.creep];
     let enemy = <Creep>Game.getObjectById(this.metaData.target);
 

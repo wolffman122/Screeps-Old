@@ -21,8 +21,6 @@ export class CollectProcess extends Process{
     }
 
     let target = <Structure>Game.getObjectById(this.metaData.target)
-    console.log('Collect Proces', target);
-    console.log(creep.name);
     if(!target){
       this.completed = true
       this.resumeParent(true)

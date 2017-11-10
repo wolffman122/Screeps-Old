@@ -26,11 +26,9 @@ export class RemoteMiningManagementProcess extends Process
 
     let miningCreep = Game.creeps[this.metaData.miningCreep];
     let deliverRoom = flag.name.split('-')[0];
-    console.log(flag.name);
 
     if(!miningCreep)
     {
-      console.log(deliverRoom);
       let spawned = Utils.spawn(
         this.kernel,
         deliverRoom,
@@ -46,7 +44,6 @@ export class RemoteMiningManagementProcess extends Process
     }
     else
     {
-      console.log('Remote add process');
       this.kernel.addProcessIfNotExist(RemoteMinerLifetimeProcess, 'rmlf-' + miningCreep.name, this.priority, {
         creep: miningCreep.name,
         flag: flag.name,

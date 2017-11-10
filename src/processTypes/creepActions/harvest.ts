@@ -11,7 +11,6 @@ export class HarvestProcess extends Process{
   type = 'harvest'
 
   run(){
-    console.log('Harvest Run');
     let creep = Game.creeps[this.metaData.creep]
 
     if(!creep || _.sum(creep.carry) === creep.carryCapacity){
@@ -31,7 +30,6 @@ export class HarvestProcess extends Process{
     }
 
     if(!creep.pos.inRangeTo(targetPos, targetRange)){
-      console.log('Harvest Move Process')
       this.kernel.addProcess(MoveProcess, creep.name + '-harvest-move', this.priority + 1, {
         creep: creep.name,
         pos: {

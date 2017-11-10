@@ -84,7 +84,7 @@ export const CreepBuilder = {
     'claimer': [],
     'harvester': [WORK, MOVE],
     'hold': [],
-    'mover': [CARRY, MOVE],
+    'mover': [CARRY, CARRY, MOVE],
     //'worker': [WORK, CARRY, MOVE, MOVE]
     'worker': [CARRY, WORK, MOVE, MOVE],
     'defender': [MOVE,MOVE,ATTACK,ATTACK]
@@ -94,7 +94,7 @@ export const CreepBuilder = {
     'claimer': 2,
     'harvester': 12,
     'hold': 4,
-    'mover': 10,
+    'mover': 14,
     'worker': 16,
     'defender': 8
   }
