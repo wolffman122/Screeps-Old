@@ -2,7 +2,7 @@ import {LifetimeProcess} from '../../os/process'
 import {MoveProcess} from '../creepActions/move'
 import {DefendProcess} from '../creepActions/defend'
 
-export class RemoteDefendLifetimeProcess extends LifetimeProcess
+export class RemoteDefenderLifetimeProcess extends LifetimeProcess
 {
   type = 'rdlf';
 

@@ -81,7 +81,7 @@ export const CreepBuilder = {
   },
 
   typeExtends: <PartList>{
-    'claimer': [],
+    'claimer': [CLAIM],
     'harvester': [WORK, MOVE],
     'hold': [],
     'mover': [CARRY, CARRY, MOVE],
@@ -91,7 +91,7 @@ export const CreepBuilder = {
   },
 
   typeLengths: <{[name: string]: number}>{
-    'claimer': 2,
+    'claimer': 3,
     'harvester': 12,
     'hold': 4,
     'mover': 14,

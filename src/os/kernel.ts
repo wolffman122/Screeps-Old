@@ -27,6 +27,11 @@ import {DefendProcess} from '../processTypes/creepActions/defend'
 import {RemoteMinerLifetimeProcess} from '../processTypes/lifetimes/remoteMiner'
 import {RemoteMiningManagementProcess} from '../processTypes/management/remoteMining'
 
+import {HoldManagementProcess} from '../processTypes/management/hold'
+import {HolderLifetimeProcess} from '../processTypes/lifetimes/holder'
+import {HoldProcess} from '../processTypes/creepActions/hold'
+
+import {RemoteDefenderLifetimeProcess} from '../processTypes/lifetimes/remoteDefender'
 /*import {ClaimProcess} from '../processTypes/empireActions/claim'
 import {HoldRoomProcess} from '../processTypes/empireActions/hold'
 import {HoldProcess} from '../processTypes/creepActions/hold'
@@ -66,7 +71,10 @@ const processTypes = <{[type: string]: any}>{
   'defend': DefendProcess,
   'rmlf': RemoteMinerLifetimeProcess,
   'rmmp': RemoteMiningManagementProcess,
-
+  'hmp': HoldManagementProcess,
+  'hdlf': HolderLifetimeProcess,
+  'hold': HoldProcess,
+  'rdlf': RemoteDefenderLifetimeProcess,
   /*
   'claim': ClaimProcess,
 

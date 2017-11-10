@@ -1,6 +1,6 @@
 import {Process} from '../os/process'
 import {RemoteMiningManagementProcess} from './management/remoteMining'
-
+import {HoldManagementProcess} from './management/hold'
 export class FlagWatcherProcess extends Process
 {
   type='flagWatcher';
@@ -9,6 +9,11 @@ export class FlagWatcherProcess extends Process
   remoteMiningFlag(flag: Flag)
   {
     this.kernel.addProcessIfNotExist(RemoteMiningManagementProcess, 'rnmp-' + flag.name, 40, { flag: flag.name })
+  }
+
+  remoteHoldFlag(flag: Flag)
+  {
+    this.kernel.addProcessIfNotExist(HoldManagementProcess, 'hmp-' + flag.name, 40, {flag: flag.name });
   }
 
   run()
@@ -22,6 +27,9 @@ export class FlagWatcherProcess extends Process
       {
         case COLOR_YELLOW:
           proc.remoteMiningFlag(flag);
+          break;
+        case COLOR_RED:
+          proc.remoteHoldFlag(flag);
           break;
       }
     })
