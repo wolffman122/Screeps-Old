@@ -11,12 +11,32 @@ export class DistroLifetimeProcess extends LifetimeProcess{
 
     if(!creep){ return }
 
-    if(_.sum(creep.carry) === 0){
-      this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
-        target: this.metaData.sourceContainer,
-        creep: creep.name,
-        resource: RESOURCE_ENERGY
-      })
+    if(_.sum(creep.carry) === 0)
+    {
+      let sourceContainer = <Container>Game.getObjectById(this.metaData.sourceContainer);
+
+      if(sourceContainer.store.energy > 0)
+      {
+
+        this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+          target: this.metaData.sourceContainer,
+          creep: creep.name,
+          resource: RESOURCE_ENERGY
+        })
+      }
+      else
+      {
+        let storage = creep.room.storage;
+
+        if(storage.store.energy > 0)
+        {
+          this.fork(CollectProcess, 'collect-' + creep.name, this.priority -1, {
+            target: storage.id,
+            creep: creep.name,
+            resource: RESOURCE_ENERGY
+          })
+        }
+      }
 
       return
     }

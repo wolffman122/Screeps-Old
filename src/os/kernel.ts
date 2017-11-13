@@ -31,7 +31,13 @@ import {HoldManagementProcess} from '../processTypes/management/hold'
 import {HolderLifetimeProcess} from '../processTypes/lifetimes/holder'
 import {HoldProcess} from '../processTypes/creepActions/hold'
 
+import {RemoteDefenseManagementProcess} from '../processTypes/management/remoteDefense'
 import {RemoteDefenderLifetimeProcess} from '../processTypes/lifetimes/remoteDefender'
+
+import {DismantleManagementProcess} from '../processTypes/management/dismantle'
+import {DismantleLifetimeProcess} from '../processTypes/lifetimes/dismantler'
+import {DismantleProcess} from '../processTypes/creepActions/dismantle'
+
 /*import {ClaimProcess} from '../processTypes/empireActions/claim'
 import {HoldRoomProcess} from '../processTypes/empireActions/hold'
 import {HoldProcess} from '../processTypes/creepActions/hold'
@@ -74,7 +80,12 @@ const processTypes = <{[type: string]: any}>{
   'hmp': HoldManagementProcess,
   'hdlf': HolderLifetimeProcess,
   'hold': HoldProcess,
+  'rdmp': RemoteDefenseManagementProcess,
   'rdlf': RemoteDefenderLifetimeProcess,
+  'dmp': DismantleManagementProcess,
+  'dislf': DismantleLifetimeProcess,
+  'dismantle': DismantleProcess
+
   /*
   'claim': ClaimProcess,
 

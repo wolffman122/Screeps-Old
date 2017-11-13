@@ -21,7 +21,9 @@ export class RemoteMiningManagementProcess extends Process
     if(!flag.memory.source)
     {
       let sources = <Source[]>flag.pos.lookFor(LOOK_SOURCES);
+      console.log('Finding sources ' + sources)
       flag.memory.source = sources[0].id;
+      console.log('Found sources');
     }
 
     let miningCreep = Game.creeps[this.metaData.miningCreep];

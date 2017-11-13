@@ -295,7 +295,7 @@ export class RoomDataProcess extends Process{
     let enemies = <Creep[]>room.find(FIND_HOSTILE_CREEPS)
 
     if(enemies.length > 0 && !this.kernel.hasProcess('td-' + this.metaData.roomName)){
-      this.kernel.addProcess(TowerDefenseProcess, 'td-' + this.metaData.roomName, 80, {
+      this.kernel.addProcess(TowerDefenseProcess, 'td-' + this.metaData.roomName, 95, {
         roomName: this.metaData.roomName
       })
     }

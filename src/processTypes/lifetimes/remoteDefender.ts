@@ -25,21 +25,7 @@ export class RemoteDefenderLifetimeProcess extends LifetimeProcess
 
     if(flag.memory.enemies == true)
     {
-      if(creep.pos.roomName != flag.pos.roomName)
-      {
-        this.fork(MoveProcess, 'move-' + creep.name, this.priority - 1, {
-          creep: creep.name,
-          pos: {
-            x: flag.pos.x,
-            y: flag.pos.y,
-            roomName: flag.pos.roomName
-          },
-          range: 5
-        });
-
-        return;
-      }
-      else
+      if(creep.pos.roomName == flag.pos.roomName)
       {
         let enemies = <Creep[]>flag.pos.findInRange(FIND_HOSTILE_CREEPS, 8);
 
@@ -54,6 +40,21 @@ export class RemoteDefenderLifetimeProcess extends LifetimeProcess
 
           return;
         }
+
+      }
+      else
+      {
+        this.fork(MoveProcess, 'move-' + creep.name, this.priority - 1, {
+          creep: creep.name,
+          pos: {
+            x: flag.pos.x,
+            y: flag.pos.y,
+            roomName: flag.pos.roomName
+          },
+          range: 5
+        });
+
+        return;
       }
     }
   }

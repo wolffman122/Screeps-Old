@@ -24,7 +24,7 @@ export class DefenderLifetimeProcess extends LifetimeProcess
     //let room = Game.rooms[creep.room.name];
 
     let flag = Game.flags[this.metaData.flagName];
-    let enemies  = <Creep[]>flag.pos.findInRange(FIND_HOSTILE_CREEPS, 5);
+    let enemies  = <Creep[]>flag.pos.findInRange(FIND_HOSTILE_CREEPS, 10);
 
     if(enemies.length > 0)
     {
