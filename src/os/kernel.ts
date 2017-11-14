@@ -38,13 +38,15 @@ import {DismantleManagementProcess} from '../processTypes/management/dismantle'
 import {DismantleLifetimeProcess} from '../processTypes/lifetimes/dismantler'
 import {DismantleProcess} from '../processTypes/creepActions/dismantle'
 
-/*import {ClaimProcess} from '../processTypes/empireActions/claim'
+import {RemoteBuilderLifetimeProcess} from '../processTypes/lifetimes/remoteBuilder'
+import {ClaimProcess} from '../processTypes/empireActions/claim'
+/*
 import {HoldRoomProcess} from '../processTypes/empireActions/hold'
 import {HoldProcess} from '../processTypes/creepActions/hold'
 import {MineralHarvestProcess} from '../processTypes/creepActions/mineralHarvest'
 import {MineralharvesterLifetimeProcess} from '../processTypes/lifetimes/mineralHarvester'
 import {MineralManagementProcess} from '../processTypes/management/mineral'
-import {RemoteBuilderLifetimeProcess} from '../processTypes/lifetimes/remoteBuilder'
+
 
 
 import {RoomLayoutProcess} from '../processTypes/management/roomLayout'
@@ -84,10 +86,11 @@ const processTypes = <{[type: string]: any}>{
   'rdlf': RemoteDefenderLifetimeProcess,
   'dmp': DismantleManagementProcess,
   'dislf': DismantleLifetimeProcess,
-  'dismantle': DismantleProcess
-
-  /*
+  'dismantle': DismantleProcess,
+  'rblf': RemoteBuilderLifetimeProcess,
   'claim': ClaimProcess,
+  /*
+
 
 
   'holdRoom': HoldRoomProcess,
@@ -96,7 +99,7 @@ const processTypes = <{[type: string]: any}>{
   'mhlf': MineralharvesterLifetimeProcess,
   'mineralManagement': MineralManagementProcess,
 
-  'rblf': RemoteBuilderLifetimeProcess,
+
 
 
 

@@ -2,7 +2,7 @@ import {Process} from '../os/process'
 
 //import {MineralManagementProcess} from './management/mineral'
 //import {RoomLayoutProcess} from './management/roomLayout'
-//import {SpawnRemoteBuilderProcess} from './system/spawnRemoteBuilder'
+import {SpawnRemoteBuilderProcess} from './system/spawnRemoteBuilder'
 import {TowerDefenseProcess} from './buildingProcesses/towerDefense'
 import {TowerRepairProcess} from './buildingProcesses/towerRepair'
 
@@ -15,7 +15,8 @@ export class RoomDataProcess extends Process{
 
   metaData: RoomDataMeta
   fields = [
-    'constructionSites', 'containers', 'extensions', 'generalContainers', 'labs', 'roads', 'spawns', 'sources', 'sourceContainers', 'towers'
+    'constructionSites', 'containers', 'extensions', 'generalContainers', 'labs', 'roads', 'spawns', 'sources', 'sourceContainers', 'towers',
+    'enemySpawns', 'enemyExtensions'
   ]
 
   mapFields = [
@@ -33,10 +34,10 @@ export class RoomDataProcess extends Process{
 
     if(this.kernel.data.roomData[this.metaData.roomName].spawns.length === 0){
       if(this.kernel.data.roomData[this.metaData.roomName].constructionSites.length > 0 && this.kernel.data.roomData[this.metaData.roomName].constructionSites[0].structureType === STRUCTURE_SPAWN){
-        /*this.kernel.addProcess(SpawnRemoteBuilderProcess, 'srm-' + this.metaData.roomName, 90, {
+        this.kernel.addProcess(SpawnRemoteBuilderProcess, 'srm-' + this.metaData.roomName, 90, {
           site: this.kernel.data.roomData[this.metaData.roomName].constructionSites[0].id,
           roomName: this.metaData.roomName
-        })*/
+        })
       }
     }
 
@@ -113,6 +114,19 @@ export class RoomDataProcess extends Process{
       spawns: <StructureSpawn[]>_.filter(myStructures, function(structure){
         return (structure.structureType === STRUCTURE_SPAWN)
       }),
+      enemySpawns: <StructureSpawn[]>_.filter(structures, function(structure: StructureSpawn){
+        return (structure.structureType === STRUCTURE_SPAWN
+                &&
+                !structure.my
+               );
+
+      }),
+      enemyExtensions: <StructureExtension[]>_.filter(structures, function(structure: StructureExtension){
+        return (structure.structureType === STRUCTURE_EXTENSION
+                &&
+                !structure.my
+               );
+      }),
       sources: <Source[]>room.find(FIND_SOURCES),
       sourceContainers: sourceContainers,
       sourceContainerMaps: sourceContainerMaps,
@@ -172,7 +186,9 @@ export class RoomDataProcess extends Process{
       sources: [],
       sourceContainers: [],
       sourceContainerMaps: <{[id: string]: StructureContainer}>{},
-      towers: []
+      towers: [],
+      enemySpawns: [],
+      enemyExtensions: []
     }
     let run = true
     let i = 0

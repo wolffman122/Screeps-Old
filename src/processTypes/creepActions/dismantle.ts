@@ -22,8 +22,8 @@ export class DismantleProcess extends Process
       return;
     }
 
-    let controller = creep.room.controller;
-    let targetPos = controller.pos;
+    let spawn = this.kernel.data.roomData[creep.pos.roomName].enemySpawns[0];
+    let targetPos = spawn.pos;
 
     if(!creep.pos.inRangeTo(targetPos, 1))
     {
@@ -40,7 +40,7 @@ export class DismantleProcess extends Process
     }
     else
     {
-      creep.dismantle(controller);
+      creep.dismantle(spawn);
     }
   }
 }

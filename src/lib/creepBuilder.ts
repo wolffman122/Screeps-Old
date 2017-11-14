@@ -82,8 +82,7 @@ export const CreepBuilder = {
 
   typeExtends: <PartList>{
     'claimer': [CLAIM],
-    'harvester': [WORK, MOVE],
-    //'harvester': [MOVE, WORK],
+    'harvester': [MOVE, WORK],
     'hold': [],
     'mover': [CARRY, CARRY, MOVE],
     //'worker': [WORK, CARRY, MOVE, MOVE]

@@ -3,7 +3,8 @@ import {RemoteMiningManagementProcess} from './management/remoteMining'
 //import {RemoteDefenseManagementProcess} from './management/remoteDefense'
 import {DismantleManagementProcess} from './management/dismantle'
 
-import {HoldManagementProcess} from './management/hold'
+import {ClaimProcess} from '../processTypes/empireActions/claim'
+import {HoldProcess} from '../processTypes/empireActions/hold'
 export class FlagWatcherProcess extends Process
 {
   type='flagWatcher';
@@ -18,15 +19,19 @@ export class FlagWatcherProcess extends Process
     this.kernel.addProcessIfNotExist(RemoteMiningManagementProcess, 'rnmp-' + flag.name, 40, { flag: flag.name })
   }
 
-  remoteHoldFlag(flag: Flag)
-  {
-    console.log('Hold Flag');
-    this.kernel.addProcessIfNotExist(HoldManagementProcess, 'hmp-' + flag.name, 40, {flag: flag.name });
-  }
-
-  remoteDismantleFlag(flag: Flag)
+remoteDismantleFlag(flag: Flag)
   {
     this.kernel.addProcessIfNotExist(DismantleManagementProcess, 'dmp' + flag.name, 40, {flag: flag.name});
+  }
+
+  claimFlag(flag: Flag)
+  {
+    this.kernel.addProcessIfNotExist(ClaimProcess, 'claim-' + flag.name, 20, { targetRoom: flag.pos.roomName, flagName: flag.name});
+  }
+
+  holdFlag(flag: Flag)
+  {
+    this.kernel.addProcessIfNotExist(HoldProcess, 'hold-' + flag.name, 20, {targetRoom: flag.pos.roomName, flagName: flag.name});
   }
 
   run()
@@ -38,15 +43,22 @@ export class FlagWatcherProcess extends Process
     _.forEach(Game.flags, (flag) => {
       switch(flag.color)
       {
+        case COLOR_BLUE:
+          proc.claimFlag(flag);
+          break;
         case COLOR_YELLOW:
           proc.remoteMiningFlag(flag);
           break;
-        case COLOR_RED:
+        /*case COLOR_RED:
           proc.remoteHoldFlag(flag);
-          break;
+          break;*/
         case COLOR_PURPLE:
           proc.remoteDismantleFlag(flag);
           break;
+        case COLOR_BROWN:
+          proc.holdFlag(flag)
+          break;
+
       }
     })
   }

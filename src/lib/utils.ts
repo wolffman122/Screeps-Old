@@ -1,7 +1,7 @@
 import {CreepBuilder} from './creepBuilder'
 import {Kernel} from '../os/kernel'
 import {Process} from '../os/process'
-//import {RoomPathFinder} from './roomPathFinder'
+import {RoomPathFinder} from './roomPathFinder'
 
 export const Utils = {
   clearDeadCreeps: function(list: string[]){
@@ -82,7 +82,7 @@ export const Utils = {
   },
 
   /** Returns the room closest to the source room with the required spawn energy */
-  /*nearestRoom(sourceRoom: string, minSpawnEnergy = 0){
+  nearestRoom(sourceRoom: string, minSpawnEnergy = 0){
     let bestRoom = ''
     let bestDistance = 999
 
@@ -100,7 +100,7 @@ export const Utils = {
     })
 
     return bestRoom
-  }*/
+  }
 
   /*roomDeliveryTarget(kernel: Kernel, roomName: string){
     return Utils.roomDeliveryTargets(kernel, roomName)[0]
