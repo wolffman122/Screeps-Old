@@ -44,7 +44,7 @@ export class EnergyManagementProcess extends Process{
       let creeps = Utils.inflateCreeps(creepNames)
       let workRate = Utils.workRate(creeps, 2)
 
-      if(workRate < source.energyCapacity / 225){ //300
+      if(workRate < source.energyCapacity / 300){ //300
         let creepName = 'em-' + proc.metaData.roomName + '-' + Game.time
         let spawned = Utils.spawn(
           proc.kernel,
@@ -101,7 +101,7 @@ export class EnergyManagementProcess extends Process{
 
     this.metaData.upgradeCreeps = Utils.clearDeadCreeps(this.metaData.upgradeCreeps)
 
-    if(this.metaData.upgradeCreeps.length < 3 && this.kernel.data.roomData[this.metaData.roomName].generalContainers.length > 0){
+    if(this.metaData.upgradeCreeps.length < 1 && this.kernel.data.roomData[this.metaData.roomName].generalContainers.length > 0){
       let creepName = 'em-u-' + proc.metaData.roomName + '-' + Game.time
       let spawned = Utils.spawn(
         proc.kernel,
