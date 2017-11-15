@@ -121,15 +121,15 @@ export class StructureManagementProcess extends Process{
               roomName: this.metaData.roomName
             })
           }
-          else
-          {
-            let creepName = <string>this.metaData.spareCreeps.pop();
-            this.metaData.dismantleCreeps.push(creepName);
-            this.kernel.addProcess(DismantleLifetimeProcess, 'dislf-' + creepName, 28, {
-              creep: creepName,
-              roomName: this.metaData.roomName
-            });
-          }
+        }
+        else
+        {
+          let creepName = <string>this.metaData.spareCreeps.pop();
+          this.metaData.dismantleCreeps.push(creepName);
+          this.kernel.addProcess(DismantleLifetimeProcess, 'dislf-' + creepName, 28, {
+            creep: creepName,
+            roomName: this.metaData.roomName
+          });
         }
       }
     }
