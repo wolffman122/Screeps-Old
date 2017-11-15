@@ -79,6 +79,7 @@ interface EnergyManagementMetaData{
 interface HoldRoomManagementProcessMetaData
 {
   roomName: string
+  holdCreeps: string[]
   harvestCreeps: {
     [source: string]: string[]
   }

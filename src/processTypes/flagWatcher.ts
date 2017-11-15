@@ -5,6 +5,8 @@ import {DismantleManagementProcess} from './management/dismantle'
 
 import {ClaimProcess} from '../processTypes/empireActions/claim'
 import {HoldProcess} from '../processTypes/empireActions/hold'
+import { HoldRoomManagementProcess } from 'processTypes/management/holdRoom';
+
 export class FlagWatcherProcess extends Process
 {
   type='flagWatcher';
@@ -31,8 +33,14 @@ remoteDismantleFlag(flag: Flag)
 
   holdFlag(flag: Flag)
   {
-    console.log('Insie hold function');
+    this.log("Hold Function")
     this.kernel.addProcessIfNotExist(HoldProcess, 'hold-' + flag.name, 20, {targetRoom: flag.pos.roomName, flagName: flag.name});
+  }
+
+  remoteHoldFlag(flag: Flag)
+  {
+    console.log('Hold Management Process');
+    this.kernel.addProcessIfNotExist(HoldRoomManagementProcess, 'hrmp-' + flag.name, 30, {targetRoom: flag.pos.roomName, flagName: flag.name});
   }
 
   run()
@@ -50,14 +58,13 @@ remoteDismantleFlag(flag: Flag)
         case COLOR_YELLOW:
           proc.remoteMiningFlag(flag);
           break;
-        /*case COLOR_RED:
+        case COLOR_RED:
           proc.remoteHoldFlag(flag);
-          break;*/
+          break;
         case COLOR_PURPLE:
           proc.remoteDismantleFlag(flag);
           break;
         case COLOR_BROWN:
-          console.log('Brown Flag');
           proc.holdFlag(flag)
           break;
 

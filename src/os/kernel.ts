@@ -37,6 +37,7 @@ import {DismantleProcess} from '../processTypes/creepActions/dismantle'
 import {RemoteBuilderLifetimeProcess} from '../processTypes/lifetimes/remoteBuilder'
 import {ClaimProcess} from '../processTypes/empireActions/claim'
 import {HoldProcess} from '../processTypes/empireActions/hold'
+import { HoldRoomManagementProcess } from 'processTypes/management/holdRoom';
 
 /*
 import {HoldRoomProcess} from '../processTypes/empireActions/hold'
@@ -52,6 +53,7 @@ import {RoomLayoutProcess} from '../processTypes/management/roomLayout'
 
 
 import {Stats} from '../lib/stats'
+
 
 const processTypes = <{[type: string]: any}>{
   'harvest': HarvestProcess,
@@ -85,6 +87,7 @@ const processTypes = <{[type: string]: any}>{
   'dismantle': DismantleProcess,
   'rblf': RemoteBuilderLifetimeProcess,
   'claim': ClaimProcess,
+  'hrmp': HoldRoomManagementProcess
   /*
 
 

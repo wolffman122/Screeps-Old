@@ -8,7 +8,6 @@ export class RemoteMinerLifetimeProcess extends LifetimeProcess
 
   run()
   {
-    this.log('Remote Miner Lifetime')
     let creep = this.getCreep();
     if(!creep)
     {
@@ -81,6 +80,38 @@ export class RemoteMinerLifetimeProcess extends LifetimeProcess
         target: Game.rooms[this.metaData.deliverRoom].storage!.id,
         resource: RESOURCE_ENERGY
       });
+    }
+    else
+    {
+      let targets = [].concat(
+        <never[]>this.kernel.data.roomData[this.metaData.deliverRoom].labs,
+        <never[]>this.kernel.data.roomData[this.metaData.deliverRoom].generalContainers
+      )
+
+
+      let deliverTargets = _.filter(targets, (t: DeliveryTarget) =>{
+        if(t.store)
+        {
+          return (_.sum(t.store) < t.storeCapacity)
+        }
+        else
+        {
+          return (t.energy < t.energy)
+        }
+      });
+
+      if(deliverTargets.length > 0)
+      {
+        this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+          creep: creep.name,
+          target: deliverTargets[0].id,
+          resource: RESOURCE_ENERGY
+        });
+      }
+      else
+      {
+        this.suspend = 5;
+      }
     }
   }
 }
