@@ -38,6 +38,7 @@ import {RemoteBuilderLifetimeProcess} from '../processTypes/lifetimes/remoteBuil
 import {ClaimProcess} from '../processTypes/empireActions/claim'
 import {HoldProcess} from '../processTypes/empireActions/hold'
 import { HoldRoomManagementProcess } from 'processTypes/management/holdRoom';
+import { TransferProcess} from '../processTypes/empireActions/transfer'
 
 /*
 import {HoldRoomProcess} from '../processTypes/empireActions/hold'
@@ -53,6 +54,7 @@ import {RoomLayoutProcess} from '../processTypes/management/roomLayout'
 
 
 import {Stats} from '../lib/stats'
+
 
 
 const processTypes = <{[type: string]: any}>{
@@ -87,7 +89,8 @@ const processTypes = <{[type: string]: any}>{
   'dismantle': DismantleProcess,
   'rblf': RemoteBuilderLifetimeProcess,
   'claim': ClaimProcess,
-  'hrmp': HoldRoomManagementProcess
+  'hrmp': HoldRoomManagementProcess,
+  'transfer': TransferProcess
   /*
 
 

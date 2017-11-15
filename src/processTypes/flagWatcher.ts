@@ -5,6 +5,8 @@ import {DismantleManagementProcess} from './management/dismantle'
 
 import {ClaimProcess} from '../processTypes/empireActions/claim'
 import {HoldProcess} from '../processTypes/empireActions/hold'
+import {TransferProcess} from '../processTypes/empireActions/transfer'
+
 import { HoldRoomManagementProcess } from 'processTypes/management/holdRoom';
 
 export class FlagWatcherProcess extends Process
@@ -43,6 +45,11 @@ remoteDismantleFlag(flag: Flag)
     this.kernel.addProcessIfNotExist(HoldRoomManagementProcess, 'hrmp-' + flag.name, 30, {targetRoom: flag.pos.roomName, flagName: flag.name});
   }
 
+  transferFlag(flag: Flag)
+  {
+    this.kernel.addProcessIfNotExist(TransferProcess, 'transfer-' + flag.name, 25, {sourceRoom: flag.pos.roomName, destinationRoom: flag.name});
+  }
+
   run()
   {
     this.completed = true;
@@ -66,6 +73,9 @@ remoteDismantleFlag(flag: Flag)
           break;
         case COLOR_BROWN:
           proc.holdFlag(flag)
+          break;
+        case COLOR_ORANGE:
+          proc.transferFlag(flag);
           break;
 
       }

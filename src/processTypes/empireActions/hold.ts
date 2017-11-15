@@ -16,7 +16,6 @@ export class HoldProcess extends Process
 
   run()
   {
-    this.log("Hold")
     let creep = Game.creeps[this.metaData.creep];
 
     let flag = Game.flags[this.metaData.flagName];
