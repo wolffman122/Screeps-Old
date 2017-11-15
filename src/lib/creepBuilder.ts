@@ -91,10 +91,10 @@ export const CreepBuilder = {
   },
 
   typeLengths: <{[name: string]: number}>{
-    'claimer': 3,
-    'harvester': 12,
+    'claimer': 2,
+    'harvester': 14,
     'hold': 4,
-    'mover': 14,
+    'mover': 17,
     'worker': 16,
     'defender': 8
   }
