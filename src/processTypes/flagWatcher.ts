@@ -31,6 +31,7 @@ remoteDismantleFlag(flag: Flag)
 
   holdFlag(flag: Flag)
   {
+    console.log('Insie hold function');
     this.kernel.addProcessIfNotExist(HoldProcess, 'hold-' + flag.name, 20, {targetRoom: flag.pos.roomName, flagName: flag.name});
   }
 
@@ -56,6 +57,7 @@ remoteDismantleFlag(flag: Flag)
           proc.remoteDismantleFlag(flag);
           break;
         case COLOR_BROWN:
+          console.log('Brown Flag');
           proc.holdFlag(flag)
           break;
 

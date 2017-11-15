@@ -37,6 +37,7 @@ export const Utils = {
 
     _.forEach(spawns, function(spawn){
       if(!_.includes(kernel.data.usedSpawns, spawn.id) &&!spawn.spawning && spawn.canCreateCreep(body) === OK){
+
         spawn.createCreep(body, name, memory)
         outcome = true
         kernel.data.usedSpawns.push(spawn.id)

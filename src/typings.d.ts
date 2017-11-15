@@ -76,6 +76,18 @@ interface EnergyManagementMetaData{
   upgradeCreeps: string[]
 }
 
+interface HoldRoomManagementProcessMetaData
+{
+  roomName: string
+  harvestCreeps: {
+    [source: string]: string[]
+  }
+  distroCreeps: {
+    [container: string]: string
+  }
+  builderCreeps: string[]
+}
+
 interface BunkerLayout{
   buildings: {
     [structureType: string]: {
