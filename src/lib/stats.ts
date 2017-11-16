@@ -57,18 +57,40 @@ export const Stats = {
         const enemyCreeps = room.find(FIND_HOSTILE_CREEPS);
         Memory.stats['rooms.' + roomName + '.num_enemy_creeps'] = enemyCreeps ? enemyCreeps.length : 0;
 
+        const creep_energy = _.sum(Game.creeps, c => c.pos.roomName == room.name ? c.carry.energy : 0);
+        Memory.stats['rooms.' + roomName + '.creep_energy'] = creep_energy;
+
+        const containers = <StructureContainer[]>room.find(FIND_STRUCTURES, {filter: s => s.structureType == STRUCTURE_CONTAINER});
+        const container_energy = _.sum(containers, c => c.store.energy);
+        Memory.stats['rooms.' + roomName + '.container_energy'] = container_energy;
+
         const towers = <StructureTower[]>room.find(FIND_STRUCTURES, { filter: s =>  s.structureType == STRUCTURE_TOWER});
         Memory.stats['rooms.' + roomName + '.tower_energy'] = _.sum(towers, t => t.energy);
 
         const const_sites = <ConstructionSite[]>room.find(FIND_CONSTRUCTION_SITES, { filter: cs => cs.my});
         Memory.stats['rooms.' + roomName + '.construction_sites'] = const_sites.length;
 
+        const spawns = <StructureSpawn[]>room.find(FIND_MY_SPAWNS);
+        const spawns_spawning = _.sum(spawns, s => s.spawning ? 1 : 0);
+        Memory.stats['rooms.' + roomName + '.spawns_spawning'] = spawns_spawning;
 
+        const sources = <Source[]>room.find(FIND_SOURCES);
+        const source_energy = _.sum(sources, s => s.energy);
+        Memory.stats['rooms.' + roomName + '.source_energy'] = source_energy;
+
+        const links = <StructureLink[]>room.find(FIND_STRUCTURES, { filter: s => s.structureType == STRUCTURE_LINK && s.my });
+        const link_energy = _.sum(links, l => l.energy);
+        Memory.stats['rooms.' + roomName + '.link_energy'] = link_energy;
 
         if(room.storage){
           Memory.stats['rooms.' + roomName + '.storage.energy'] = room.storage.store.energy
           Memory.stats['rooms.' + roomName + '.storage.minerals'] = _.sum(room.storage.store) - room.storage.store.energy;
         }
+
+        /*const ground_resources = <Resource[]>room.find(FIND_DROPPED_RESOURCES);
+        const reduced_resources = _.reduce(ground_resources, (acc, res) => { acc[res.resourceType] = _.get(acc, [res.resourceType], 0) + res.amount; return acc; }, {});
+        Memory.stats['rooms.' + roomName + '.ground_resources'] = ground_resources: reduced_resources*/
+
       }
     })
   }
