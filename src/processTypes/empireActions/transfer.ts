@@ -40,13 +40,13 @@ export class TransferProcess extends Process
 
     if(_.sum(creep.carry) === 0)
     {
-      let storage = Game.rooms[this.metaData.sourceRoom].storage;
-      if(storage)
+      let terminal = Game.rooms[this.metaData.sourceRoom].terminal;
+      if(terminal)
       {
-        if(storage.store.energy > 0)
+        if(terminal.store.energy > 0)
         {
           this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
-            target: storage.id,
+            target: terminal.id,
             creep: creep.name,
             resource: RESOURCE_ENERGY
           });
@@ -60,7 +60,7 @@ export class TransferProcess extends Process
       return;
     }
 
-    let deliveryStorage = Game.rooms[this.metaData.destinationRoom].storage;
+    let deliveryStorage = Game.rooms[this.metaData.sourceRoom].storage;
 
     if(deliveryStorage)
     {

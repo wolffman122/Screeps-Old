@@ -39,6 +39,8 @@ interface RoomData{
   towers: StructureTower[]
   enemySpawns: StructureSpawn[]
   enemyExtensions: StructureExtension[]
+  walls: StructureWall[]
+  ramparts: StructureRampart[]
 }
 
 interface IPCMessage{

@@ -101,7 +101,8 @@ export class EnergyManagementProcess extends Process{
 
     this.metaData.upgradeCreeps = Utils.clearDeadCreeps(this.metaData.upgradeCreeps)
 
-    if(this.metaData.upgradeCreeps.length < 3 && this.kernel.data.roomData[this.metaData.roomName].generalContainers.length > 0){
+    //if(this.metaData.upgradeCreeps.length < 3 && this.kernel.data.roomData[this.metaData.roomName].generalContainers.length > 0){
+    if(this.metaData.upgradeCreeps.length < 3){
       let creepName = 'em-u-' + proc.metaData.roomName + '-' + Game.time
       let spawned = Utils.spawn(
         proc.kernel,

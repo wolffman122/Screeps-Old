@@ -16,6 +16,7 @@ export class RoomDataProcess extends Process{
   metaData: RoomDataMeta
   fields = [
     'constructionSites', 'containers', 'extensions', 'generalContainers', 'labs', 'roads', 'spawns', 'sources', 'sourceContainers', 'towers',
+    'walls', 'ramparts',
     'enemySpawns', 'enemyExtensions'
   ]
 
@@ -132,6 +133,12 @@ export class RoomDataProcess extends Process{
       sourceContainerMaps: sourceContainerMaps,
       towers: <StructureTower[]>_.filter(myStructures, function(structure){
         return (structure.structureType === STRUCTURE_TOWER)
+      }),
+      walls: <StructureWall[]>_.filter(structures, (s) => {
+        return (s.structureType === STRUCTURE_WALL);
+      }),
+      ramparts: <StructureRampart[]>_.filter(structures, (s) => {
+        return (s.structureType === STRUCTURE_RAMPART);
       })
     }
 
@@ -188,7 +195,9 @@ export class RoomDataProcess extends Process{
       sourceContainerMaps: <{[id: string]: StructureContainer}>{},
       towers: [],
       enemySpawns: [],
-      enemyExtensions: []
+      enemyExtensions: [],
+      walls: [],
+      ramparts: []
     }
     let run = true
     let i = 0
