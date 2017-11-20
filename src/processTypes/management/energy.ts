@@ -101,15 +101,32 @@ export class EnergyManagementProcess extends Process{
 
     this.metaData.upgradeCreeps = Utils.clearDeadCreeps(this.metaData.upgradeCreeps)
 
-    if(this.metaData.upgradeCreeps.length < 3 && this.kernel.data.roomData[this.metaData.roomName].generalContainers.length > 0){
+    if(this.metaData.upgradeCreeps.length < 3 && this.kernel.data.roomData[this.metaData.roomName].generalContainers.length > 0)
+    {
+      let controller = Game.rooms[this.metaData.roomName].controller;
       let creepName = 'em-u-' + proc.metaData.roomName + '-' + Game.time
-      let spawned = Utils.spawn(
-        proc.kernel,
-        proc.metaData.roomName,
-        'worker',
-        creepName,
-        {}
-      )
+      let spawned = false;
+      if(controller.level < 5)
+      {
+
+        spawned = Utils.spawn(
+          proc.kernel,
+          proc.metaData.roomName,
+          'worker',
+          creepName,
+          {}
+        )
+      }
+      else
+      {
+        spawned = Utils.spawn(
+          proc.kernel,
+          proc.metaData.roomName,
+          'upgrader',
+          creepName,
+          {}
+        );
+      }
 
       if(spawned){
         this.metaData.upgradeCreeps.push(creepName)

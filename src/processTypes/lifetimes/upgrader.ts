@@ -1,4 +1,5 @@
 import {LifetimeProcess} from '../../os/process'
+import {Utils} from '../../lib/utils'
 
 import {CollectProcess} from '../creepActions/collect'
 import {UpgradeProcess} from '../creepActions/upgrade'
@@ -23,7 +24,8 @@ export class UpgraderLifetimeProcess extends LifetimeProcess{
       })
 
       if(targets.length > 0){
-        let target = creep.pos.findClosestByPath(targets)
+        //let target = creep.pos.findClosestByPath(targets)
+        let target = Utils.withdrawTarget(creep, this);
 
         this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
           target: target.id,
