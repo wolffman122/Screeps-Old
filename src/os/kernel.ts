@@ -36,7 +36,7 @@ import {DismantleProcess} from '../processTypes/creepActions/dismantle'
 
 import {RemoteBuilderLifetimeProcess} from '../processTypes/lifetimes/remoteBuilder'
 import {ClaimProcess} from '../processTypes/empireActions/claim'
-import {HoldProcess} from '../processTypes/empireActions/hold'
+
 import { HoldRoomManagementProcess } from 'processTypes/management/holdRoom';
 import { TransferProcess} from '../processTypes/empireActions/transfer'
 
@@ -54,6 +54,8 @@ import {RoomLayoutProcess} from '../processTypes/management/roomLayout'
 
 
 import {Stats} from '../lib/stats'
+import { HolderLifetimeProcess } from 'processTypes/empireActions/lifetimes/holder';
+import { HoldProcess } from 'processTypes/empireActions/creepActions/hold';
 
 
 
@@ -81,7 +83,6 @@ const processTypes = <{[type: string]: any}>{
   'defend': DefendProcess,
   'rmlf': RemoteMinerLifetimeProcess,
   'rmmp': RemoteMiningManagementProcess,
-  'hold': HoldProcess,
   'rdmp': RemoteDefenseManagementProcess,
   'rdlf': RemoteDefenderLifetimeProcess,
   'dmp': DismantleManagementProcess,
@@ -90,6 +91,8 @@ const processTypes = <{[type: string]: any}>{
   'rblf': RemoteBuilderLifetimeProcess,
   'claim': ClaimProcess,
   'hrmp': HoldRoomManagementProcess,
+  'holdlf': HolderLifetimeProcess,
+  'hold': HoldProcess,
   'transfer': TransferProcess
   /*
 

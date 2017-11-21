@@ -4,7 +4,7 @@ import {RemoteMiningManagementProcess} from './management/remoteMining'
 import {DismantleManagementProcess} from './management/dismantle'
 
 import {ClaimProcess} from '../processTypes/empireActions/claim'
-import {HoldProcess} from '../processTypes/empireActions/hold'
+//import {HoldProcess} from '../processTypes/empireActions/hold'
 import {TransferProcess} from '../processTypes/empireActions/transfer'
 
 import { HoldRoomManagementProcess } from 'processTypes/management/holdRoom';
@@ -33,11 +33,11 @@ remoteDismantleFlag(flag: Flag)
     this.kernel.addProcessIfNotExist(ClaimProcess, 'claim-' + flag.name, 20, { targetRoom: flag.pos.roomName, flagName: flag.name});
   }
 
-  holdFlag(flag: Flag)
+  /*holdFlag(flag: Flag)
   {
     this.log("Hold Function")
     this.kernel.addProcessIfNotExist(HoldProcess, 'hold-' + flag.name, 20, {targetRoom: flag.pos.roomName, flagName: flag.name});
-  }
+  }*/
 
   remoteHoldFlag(flag: Flag)
   {
@@ -71,9 +71,9 @@ remoteDismantleFlag(flag: Flag)
         case COLOR_PURPLE:
           proc.remoteDismantleFlag(flag);
           break;
-        case COLOR_BROWN:
+        /*case COLOR_BROWN:
           proc.holdFlag(flag)
-          break;
+          break;*/
         case COLOR_ORANGE:
           proc.transferFlag(flag);
           break;
