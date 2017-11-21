@@ -2,6 +2,8 @@ import {Process} from '../../os/process'
 import {Utils} from '../../lib/utils'
 //import { HarvesterLifetimeProcess } from 'processTypes/lifetimes/harvester';
 import { HolderLifetimeProcess } from 'processTypes/empireActions/lifetimes/holder';
+import { HoldBuilderLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderBuild';
+
 
 export class HoldRoomManagementProcess extends Process
 {
@@ -65,6 +67,33 @@ export class HoldRoomManagementProcess extends Process
           flagName: this.metaData.flagName
         })
       }
+    }
+
+    let containerSites = _.filter(this.roomData().constructionSites, c => {
+      return (c.structureType === STRUCTURE_CONTAINER);
+    });
+
+    if(this.metaData.holdCreeps.length < containerSites.length)
+    {
+      let creepName = 'hrm-build-' + proc.metaData.roomName + '-' + Game.time;
+      let spawned = Utils.spawn(
+        proc.kernel,
+        proc.metaData.roomName,
+        'worker',
+        creepName,
+        {}
+      );
+
+      if(spawned)
+      {
+        this.metaData.builderCreeps.push(creepName);
+        this.kernel.addProcess(HoldBuilderLifetimeProcess, 'holdBuilderlf-' + creepName, 25, {
+          creep: creepName,
+          targetRoom: this.metaData.targetRoom,
+          flagName: this.metaData.flagName
+        })
+      }
+
     }
 
 
