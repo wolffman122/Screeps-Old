@@ -91,6 +91,24 @@ export const Stats = {
         const reduced_resources = _.reduce(ground_resources, (acc, res) => { acc[res.resourceType] = _.get(acc, [res.resourceType], 0) + res.amount; return acc; }, {});
         Memory.stats['rooms.' + roomName + '.ground_resources'] = ground_resources: reduced_resources*/
 
+        const structure_types = new Set(room.find(FIND_STRUCTURES).map((s: Structure) => s.structureType));
+        const structure_info = {};
+        for(const s of structure_types)
+        {
+          const ss = room.find(FIND_STRUCTURES, {filter: str => str.structureType == s});
+          let min = <Structure>_.min(ss, 'hits');
+          let min_hits = min.hits;
+          let max = <Structure>_.max(ss, 'hits');
+          let max_hits = max.hits;
+          structure_info[s] = {
+            count: ss.length,
+            min_hits: min_hits,
+            max_hits: max_hits,
+          };
+        }
+
+        Memory.stats['rooms.' + roomName + '.structure_info'] = structure_info;
+
       }
     })
   }

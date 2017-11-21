@@ -101,13 +101,31 @@ export const Utils = {
     })
 
     return bestRoom
-  }
-
-  /*roomDeliveryTarget(kernel: Kernel, roomName: string){
-    return Utils.roomDeliveryTargets(kernel, roomName)[0]
   },
 
-  roomDeliveryTargets(kernel: Kernel, roomName: string): Structure[]{
+  rampartHealth(kernel: Kernel, roomName: string)
+  {
+    let room = Game.rooms[roomName];
 
-  }*/
+    if(room.controller!.level < 3)
+    {
+      return 0;
+    }
+    else
+    {
+      let max = room.controller!.level * 20000;
+
+      let average = Math.ceil(_.sum(<never[]>kernel.data.roomData[roomName].ramparts, 'hits') / kernel.data.roomData[roomName].ramparts.length);
+
+      let target = average + 10000;
+      if(target > max)
+      {
+        return max;
+      }
+      else
+      {
+        return target;
+      }
+    }
+  }
 }

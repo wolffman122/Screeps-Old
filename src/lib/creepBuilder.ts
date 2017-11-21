@@ -98,7 +98,7 @@ export const CreepBuilder = {
     'hold': 4,
     'mover': 17,
     'worker': 16,
-    'upgrader': 21,
+    'upgrader': 27,
     'defender': 8
   }
 }

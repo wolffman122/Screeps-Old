@@ -13,7 +13,7 @@ export class UpgraderLifetimeProcess extends LifetimeProcess{
     if(!creep){ return }
 
     if(_.sum(creep.carry) === 0){
-      let targets = <DeliveryTarget[]>[].concat(
+      /*let targets = <DeliveryTarget[]>[].concat(
         <never[]>this.kernel.data.roomData[creep.room.name].generalContainers
       )
 
@@ -23,7 +23,7 @@ export class UpgraderLifetimeProcess extends LifetimeProcess{
           return (target.store.energy > capacity)
       })
 
-      if(targets.length > 0){
+      if(targets.length > 0){*/
         //let target = creep.pos.findClosestByPath(targets)
         let target = Utils.withdrawTarget(creep, this);
 
@@ -34,7 +34,7 @@ export class UpgraderLifetimeProcess extends LifetimeProcess{
         })
 
         return
-      }
+     // }
     }
 
     // If the creep has been refilled
