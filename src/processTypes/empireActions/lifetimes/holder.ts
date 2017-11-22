@@ -25,7 +25,7 @@ export class HolderLifetimeProcess extends LifetimeProcess
 
     let room = Game.rooms[this.metaData.targetRoom];
 
-    if(!room)
+    if(!room || (creep.pos.roomName != room.name))
     {
       this.fork(MoveProcess, 'move-' + creep.name, this.priority - 1, {
         creep: creep.name,

@@ -3,6 +3,8 @@ import { MoveProcess } from "processTypes/creepActions/move";
 import { BuildProcess } from "processTypes/creepActions/build";
 import { Utils } from "lib/utils";
 import { CollectProcess } from "processTypes/creepActions/collect";
+import { HarvestProcess } from "processTypes/creepActions/harvest";
+//import { HarvestProcess } from "processTypes/creepActions/harvest";
 
 interface HoldBuilderLifetimeProcessMetaData
 {
@@ -17,7 +19,7 @@ export class HoldBuilderLifetimeProcess extends LifetimeProcess
 
   run()
   {
-
+    this.log('Holder Builder LF');
     let creep = this.getCreep();
 
     if(!creep)
@@ -27,8 +29,11 @@ export class HoldBuilderLifetimeProcess extends LifetimeProcess
 
     let room = Game.rooms[this.metaData.targetRoom];
 
-    if(!room)
+    this.log('In Remote build');
+
+    if(room.name != creep.pos.roomName)
     {
+      this.log('Move remote build');
       this.fork(MoveProcess, 'move-' + creep.name, this.priority - 1, {
         creep: creep.name,
         pos: Game.flags[this.metaData.flagName].pos,
@@ -53,11 +58,21 @@ export class HoldBuilderLifetimeProcess extends LifetimeProcess
       }
       else
       {
-        this.suspend = 10;
+        if( this.kernel.data.roomData[creep.room.name].sources)
+        {
+          let source = creep.pos.findClosestByRange( this.kernel.data.roomData[creep.room.name].sources);
+
+          this.fork(HarvestProcess, 'harvest-' + creep.name, this.priority - 1, {
+            creep: creep.name,
+            source: source.id
+          });
+
+          return;
+        }
       }
     }
 
-    let target = creep.pos.findClosestByRange(this.roomData().constructionSites);
+    let target = creep.pos.findClosestByRange(this.kernel.data.roomData[this.metaData.targetRoom].constructionSites);
 
     if(target)
     {
