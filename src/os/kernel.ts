@@ -54,6 +54,7 @@ import {RoomLayoutProcess} from '../processTypes/management/roomLayout'
 
 
 import {Stats} from '../lib/stats'
+import { LinkManagementProcess } from 'processTypes/management/link';
 
 
 
@@ -90,7 +91,8 @@ const processTypes = <{[type: string]: any}>{
   'rblf': RemoteBuilderLifetimeProcess,
   'claim': ClaimProcess,
   'hrmp': HoldRoomManagementProcess,
-  'transfer': TransferProcess
+  'transfer': TransferProcess,
+  'lm': LinkManagementProcess
   /*
 
 

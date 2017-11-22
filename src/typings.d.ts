@@ -39,6 +39,10 @@ interface RoomData{
   towers: StructureTower[]
   enemySpawns: StructureSpawn[]
   enemyExtensions: StructureExtension[]
+  sourceLinks: StructureLink[]
+  sourceLinkMaps: {[id: string]: StructureLink}
+  storageLinks: StructureLink[]
+  storageLinkMaps: {[id: string]: StructureLink}
 }
 
 interface IPCMessage{

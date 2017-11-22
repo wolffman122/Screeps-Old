@@ -16,11 +16,11 @@ export class RoomDataProcess extends Process{
   metaData: RoomDataMeta
   fields = [
     'constructionSites', 'containers', 'extensions', 'generalContainers', 'labs', 'roads', 'spawns', 'sources', 'sourceContainers', 'towers',
-    'enemySpawns', 'enemyExtensions'
+    'enemySpawns', 'enemyExtensions', 'sourceLinks', 'storageLink'
   ]
 
   mapFields = [
-    'sourceContainerMaps'
+    'sourceContainerMaps', 'sourceLinkMaps', 'storageLinkMaps'
   ]
 
   singleFields = [
@@ -90,6 +90,34 @@ export class RoomDataProcess extends Process{
       return (matched.length == 0)
     })
 
+    let links = <StructureLink[]>_.filter(myStructures, function(s){
+      return (s.structureType === STRUCTURE_LINK)
+    });
+
+    let sourceLinkMaps = <{[id: string]: StructureLink}>{};
+
+    let sourceLinks = _.filter(links, function(l){
+      var sources: Array<Source> = l.pos.findInRange(FIND_SOURCES, 2);
+
+      if(sources[0])
+      {
+        sourceLinkMaps[sources[0].id] = l;
+      }
+
+      return (sources.length != 0);
+    });
+
+    let storageLinkMaps = <{[id: string]: StructureLink}>{};
+
+    let storageLinks = _.filter(links, function(l){
+        if(l.pos.inRangeTo(l.room.controller, 2))
+        {
+          storageLinkMaps[l.room.controller.id] = l;
+          return l;
+        }
+    });
+
+
     let roads = <StructureRoad[]>_.filter(structures, function(structure){
       return (structure.structureType === STRUCTURE_ROAD)
     })
@@ -132,7 +160,11 @@ export class RoomDataProcess extends Process{
       sourceContainerMaps: sourceContainerMaps,
       towers: <StructureTower[]>_.filter(myStructures, function(structure){
         return (structure.structureType === STRUCTURE_TOWER)
-      })
+      }),
+      sourceLinks: sourceLinks,
+      sourceLinkMaps: sourceLinkMaps,
+      storageLinks: storageLinks,
+      storageLinkMaps: storageLinkMaps
     }
 
     this.kernel.data.roomData[this.metaData.roomName] = roomData
@@ -188,7 +220,11 @@ export class RoomDataProcess extends Process{
       sourceContainerMaps: <{[id: string]: StructureContainer}>{},
       towers: [],
       enemySpawns: [],
-      enemyExtensions: []
+      enemyExtensions: [],
+      sourceLinks: [],
+      sourceLinkMaps: <{[id: string]: StructureLink}>{},
+      storageLinks: [],
+      storageLinkMaps: <{[id: string]: StructureLink}>{},
     }
     let run = true
     let i = 0

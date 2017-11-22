@@ -53,6 +53,13 @@ export class InitProcess extends Process{
           roomName: room.name
         })
       }
+
+      if(!proc.kernel.hasProcess('lm-' + room.name))
+      {
+        proc.kernel.addProcess(LinkManagementProcess, 'lm-' + room.name, 60, {
+          roomName: room.name
+        })
+      }
     })
 
     this.kernel.addProcess(SuspensionProcess, 'suspension-master', 99, {master: true})
