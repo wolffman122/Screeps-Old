@@ -3,6 +3,8 @@ import {Utils} from '../../lib/utils'
 //import { HarvesterLifetimeProcess } from 'processTypes/lifetimes/harvester';
 import { HolderLifetimeProcess } from 'processTypes/empireActions/lifetimes/holder';
 import { HoldBuilderLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderBuilder';
+import { HoldHarvesterLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderHarvester';
+import { HoldDistroLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderDistro';
 
 
 
@@ -73,7 +75,9 @@ export class HoldRoomManagementProcess extends Process
       }
     }
 
-    if(this.kernel.data.roomData[this.metaData.targetRoom].constructionSites)
+
+    let constructionSites = this.kernel.data.roomData[this.metaData.targetRoom].constructionSites;
+    if(constructionSites.length > 0)
     {
       let containerSites = _.filter(this.kernel.data.roomData[this.metaData.targetRoom].constructionSites, c => {
         return (c.structureType === STRUCTURE_CONTAINER);
@@ -104,7 +108,7 @@ export class HoldRoomManagementProcess extends Process
       }
     }
 
-    if(this.kernel.data.roomData[this.metaData.targetRoom].sourceContainers)
+    if(this.kernel.data.roomData[this.metaData.targetRoom].sourceContainers.length > 0)
     {
       let containers = _.filter(this.kernel.data.roomData[this.metaData.targetRoom].sourceContainers, c => {
         return (c.structureType === STRUCTURE_CONTAINER);
@@ -113,7 +117,87 @@ export class HoldRoomManagementProcess extends Process
       if(containers.length > 0)
       {
         this.log('Containers now need to harves into them');
+
+        let sources = this.kernel.data.roomData[this.metaData.targetRoom].sources;
+
+        _.forEach(sources, function(source) {
+          if(!proc.metaData.harvestCreeps[source.id])
+          {
+            proc.metaData.harvestCreeps[source.id] = [];
+          }
+
+          let creepNames = Utils.clearDeadCreeps(proc.metaData.harvestCreeps[source.id])
+          proc.metaData.harvestCreeps[source.id] = creepNames;
+          let creeps = Utils.inflateCreeps(creepNames);
+          let workRate = Utils.workRate(creeps, 2);
+
+          if(workRate < source.energyCapacity / 300)
+          {
+            console.log("Need to make some harvesting creeps " + source.id);
+            let creepName = 'hrm-harvest-' + spawnRoom + '-' + Game.time;
+            let spawned = Utils.spawn(
+              proc.kernel,
+              spawnRoom,
+              'harvester',
+              creepName,
+              {}
+            )
+
+            if(spawned)
+            {
+              proc.metaData.harvestCreeps[source.id].push(creepName);
+            }
+          }
+
+          _.forEach(creeps, function(creep){
+            if(!proc.kernel.hasProcess('holdHarvesterlf-' + creep.name))
+            {
+              proc.kernel.addProcess(HoldHarvesterLifetimeProcess, 'holdHarvesterlf-' + creep.name, 27, {
+                creep: creep.name,
+                source: source.id
+              });
+            }
+          });
+        });
       }
+
+      _.forEach(this.kernel.data.roomData[this.metaData.targetRoom].sourceContainers, function(container){
+        if(proc.metaData.distroCreeps[container.id])
+        {
+          let creep = Game.creeps[proc.metaData.distroCreeps[container.id]];
+          if(!creep)
+          {
+            delete proc.metaData.distroCreeps[container.id];
+            return;
+          }
+        }
+        else
+        {
+          let creepName = 'hrm-m-' + spawnRoom + '-' + Game.time;
+          let spawned = Utils.spawn(
+            proc.kernel,
+            spawnRoom,
+            'mover',
+            creepName,
+            {}
+          );
+
+          if(spawned)
+          {
+            proc.metaData.distroCreeps[container.id] = creepName;
+            if(!proc.kernel.hasProcess('holdDistrolf-' + creepName))
+            {
+              proc.kernel.addProcess(HoldDistroLifetimeProcess, 'holdDistrolf-' + creepName, 26, {
+                sourceContainer: container.id,
+                spawnRoom: spawnRoom,
+                creep: creepName
+              })
+            }
+          }
+        }
+      })
     }
+
+
   }
 }

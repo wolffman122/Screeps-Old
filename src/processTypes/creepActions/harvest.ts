@@ -20,8 +20,6 @@ export class HarvestProcess extends Process{
     }
 
     let source = <Source>Game.getObjectById(this.metaData.source)
-
-    this.log('Remote harvest' + this.metaData.source);
     
     let targetPos = source.pos
     let targetRange = 1
