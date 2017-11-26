@@ -16,15 +16,15 @@ export class RoomDataProcess extends Process{
   metaData: RoomDataMeta
   fields = [
     'constructionSites', 'containers', 'extensions', 'generalContainers', 'labs', 'roads', 'spawns', 'sources', 'sourceContainers', 'towers', 'ramparts',
-    'enemySpawns', 'enemyExtensions'
+    'enemySpawns', 'enemyExtensions', 'links', 'sourceLinks'
   ]
 
   mapFields = [
-    'sourceContainerMaps'
+    'sourceContainerMaps', 'sourceLinkMaps'
   ]
 
   singleFields = [
-    'extractor', 'mineral'
+    'extractor', 'mineral', 'storageLink'
   ]
 
   run(){
@@ -90,6 +90,23 @@ export class RoomDataProcess extends Process{
       return (matched.length == 0)
     })
 
+    let links = <StructureLink[]>_.filter(myStructures, (s) => {
+      return (s.structureType === STRUCTURE_LINK);
+    })
+
+    let sourceLinkMaps = <{[id: string]: StructureLink}>{};
+
+    let sourceLinks = _.filter(links, (l) => {
+      var sources: Array<Source> = l.pos.findInRange(FIND_SOURCES, 3);
+
+      if(sources[0])
+      {
+        sourceLinkMaps[sources[0].id] = l
+      }
+
+      return (sources.length != 0);
+    });
+
     let roads = <StructureRoad[]>_.filter(structures, function(structure){
       return (structure.structureType === STRUCTURE_ROAD)
     })
@@ -135,7 +152,11 @@ export class RoomDataProcess extends Process{
       }),
       ramparts: <StructureRampart[]>_.filter(myStructures, function(s){
         return (s.structureType === STRUCTURE_RAMPART);
-      })
+      }),
+      links: links,
+      sourceLinks: sourceLinks,
+      sourceLinkMaps: sourceLinkMaps,
+      storageLink: <StructureLink>room.storage.pos.findInRange(links, 2)[0]
     }
 
     this.kernel.data.roomData[this.metaData.roomName] = roomData
@@ -192,7 +213,11 @@ export class RoomDataProcess extends Process{
       towers: [],
       enemySpawns: [],
       enemyExtensions: [],
-      ramparts: []
+      ramparts: [],
+      links: [],
+      sourceLinks: [],
+      sourceLinkMaps: <{[id: string]: StructureLink}>{},
+      storageLink: undefined
     }
     let run = true
     let i = 0

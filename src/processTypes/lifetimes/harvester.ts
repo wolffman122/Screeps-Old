@@ -21,6 +21,24 @@ export class HarvesterLifetimeProcess extends LifetimeProcess{
       return
     }
 
+    // Creep has been harvesting and has energy put it in source links
+    if(this.kernel.data.roomData[creep.room.name].sourceLinkMaps[this.metaData.source])
+    {
+      let link = this.kernel.data.roomData[creep.room.name].sourceLinkMaps[this.metaData.source];
+
+      if(link.energy < link.energyCapacity)
+      {
+        this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+          target: link.id,
+          creep: creep.name,
+          resource: RESOURCE_ENERGY
+        })
+
+        return;
+      }
+    }
+
+
     // Creep has been harvesting and has energy in it
     if(this.kernel.data.roomData[creep.room.name].sourceContainerMaps[this.metaData.source]){
       let container = this.kernel.data.roomData[creep.room.name].sourceContainerMaps[this.metaData.source]

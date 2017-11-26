@@ -59,6 +59,8 @@ import { HoldProcess } from 'processTypes/empireActions/creepActions/hold';
 import { HoldBuilderLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderBuilder';
 import { HoldHarvesterLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderHarvester';
 import { HoldDistroLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderDistro';
+import { LinkManagementProcess } from 'processTypes/management/link';
+import { SpinnerLifetimeProcess } from 'processTypes/lifetimes/spinner';
 
 
 
@@ -99,7 +101,9 @@ const processTypes = <{[type: string]: any}>{
   'holdBuilderlf': HoldBuilderLifetimeProcess,
   'holdHarvesterlf': HoldHarvesterLifetimeProcess,
   'holdDistrolf': HoldDistroLifetimeProcess,
-  'transfer': TransferProcess
+  'transfer': TransferProcess,
+  'lm': LinkManagementProcess,
+  'slf': SpinnerLifetimeProcess
   /*
 
 

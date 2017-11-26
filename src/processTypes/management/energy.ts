@@ -4,6 +4,7 @@ import {Utils} from '../../lib/utils'
 import {HarvesterLifetimeProcess} from '../lifetimes/harvester'
 import {DistroLifetimeProcess} from '../lifetimes/distro'
 import {UpgraderLifetimeProcess} from '../lifetimes/upgrader'
+import { SpinnerLifetimeProcess } from 'processTypes/lifetimes/spinner';
 
 export class EnergyManagementProcess extends Process{
   metaData: EnergyManagementMetaData
@@ -19,6 +20,9 @@ export class EnergyManagementProcess extends Process{
 
     if(!this.metaData.upgradeCreeps)
       this.metaData.upgradeCreeps = []
+
+    if(!this.metaData.spinCreeps)
+      this.metaData.spinCreeps = []
   }
 
   run(){
@@ -105,10 +109,10 @@ export class EnergyManagementProcess extends Process{
     switch(this.metaData.roomName)
     {
       case 'E46S51':
-        upgraders = 2;
+        upgraders = 1;
         break;
       case 'E43S52':
-        upgraders = 3;
+        upgraders = 2;
         break;
       default:
         upgraders = 2;
@@ -146,6 +150,42 @@ export class EnergyManagementProcess extends Process{
         this.kernel.addProcess(UpgraderLifetimeProcess, 'ulf-' + creepName, 30, {
           creep: creepName
         })
+      }
+    }
+
+    if(this.kernel.data.roomData[this.metaData.roomName].storageLink)
+    {
+      this.log('Spinner storage link');
+      let storageLink = this.kernel.data.roomData[this.metaData.roomName].storageLink
+
+      this.metaData.spinCreeps = Utils.clearDeadCreeps(this.metaData.spinCreeps)
+
+      this.log('SpinCreeps length ' + this.metaData.spinCreeps.length);
+      this.log('SourceLinks length ' + this.kernel.data.roomData[this.metaData.roomName].sourceLinks.length)
+      if(this.metaData.spinCreeps.length < 1 && this.kernel.data.roomData[this.metaData.roomName].sourceLinks.length > 1)
+      {
+        this.log('Spinner spawn ');
+        let creepName = 'em-s-' + proc.metaData.roomName + '-' + Game.time;
+        let spawned = Utils.spawn(
+          proc.kernel,
+          proc.metaData.roomName,
+          'spinner',
+          creepName,
+          {}
+        );
+
+        if(spawned)
+        {
+          this.metaData.spinCreeps.push(creepName);
+          this.kernel.addProcess(SpinnerLifetimeProcess, 'slf-' + creepName, 45, {
+            creep: creepName,
+            storageLink: storageLink.id
+          })
+        }
+      }
+      else
+      {
+        this.log('Spinner spawn failed');
       }
     }
   }

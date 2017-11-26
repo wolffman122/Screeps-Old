@@ -40,6 +40,10 @@ interface RoomData{
   enemySpawns: StructureSpawn[]
   enemyExtensions: StructureExtension[]
   ramparts: StructureRampart[]
+  links: StructureLink[]
+  sourceLinks: StructureLink[]
+  sourceLinkMaps: {[id: string]: StructureLink}
+  storageLink: StructureLink | undefined
 }
 
 interface IPCMessage{
@@ -75,6 +79,7 @@ interface EnergyManagementMetaData{
     [container: string]: string
   }
   upgradeCreeps: string[]
+  spinCreeps: string[]
 }
 
 interface HoldRoomManagementProcessMetaData

@@ -6,6 +6,7 @@ import {SuspensionProcess} from './suspension'
 import {StructureManagementProcess} from '../management/structure'
 import {DefenseManagementProcess} from '../management/defense'
 import {FlagWatcherProcess} from '../flagWatcher'
+import { LinkManagementProcess } from 'processTypes/management/link';
 
 /*
 
@@ -52,6 +53,16 @@ export class InitProcess extends Process{
         proc.kernel.addProcess(DefenseManagementProcess, 'dm-' + room.name, 70, {
           roomName: room.name
         })
+      }
+
+      if(Game.rooms[room.name].controller.my)
+      {
+        if(!proc.kernel.hasProcess('lm-' + room.name))
+        {
+          proc.kernel.addProcess(LinkManagementProcess, 'lm-' + room.name, 60, {
+            roomName: room.name
+          });
+        }
       }
     })
 

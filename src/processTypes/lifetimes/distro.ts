@@ -13,32 +13,70 @@ export class DistroLifetimeProcess extends LifetimeProcess{
 
     if(_.sum(creep.carry) === 0)
     {
-      let sourceContainer = <Container>Game.getObjectById(this.metaData.sourceContainer);
-
-      if(sourceContainer.store.energy > 0)
-      {
-
-        this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
-          target: this.metaData.sourceContainer,
-          creep: creep.name,
-          resource: RESOURCE_ENERGY
-        })
-      }
-      else
+      if(this.kernel.data.roomData[creep.pos.roomName].sourceLinks.length == 2)
       {
         let storage = creep.room.storage;
 
         if(storage.store.energy > 0)
         {
+          this.log('Go get from storage .........')
           this.fork(CollectProcess, 'collect-' + creep.name, this.priority -1, {
             target: storage.id,
             creep: creep.name,
             resource: RESOURCE_ENERGY
           })
+
+          return;
+        }
+        else
+        {
+          let sourceContainer = <Container>Game.getObjectById(this.metaData.sourceContainer);
+
+          if(sourceContainer.store.energy > 0)
+          {
+
+            this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+              target: this.metaData.sourceContainer,
+              creep: creep.name,
+              resource: RESOURCE_ENERGY
+            })
+
+            return;
+          }
         }
       }
+      else
+      {
+        let sourceContainer = <Container>Game.getObjectById(this.metaData.sourceContainer);
 
-      return
+        if(sourceContainer.store.energy > 0)
+        {
+
+          this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+            target: this.metaData.sourceContainer,
+            creep: creep.name,
+            resource: RESOURCE_ENERGY
+          })
+
+          return;
+        }
+        else
+        {
+          let storage = creep.room.storage;
+
+          if(storage.store.energy > 0)
+          {
+            this.fork(CollectProcess, 'collect-' + creep.name, this.priority -1, {
+              target: storage.id,
+              creep: creep.name,
+              resource: RESOURCE_ENERGY
+            })
+
+            return;
+          }
+        }
+
+      }
     }
 
     // If the creep has been refilled
@@ -68,7 +106,7 @@ export class DistroLifetimeProcess extends LifetimeProcess{
       })
     }
 
-    if(deliverTargets.length === 0 && creep.room.storage)
+    if(deliverTargets.length === 0 && creep.room.storage && this.kernel.data.roomData[creep.pos.roomName].sourceLinks.length < 2)
     {
       let targets = [].concat(
         <never[]>[creep.room.storage]
