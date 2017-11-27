@@ -155,16 +155,12 @@ export class EnergyManagementProcess extends Process{
 
     if(this.kernel.data.roomData[this.metaData.roomName].storageLink)
     {
-      this.log('Spinner storage link');
       let storageLink = this.kernel.data.roomData[this.metaData.roomName].storageLink
 
       this.metaData.spinCreeps = Utils.clearDeadCreeps(this.metaData.spinCreeps)
 
-      this.log('SpinCreeps length ' + this.metaData.spinCreeps.length);
-      this.log('SourceLinks length ' + this.kernel.data.roomData[this.metaData.roomName].sourceLinks.length)
       if(this.metaData.spinCreeps.length < 1 && this.kernel.data.roomData[this.metaData.roomName].sourceLinks.length > 1)
       {
-        this.log('Spinner spawn ');
         let creepName = 'em-s-' + proc.metaData.roomName + '-' + Game.time;
         let spawned = Utils.spawn(
           proc.kernel,
@@ -182,10 +178,6 @@ export class EnergyManagementProcess extends Process{
             storageLink: storageLink.id
           })
         }
-      }
-      else
-      {
-        this.log('Spinner spawn failed');
       }
     }
   }

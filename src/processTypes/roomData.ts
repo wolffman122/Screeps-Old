@@ -115,6 +115,12 @@ export class RoomDataProcess extends Process{
       return (structure.structureType === STRUCTURE_LAB)
     })
 
+    let storageLink = undefined;
+    if(room.storage)
+    {
+      storageLink = <StructureLink>room.storage.pos.findInRange(links, 2)[0];
+    }
+
     let roomData: RoomData = {
       constructionSites: <ConstructionSite[]>room.find(FIND_CONSTRUCTION_SITES),
       containers: containers,
@@ -156,12 +162,17 @@ export class RoomDataProcess extends Process{
       links: links,
       sourceLinks: sourceLinks,
       sourceLinkMaps: sourceLinkMaps,
-      storageLink: <StructureLink>room.storage.pos.findInRange(links, 2)[0]
+      storageLink: storageLink
     }
 
     this.kernel.data.roomData[this.metaData.roomName] = roomData
 
-    room.memory.cache = {}
+    if(room.name == 'E42S53')
+    {
+      this.log('E43S52 roomdata ' + roomData);
+    }
+
+      room.memory.cache = {}
 
     let proc = this
     _.forEach(this.fields, function(field){
@@ -197,6 +208,7 @@ export class RoomDataProcess extends Process{
       return
     }
 
+    this.log('Finished Build room ' + room.name)
     let roomData: RoomData = {
       constructionSites: [],
       containers: [],

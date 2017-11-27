@@ -19,7 +19,6 @@ export class HoldBuilderLifetimeProcess extends LifetimeProcess
 
   run()
   {
-    this.log('Holder Builder LF');
     let creep = this.getCreep();
 
     if(!creep)

@@ -93,6 +93,7 @@ interface HoldRoomManagementProcessMetaData
     [container: string]: string
   }
   builderCreeps: string[]
+  workerCreeps: string[]
   flagName: string
   targetRoom: string
 }

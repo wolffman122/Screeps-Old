@@ -5,6 +5,7 @@ import { HolderLifetimeProcess } from 'processTypes/empireActions/lifetimes/hold
 import { HoldBuilderLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderBuilder';
 import { HoldHarvesterLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderHarvester';
 import { HoldDistroLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderDistro';
+import { HoldWorkerLifetimeProcess } from 'processTypes/empireActions/lifetimes/holdWorker';
 
 
 
@@ -18,6 +19,11 @@ export class HoldRoomManagementProcess extends Process
     if(!this.metaData.builderCreeps)
     {
       this.metaData.builderCreeps = [];
+    }
+
+    if(!this.metaData.workerCreeps)
+    {
+      this.metaData.workerCreeps = [];
     }
 
     if(!this.metaData.distroCreeps)
@@ -52,6 +58,7 @@ export class HoldRoomManagementProcess extends Process
     let proc = this;
 
     this.metaData.holdCreeps = Utils.clearDeadCreeps(this.metaData.holdCreeps);
+    this.metaData.workerCreeps = Utils.clearDeadCreeps(this.metaData.workerCreeps);
 
     if(this.metaData.holdCreeps.length < 1)
     {
@@ -75,8 +82,8 @@ export class HoldRoomManagementProcess extends Process
       }
     }
 
-
     let constructionSites = this.kernel.data.roomData[this.metaData.targetRoom].constructionSites;
+
     if(constructionSites.length > 0)
     {
       let containerSites = _.filter(this.kernel.data.roomData[this.metaData.targetRoom].constructionSites, c => {
@@ -116,8 +123,6 @@ export class HoldRoomManagementProcess extends Process
 
       if(containers.length > 0)
       {
-        this.log('Containers now need to harves into them');
-
         let sources = this.kernel.data.roomData[this.metaData.targetRoom].sources;
 
         _.forEach(sources, function(source) {
@@ -177,7 +182,7 @@ export class HoldRoomManagementProcess extends Process
           let spawned = Utils.spawn(
             proc.kernel,
             spawnRoom,
-            'mover',
+            'holdmover',
             creepName,
             {}
           );
@@ -198,6 +203,26 @@ export class HoldRoomManagementProcess extends Process
       })
     }
 
+    if(this.metaData.workerCreeps.length < this.kernel.data.roomData[this.metaData.targetRoom].sourceContainers.length)
+    {
+      let creepName = 'hrm-worker-' + spawnRoom + '-' + Game.time;
+      let spawned = Utils.spawn(
+        proc.kernel,
+        spawnRoom,
+        'worker',
+        creepName,
+        {}
+      );
 
+      if(spawned)
+      {
+        this.metaData.workerCreeps.push(creepName);
+        this.kernel.addProcess(HoldWorkerLifetimeProcess, 'holdWorkerlf-' + creepName, 22, {
+          creep: creepName,
+          targetRoom: this.metaData.targetRoom,
+          flagName: this.metaData.flagName
+        });
+      }
+    }
   }
 }
