@@ -81,6 +81,7 @@ export const CreepBuilder = {
     'defender': [MOVE,MOVE,ATTACK,ATTACK],
     'spinner': [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
     'holdmover': [CARRY,CARRY,MOVE],
+    'bigHarvester': [WORK, WORK, CARRY, MOVE, MOVE],
   },
 
   typeExtends: <PartList>{
@@ -93,7 +94,8 @@ export const CreepBuilder = {
     'upgrader': [CARRY, WORK, MOVE],
     'defender': [MOVE,MOVE,ATTACK,ATTACK],
     'spinner': [CARRY],
-    'holdmover': [CARRY,CARRY,MOVE]
+    'holdmover': [CARRY,CARRY,MOVE],
+    'bigHarvester': [WORK, WORK]
   },
 
   typeLengths: <{[name: string]: number}>{
@@ -105,6 +107,7 @@ export const CreepBuilder = {
     'upgrader': 27,
     'defender': 8,
     'spinner': 6,
-    'holdmover': 33
+    'holdmover': 33,
+    'bigHarvester': 155
   }
 }

@@ -81,6 +81,14 @@ export class HoldRoomManagementProcess extends Process
         })
       }
     }
+    else
+    {
+      let hostileCreeps = <Creep[]>Game.creeps[this.metaData.holdCreeps[0]].room.find(FIND_HOSTILE_CREEPS);
+      if(hostileCreeps.length > 0)
+      {
+        this.suspend = hostileCreeps[0].ticksToLive;
+      }
+    }
 
     let constructionSites = this.kernel.data.roomData[this.metaData.targetRoom].constructionSites;
 

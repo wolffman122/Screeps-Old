@@ -15,6 +15,19 @@ export class DistroLifetimeProcess extends LifetimeProcess{
     {
       if(this.kernel.data.roomData[creep.pos.roomName].sourceLinks.length == 2)
       {
+        let sourceContainer = <Container>Game.getObjectById(this.metaData.sourceContainer);
+
+        if(sourceContainer.store.energy > creep.carryCapacity)
+        {
+          this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+            target: this.metaData.sourceContainer,
+            creep: creep.name,
+            resource: RESOURCE_ENERGY
+          });
+
+          return;
+        }
+
         let storage = creep.room.storage;
 
         if(storage.store.energy > 0)
