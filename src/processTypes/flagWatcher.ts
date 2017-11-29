@@ -41,7 +41,7 @@ remoteDismantleFlag(flag: Flag)
 
   remoteHoldFlag(flag: Flag)
   {
-    console.log('Hold Management Process');
+    console.log('Hold Management Process ' + flag.name);
     this.kernel.addProcessIfNotExist(HoldRoomManagementProcess, 'hrmp-' + flag.name, 30, {targetRoom: flag.pos.roomName, flagName: flag.name});
   }
 

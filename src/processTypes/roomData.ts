@@ -208,7 +208,6 @@ export class RoomDataProcess extends Process{
       return
     }
 
-    this.log('Finished Build room ' + room.name)
     let roomData: RoomData = {
       constructionSites: [],
       containers: [],
@@ -349,9 +348,9 @@ export class RoomDataProcess extends Process{
   /** Find enemies in the room */
   enemyDetection(room: Room)
   {
-    let enemies = <Creep[]>room.find(FIND_HOSTILE_CREEPS)
-
-    if(enemies.length > 0 && !this.kernel.hasProcess('td-' + this.metaData.roomName)){
+    let enemies = <Creep[]>room.find(FIND_HOSTILE_CREEPS);
+    let controller = Game.rooms[this.metaData.roomName].controller;
+    if(enemies.length > 0 &&  controller.my && !this.kernel.hasProcess('td-' + this.metaData.roomName)){
       this.kernel.addProcess(TowerDefenseProcess, 'td-' + this.metaData.roomName, 95, {
         roomName: this.metaData.roomName
       })

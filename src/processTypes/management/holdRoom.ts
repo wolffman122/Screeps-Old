@@ -44,6 +44,8 @@ export class HoldRoomManagementProcess extends Process
 
   run()
   {
+    this.log('Run Remote Hold');
+    
     this.ensureMetaData()
 
     let spawnRoom = this.metaData.flagName.split('-')[0];

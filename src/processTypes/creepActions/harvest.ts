@@ -19,8 +19,10 @@ export class HarvestProcess extends Process{
       return
     }
 
+    creep.fixMyRoad();
+
     let source = <Source>Game.getObjectById(this.metaData.source)
-    
+
     let targetPos = source.pos
     let targetRange = 1
 

@@ -30,8 +30,12 @@ export class MoveProcess extends Process{
       if(creep.pos.inRangeTo(target, this.metaData.range)){
         this.completed = true
         this.resumeParent()
-      }else{
-        creep.moveTo(target)
+      }else
+      {
+        if(!creep.fixMyRoad())
+        {
+          creep.moveTo(target)
+        }
       }
     }else{
       let decreasePerTick = 0

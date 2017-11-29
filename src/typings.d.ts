@@ -110,3 +110,7 @@ interface BunkerLayout{
     }
   }
 }
+
+interface Creep {
+  fixMyRoad(): boolean;
+}

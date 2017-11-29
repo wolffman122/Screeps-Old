@@ -2,6 +2,33 @@
 
 import {Kernel} from './os/kernel'
 
+Creep.prototype.fixMyRoad = function()
+{
+  if(this.carry.energy === 0)
+  {
+    return false;
+  }
+
+  let repairPower = this.getActiveBodyparts(WORK) * REPAIR_POWER;
+
+  if(repairPower === 0)
+  {
+    return false;
+  }
+
+  var road = this.pos.lookFor(LOOK_STRUCTURES).find(s => s.structureType === STRUCTURE_ROAD);
+
+  if(!road)
+  {
+    return false;
+  }
+
+  var toFix = road.hitsMax - road.hits;
+  this.repair(road);
+
+  return toFix - repairPower > repairPower;
+}
+
 module.exports.loop = function(){
   // Load Memory from the global object if it is there and up to date.
   if(global.lastTick && global.LastMemory && Game.time === (global.lastTick + 1)){

@@ -37,12 +37,6 @@ export class HoldHarvesterLifetimeProcess extends LifetimeProcess
           creep: creep.name,
           resource: RESOURCE_ENERGY
         })
-
-        return
-      }
-      else
-      {
-        this.suspend = 20;
       }
     }
   }
