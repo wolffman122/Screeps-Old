@@ -16,7 +16,7 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
       return;
     }
 
-    if(_.sum(creep.carry) === 0)
+    if(_.sum(creep.carry) === 0 && creep.ticksToLive > 75)
     {
       let sourceContainer = <Container>Game.getObjectById(this.metaData.sourceContainer);
 

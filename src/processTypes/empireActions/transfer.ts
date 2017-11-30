@@ -2,6 +2,7 @@ import {Process} from '../../os/process'
 import { Utils } from 'lib/utils';
 import { DeliverProcess } from '../creepActions/deliver';
 import {CollectProcess} from '../creepActions/collect';
+import { MoveProcess } from 'processTypes/creepActions/move';
 
 interface TransferProcessMetaData
 {
@@ -17,6 +18,7 @@ export class TransferProcess extends Process
 
   run()
   {
+
     let creep = Game.creeps[this.metaData.creep];
 
     if(!creep)
@@ -24,7 +26,7 @@ export class TransferProcess extends Process
       let creepName = 'transfer-' + this.metaData.destinationRoom + '-' + Game.time;
       let spawned = Utils.spawn(
         this.kernel,
-        this.metaData.sourceRoom,
+        this.metaData.destinationRoom,
         'mover',
         creepName,
         {}
@@ -38,27 +40,87 @@ export class TransferProcess extends Process
       return;
     }
 
+    if(creep.room.name != this.metaData.sourceRoom)
+    {
+      this.fork(MoveProcess, 'move-' + creep.name, this.priority - 1, {
+        creep: creep.name,
+        pos: Game.flags[this.metaData.destinationRoom].pos,
+        range: 3
+      });
+
+      return
+    }
+
     if(_.sum(creep.carry) === 0)
     {
-      let storage = Game.rooms[this.metaData.sourceRoom].storage;
-      if(storage)
+      let structures = creep.room.find(FIND_STRUCTURES);
+      let targets = _.filter(structures, (s: Structure) => {
+        return (s.structureType == STRUCTURE_SPAWN
+                ||
+                s.structureType == STRUCTURE_TOWER
+                ||
+                s.structureType == STRUCTURE_LINK
+                ||
+                s.structureType == STRUCTURE_LAB);
+      });
+
+      this.log('Target length ' + targets.length)
+
+      let pickupTargets = _.filter(targets, function(target: DeliveryTarget){
+        return (target.energy > 0);
+      });
+
+      if(pickupTargets.length === 0)
       {
-        if(storage.store.energy > 0)
-        {
-          this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
-            target: storage.id,
-            creep: creep.name,
-            resource: RESOURCE_ENERGY
-          });
-        }
+        targets = [].concat(
+          <never[]>this.kernel.data.roomData[creep.room.name].labs,
+          <never[]>this.kernel.data.roomData[creep.room.name].generalContainers
+        )
+
+        pickupTargets = _.filter(targets, function(target: DeliveryTarget){
+          if(target.store)
+          {
+            return (target.store.energy > 0);
+          }
+          else
+          {
+            return (target.energy > 0);
+          }
+        });
+      }
+
+      if(pickupTargets.length === 0 && creep.room.storage)
+      {
+        targets = [].concat(
+          <never[]>[creep.room.storage],
+        );
+
+        pickupTargets = _.filter(targets, function(t: DeliveryTarget) {
+          return (_.sum(t.store) > 0);
+        })
+      }
+
+      let target = <Structure>creep.pos.findClosestByPath(pickupTargets);
+
+      if(target)
+      {
+        this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+          creep: creep.name,
+          target: target.id,
+          resource: RESOURCE_ENERGY
+        });
       }
       else
       {
-        this.log("Storage source bad");
+        this.log('Problem selecting a pickup target');
       }
-
-      return;
+        /*else
+        {
+          this.completed = true;
+          this.resumeParent();
+        }*/
     }
+
 
     let deliveryStorage = Game.rooms[this.metaData.destinationRoom].storage;
 

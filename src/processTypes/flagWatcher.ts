@@ -1,6 +1,5 @@
 import {Process} from '../os/process'
 import {RemoteMiningManagementProcess} from './management/remoteMining'
-//import {RemoteDefenseManagementProcess} from './management/remoteDefense'
 import {DismantleManagementProcess} from './management/dismantle'
 
 import {ClaimProcess} from '../processTypes/empireActions/claim'
@@ -8,6 +7,7 @@ import {ClaimProcess} from '../processTypes/empireActions/claim'
 import {TransferProcess} from '../processTypes/empireActions/transfer'
 
 import { HoldRoomManagementProcess } from 'processTypes/management/holdRoom';
+import { RemoteDefenseManagementProcess } from 'processTypes/management/remoteDefense';
 
 export class FlagWatcherProcess extends Process
 {
@@ -18,7 +18,7 @@ export class FlagWatcherProcess extends Process
   {
     if(flag.memory.enemies)
     {
-      //this.kernel.addProcessIfNotExist(RemoteDefenseManagementProcess, 'rdmp-' + flag.name, 45,  { flag: flag.name })
+      this.kernel.addProcessIfNotExist(RemoteDefenseManagementProcess, 'rdmp-' + flag.name, 45,  { flag: flag.name })
     }
     this.kernel.addProcessIfNotExist(RemoteMiningManagementProcess, 'rnmp-' + flag.name, 40, { flag: flag.name })
   }
@@ -41,7 +41,7 @@ remoteDismantleFlag(flag: Flag)
 
   remoteHoldFlag(flag: Flag)
   {
-    console.log('Hold Management Process ' + flag.name);
+    //console.log('Hold Management Process ' + flag.name);
     this.kernel.addProcessIfNotExist(HoldRoomManagementProcess, 'hrmp-' + flag.name, 30, {targetRoom: flag.pos.roomName, flagName: flag.name});
   }
 

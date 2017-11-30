@@ -5,7 +5,6 @@ import { HolderLifetimeProcess } from 'processTypes/empireActions/lifetimes/hold
 import { HoldBuilderLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderBuilder';
 import { HoldHarvesterLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderHarvester';
 import { HoldDistroLifetimeProcess } from 'processTypes/empireActions/lifetimes/holderDistro';
-import { HoldWorkerLifetimeProcess } from 'processTypes/empireActions/lifetimes/holdWorker';
 
 
 
@@ -44,8 +43,8 @@ export class HoldRoomManagementProcess extends Process
 
   run()
   {
-    this.log('Run Remote Hold');
-    
+    //this.log('Run Remote Hold');
+
     this.ensureMetaData()
 
     let spawnRoom = this.metaData.flagName.split('-')[0];
@@ -213,7 +212,7 @@ export class HoldRoomManagementProcess extends Process
       })
     }
 
-    if(this.metaData.workerCreeps.length < this.kernel.data.roomData[this.metaData.targetRoom].sourceContainers.length)
+    /*if(this.metaData.workerCreeps.length < this.kernel.data.roomData[this.metaData.targetRoom].sourceContainers.length)
     {
       let creepName = 'hrm-worker-' + spawnRoom + '-' + Game.time;
       let spawned = Utils.spawn(
@@ -233,6 +232,6 @@ export class HoldRoomManagementProcess extends Process
           flagName: this.metaData.flagName
         });
       }
-    }
+    }*/
   }
 }

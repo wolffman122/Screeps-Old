@@ -38,11 +38,9 @@ export class HarvesterLifetimeProcess extends LifetimeProcess{
       }
     }
 
-
     // Creep has been harvesting and has energy in it
     if(this.kernel.data.roomData[creep.room.name].sourceContainerMaps[this.metaData.source]){
       let container = this.kernel.data.roomData[creep.room.name].sourceContainerMaps[this.metaData.source]
-
       if(_.sum(container.store) < container.storeCapacity){
         this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
           target: container.id,

@@ -249,7 +249,7 @@ export class Kernel{
       parent: parent
     }, this)
 
-    console.log("Add process ", name);
+    //console.log("Add process ", name);
     this.processTable[name] = process
   }
 
