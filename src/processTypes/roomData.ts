@@ -24,7 +24,7 @@ export class RoomDataProcess extends Process{
   ]
 
   singleFields = [
-    'extractor', 'mineral', 'storageLink'
+    'extractor', 'mineral', 'storageLink', 'controllerLink'
   ]
 
   run(){
@@ -121,6 +121,8 @@ export class RoomDataProcess extends Process{
       storageLink = <StructureLink>room.storage.pos.findInRange(links, 2)[0];
     }
 
+    let controllerLink = <StructureLink>room.controller.pos.findInRange(links, 2)[0];
+
     let roomData: RoomData = {
       constructionSites: <ConstructionSite[]>room.find(FIND_CONSTRUCTION_SITES),
       containers: containers,
@@ -162,7 +164,8 @@ export class RoomDataProcess extends Process{
       links: links,
       sourceLinks: sourceLinks,
       sourceLinkMaps: sourceLinkMaps,
-      storageLink: storageLink
+      storageLink: storageLink,
+      controllerLink: controllerLink
     }
 
     this.kernel.data.roomData[this.metaData.roomName] = roomData
@@ -228,7 +231,8 @@ export class RoomDataProcess extends Process{
       links: [],
       sourceLinks: [],
       sourceLinkMaps: <{[id: string]: StructureLink}>{},
-      storageLink: undefined
+      storageLink: undefined,
+      controllerLink: undefined
     }
     let run = true
     let i = 0

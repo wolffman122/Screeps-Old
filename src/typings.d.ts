@@ -44,6 +44,7 @@ interface RoomData{
   sourceLinks: StructureLink[]
   sourceLinkMaps: {[id: string]: StructureLink}
   storageLink: StructureLink | undefined
+  controllerLink: StructureLink | undefined
 }
 
 interface IPCMessage{

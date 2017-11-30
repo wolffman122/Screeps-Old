@@ -17,34 +17,56 @@ export class SpinnerLifetimeProcess extends LifetimeProcess
 
     if(_.sum(creep.carry) === 0)
     {
-      this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
-        target: this.metaData.storageLink,
-        creep: creep.name,
-        resource: RESOURCE_ENERGY
-      });
+      if(this.kernel.data.roomData[creep.room.name].sourceLinks.length > 0)
+      {
+        this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+          target: this.metaData.storageLink,
+          creep: creep.name,
+          resource: RESOURCE_ENERGY
+        });
+      }
+      else
+      {
+        this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+          target: creep.room.storage.id,
+          creep: creep.name,
+          resource: RESOURCE_ENERGY
+        });
+      }
 
       return;
     }
 
     if(creep.room.storage && creep.room.terminal)
     {
-      if(creep.room.storage.store.energy < 500000)
+      if(this.kernel.data.roomData[creep.room.name].sourceLinks.length > 0)
       {
-        this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
-          creep: creep.name,
-          target: creep.room.storage.id,
-          resource: RESOURCE_ENERGY
-        })
+        if(creep.room.storage.store.energy < 500000)
+        {
+          this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+            creep: creep.name,
+            target: creep.room.storage.id,
+            resource: RESOURCE_ENERGY
+          })
+        }
+        else
+        {
+          this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+            creep: creep.name,
+            target: creep.room.terminal.id,
+            resource: RESOURCE_ENERGY
+          })
+        }
       }
       else
       {
         this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
           creep: creep.name,
-          target: creep.room.terminal.id,
+          target: this.kernel.data.roomData[creep.room.name].storageLink.id,
           resource: RESOURCE_ENERGY
         })
       }
-      
+
       return;
     }
     else

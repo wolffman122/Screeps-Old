@@ -159,7 +159,7 @@ export class EnergyManagementProcess extends Process{
 
       this.metaData.spinCreeps = Utils.clearDeadCreeps(this.metaData.spinCreeps)
 
-      if(this.metaData.spinCreeps.length < 1 && this.kernel.data.roomData[this.metaData.roomName].sourceLinks.length > 1)
+      if(this.metaData.spinCreeps.length < 1 && (this.kernel.data.roomData[this.metaData.roomName].sourceLinks.length > 1 || this.roomData().controllerLink))
       {
         let creepName = 'em-s-' + proc.metaData.roomName + '-' + Game.time;
         let spawned = Utils.spawn(

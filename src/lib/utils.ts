@@ -52,6 +52,14 @@ export const Utils = {
       <never[]>proc.kernel.data.roomData[creep.room.name].generalContainers
     )
 
+    if(proc.kernel.data.roomData[creep.room.name].controllerLink)
+    {
+      withdraws = [].concat(
+        withdraws,
+        <never[]>[proc.kernel.data.roomData[creep.room.name].controllerLink]
+      )
+    }
+
     if(creep.room.storage)
     {
       withdraws = [].concat(
@@ -113,7 +121,7 @@ export const Utils = {
     }
     else
     {
-      let max = room.controller!.level * 40000;
+      let max = room.controller!.level * 44000;
 
       let average = Math.ceil(_.sum(<never[]>kernel.data.roomData[roomName].ramparts, 'hits') / kernel.data.roomData[roomName].ramparts.length);
 

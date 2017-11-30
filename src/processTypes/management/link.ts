@@ -7,6 +7,29 @@ export class LinkManagementProcess extends Process
 
   run()
   {
+    if(this.roomData().controllerLink)
+    {
+      let controllerLink = this.roomData().controllerLink;
+
+      let storageLink = this.roomData().storageLink;
+
+      if(storageLink)
+      {
+        if(storageLink.cooldown == 0 && storageLink.energy > 700 && controllerLink.energy < 450)
+        {
+          let ret = storageLink.transferEnergy(controllerLink);
+          if(ret == ERR_FULL)
+          {
+            this.suspend = 15;
+          }
+        }
+        else
+        {
+          this.suspend = 10;
+        }
+      }
+    }
+
     if(this.roomData().sourceLinks.length > 0)
     {
       let storageLink = this.roomData().storageLink
