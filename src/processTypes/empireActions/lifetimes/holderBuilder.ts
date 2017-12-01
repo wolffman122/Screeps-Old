@@ -39,9 +39,13 @@ export class HoldBuilderLifetimeProcess extends LifetimeProcess
 
     if(_.sum(creep.carry) === 0)
     {
-      if(this.kernel.data.roomData[creep.room.name].containers)
+      if(this.kernel.data.roomData[creep.room.name].containers.length == this.kernel.data.roomData[creep.room.name].sources.length)
       {
-        let target = creep.pos.findClosestByPath(this.kernel.data.roomData[creep.room.name].containers);
+        let targets = _.filter(this.kernel.data.roomData[creep.room.name].containers, (c: StructureContainer) => {
+          return (c.store.energy > 0);
+        })
+
+        let target = creep.pos.findClosestByPath(targets);
 
         if(target)
         {
@@ -53,19 +57,19 @@ export class HoldBuilderLifetimeProcess extends LifetimeProcess
 
           return;
         }
-        else
+      }
+      else
+      {
+        if( this.kernel.data.roomData[creep.room.name].sources)
         {
-          if( this.kernel.data.roomData[creep.room.name].sources)
-          {
-            let source = creep.pos.findClosestByRange( this.kernel.data.roomData[creep.room.name].sources);
+          let source = creep.pos.findClosestByRange( this.kernel.data.roomData[creep.room.name].sources);
 
-            this.fork(HarvestProcess, 'harvest-' + creep.name, this.priority - 1, {
-              creep: creep.name,
-              source: source.id
-            });
+          this.fork(HarvestProcess, 'harvest-' + creep.name, this.priority - 1, {
+            creep: creep.name,
+            source: source.id
+          });
 
-            return;
-          }
+          return;
         }
       }
     }

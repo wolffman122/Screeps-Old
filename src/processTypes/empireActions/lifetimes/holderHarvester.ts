@@ -11,10 +11,27 @@ export class HoldHarvesterLifetimeProcess extends LifetimeProcess
   run()
   {
     let creep = this.getCreep();
+    let flag = Game.flags[this.metaData.flagName];
+
+    if(!flag)
+    {
+      this.completed = true;
+      return;
+    }
 
     if(!creep)
     {
       return;
+    }
+
+    let enemies = flag.room.find(FIND_HOSTILE_CREEPS);
+    if(enemies.length > 1)
+    {
+      flag.memory.enemies = true;
+    }
+    else
+    {
+      flag.memory.enemies = false;
     }
 
     if(_.sum(creep.carry) === 0)

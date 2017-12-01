@@ -189,7 +189,8 @@ export class HoldRoomManagementProcess extends Process
             {
               proc.kernel.addProcess(HoldHarvesterLifetimeProcess, 'holdHarvesterlf-' + creep.name, 27, {
                 creep: creep.name,
-                source: source.id
+                source: source.id,
+                flagName: flag.name
               });
             }
           });

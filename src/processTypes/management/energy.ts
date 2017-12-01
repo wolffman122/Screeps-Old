@@ -35,8 +35,8 @@ export class EnergyManagementProcess extends Process{
     }
 
     let proc = this
-    let sources = this.kernel.data.roomData[this.metaData.roomName].sources
-
+    let sources = this.kernel.data.roomData[this.metaData.roomName].sources;
+    let sourceContainers = this.kernel.data.roomData[this.metaData.roomName].sourceContainers;
 
     _.forEach(sources, function(source)
     {
@@ -48,15 +48,30 @@ export class EnergyManagementProcess extends Process{
       let creeps = Utils.inflateCreeps(creepNames)
       let workRate = Utils.workRate(creeps, 2)
 
-      if(workRate < source.energyCapacity / 300) { //300
+      if(workRate < source.energyCapacity / 300) //300
+      {
         let creepName = 'em-' + proc.metaData.roomName + '-' + Game.time
-        let spawned = Utils.spawn(
-          proc.kernel,
-          proc.metaData.roomName,
-          'harvester',
-          creepName,
-          {}
-        )
+        let spawned = false;
+        if(sources.length == sourceContainers.length)
+        {
+          spawned = Utils.spawn(
+            proc.kernel,
+            proc.metaData.roomName,
+            'pureHarvester',
+            creepName,
+            {}
+          )
+        }
+        else
+        {
+          spawned = Utils.spawn(
+            proc.kernel,
+            proc.metaData.roomName,
+            'harvester',
+            creepName,
+            {}
+          )
+        }
 
         if(spawned){
           proc.metaData.harvestCreeps[source.id].push(creepName)
@@ -95,7 +110,7 @@ export class EnergyManagementProcess extends Process{
 
         if(spawned){
           proc.metaData.distroCreeps[container.id] = creepName
-          proc.kernel.addProcess(DistroLifetimeProcess, 'dlp-' + creepName, 48, {
+          proc.kernel.addProcess(DistroLifetimeProcess, 'dlf-' + creepName, 48, {
             sourceContainer: container.id,
             creep: creepName
           })
@@ -109,13 +124,13 @@ export class EnergyManagementProcess extends Process{
     switch(this.metaData.roomName)
     {
       case 'E46S51':
-        upgraders = 3;
+        upgraders = 1;
         break;
       case 'E43S52':
-        upgraders = 2;
+        upgraders = 1;
         break;
       default:
-        upgraders = 2;
+        upgraders = 1;
         break;
     }
 
