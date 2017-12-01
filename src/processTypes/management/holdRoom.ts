@@ -47,6 +47,13 @@ export class HoldRoomManagementProcess extends Process
 
     this.ensureMetaData()
 
+    let flag = Game.flags[this.metaData.flagName];
+    if(!flag)
+    {
+      this.completed = true;
+      return;
+    }
+
     let spawnRoom = this.metaData.flagName.split('-')[0];
 
     if(!this.kernel.data.roomData[spawnRoom])
@@ -59,11 +66,10 @@ export class HoldRoomManagementProcess extends Process
     let proc = this;
 
     this.metaData.holdCreeps = Utils.clearDeadCreeps(this.metaData.holdCreeps);
-    this.metaData.workerCreeps = Utils.clearDeadCreeps(this.metaData.workerCreeps);
 
     if(this.metaData.holdCreeps.length < 1)
     {
-      let creepName = 'hrm-hold-' + spawnRoom + '-' + Game.time;
+      let creepName = 'hrm-hold-' + flag.pos.roomName + '-' + Game.time;
       let spawned = Utils.spawn(
         proc.kernel,
         spawnRoom,
@@ -77,33 +83,28 @@ export class HoldRoomManagementProcess extends Process
         this.metaData.holdCreeps.push(creepName);
         this.kernel.addProcess(HolderLifetimeProcess, 'holdlf-' + creepName, 20, {
           creep: creepName,
-          targetRoom: this.metaData.targetRoom,
           flagName: this.metaData.flagName
         })
       }
     }
-    else
-    {
-      let hostileCreeps = <Creep[]>Game.creeps[this.metaData.holdCreeps[0]].room.find(FIND_HOSTILE_CREEPS);
-      if(hostileCreeps.length > 0)
-      {
-        this.suspend = hostileCreeps[0].ticksToLive;
-      }
-    }
 
-    let constructionSites = this.kernel.data.roomData[this.metaData.targetRoom].constructionSites;
+    let constructionSites = this.kernel.data.roomData[flag.pos.roomName].constructionSites;
 
     if(constructionSites.length > 0)
     {
-      let containerSites = _.filter(this.kernel.data.roomData[this.metaData.targetRoom].constructionSites, c => {
+      let containerSites = _.filter(constructionSites, c => {
         return (c.structureType === STRUCTURE_CONTAINER);
       });
+
+      let roadSites = _.filter(constructionSites, c => {
+        return (c.structureType === STRUCTURE_ROAD);
+      })
 
       this.metaData.builderCreeps = Utils.clearDeadCreeps(this.metaData.builderCreeps);
 
       if(this.metaData.builderCreeps.length < containerSites.length)
       {
-        let creepName = 'hrm-build-' + spawnRoom + '-' + Game.time;
+        let creepName = 'hrm-build-' + flag.pos.roomName + '-' + Game.time;
         let spawned = Utils.spawn(
           proc.kernel,
           spawnRoom,
@@ -117,22 +118,42 @@ export class HoldRoomManagementProcess extends Process
           this.metaData.builderCreeps.push(creepName);
           this.kernel.addProcess(HoldBuilderLifetimeProcess, 'holdBuilderlf-' + creepName, 25, {
             creep: creepName,
-            targetRoom: this.metaData.targetRoom,
+            flagName: this.metaData.flagName
+          })
+        }
+      }
+
+      if(roadSites.length > 1 && this.metaData.builderCreeps.length < 1)
+      {
+        let creepName = 'hrm-build-' + flag.pos.roomName + '-' + Game.time;
+        let spawned = Utils.spawn(
+          proc.kernel,
+          spawnRoom,
+          'worker',
+          creepName,
+          {}
+        );
+
+        if(spawned)
+        {
+          this.metaData.builderCreeps.push(creepName);
+          this.kernel.addProcess(HoldBuilderLifetimeProcess, 'holdBuilderlf-' + creepName, 25, {
+            creep: creepName,
             flagName: this.metaData.flagName
           })
         }
       }
     }
 
-    if(this.kernel.data.roomData[this.metaData.targetRoom].sourceContainers.length > 0)
+    if(this.kernel.data.roomData[flag.pos.roomName].sourceContainers.length > 0)
     {
-      let containers = _.filter(this.kernel.data.roomData[this.metaData.targetRoom].sourceContainers, c => {
+      let containers = _.filter(this.kernel.data.roomData[flag.pos.roomName].sourceContainers, c => {
         return (c.structureType === STRUCTURE_CONTAINER);
       });
 
       if(containers.length > 0)
       {
-        let sources = this.kernel.data.roomData[this.metaData.targetRoom].sources;
+        let sources = this.kernel.data.roomData[flag.pos.roomName].sources;
 
         _.forEach(sources, function(source) {
           if(!proc.metaData.harvestCreeps[source.id])
@@ -148,7 +169,7 @@ export class HoldRoomManagementProcess extends Process
           if(workRate < source.energyCapacity / 300)
           {
             console.log("Need to make some harvesting creeps " + source.id);
-            let creepName = 'hrm-harvest-' + spawnRoom + '-' + Game.time;
+            let creepName = 'hrm-harvest-' + flag.pos.roomName + '-' + Game.time;
             let spawned = Utils.spawn(
               proc.kernel,
               spawnRoom,
@@ -175,7 +196,7 @@ export class HoldRoomManagementProcess extends Process
         });
       }
 
-      _.forEach(this.kernel.data.roomData[this.metaData.targetRoom].sourceContainers, function(container){
+      _.forEach(this.kernel.data.roomData[flag.pos.roomName].sourceContainers, function(container){
         if(proc.metaData.distroCreeps[container.id])
         {
           let creep = Game.creeps[proc.metaData.distroCreeps[container.id]];
@@ -187,7 +208,7 @@ export class HoldRoomManagementProcess extends Process
         }
         else
         {
-          let creepName = 'hrm-m-' + spawnRoom + '-' + Game.time;
+          let creepName = 'hrm-m-' + flag.pos.roomName + '-' + Game.time;
           let spawned = Utils.spawn(
             proc.kernel,
             spawnRoom,

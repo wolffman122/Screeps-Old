@@ -27,7 +27,7 @@ export class RemoteDefenderLifetimeProcess extends LifetimeProcess
     {
       if(creep.pos.roomName == flag.pos.roomName)
       {
-        let enemies = <Creep[]>flag.pos.findInRange(FIND_HOSTILE_CREEPS, 8);
+        let enemies = <Creep[]>flag.room.find(FIND_HOSTILE_CREEPS);
 
         if(enemies.length > 0)
         {

@@ -96,7 +96,6 @@ interface HoldRoomManagementProcessMetaData
   builderCreeps: string[]
   workerCreeps: string[]
   flagName: string
-  targetRoom: string
 }
 
 interface BunkerLayout{

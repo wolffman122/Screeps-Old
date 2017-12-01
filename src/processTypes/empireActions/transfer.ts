@@ -7,6 +7,7 @@ import { MoveProcess } from 'processTypes/creepActions/move';
 interface TransferProcessMetaData
 {
   creep: string
+  flagName: string
   sourceRoom: string
   destinationRoom: string
 
@@ -18,6 +19,13 @@ export class TransferProcess extends Process
 
   run()
   {
+    let flag = Game.flags[this.metaData.flagName];
+
+    if(!flag)
+    {
+      this.completed = true;
+      return;
+    }
 
     let creep = Game.creeps[this.metaData.creep];
 
@@ -95,9 +103,20 @@ export class TransferProcess extends Process
           <never[]>[creep.room.storage],
         );
 
-        pickupTargets = _.filter(targets, function(t: DeliveryTarget) {
-          return (_.sum(t.store) > 0);
+        pickupTargets = _.filter(targets, function(t: Storage) {
+          return (t.store.energy > 0);
         })
+      }
+
+      if(pickupTargets.length === 0 && creep.room.terminal)
+      {
+        targets = [].concat(
+          <never[]>[creep.room.terminal]
+        );
+
+        pickupTargets = _.filter(targets, function(t: Terminal) {
+          return (t.store.energy > 0);
+        });
       }
 
       let target = <Structure>creep.pos.findClosestByPath(pickupTargets);

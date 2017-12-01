@@ -41,13 +41,17 @@ remoteDismantleFlag(flag: Flag)
 
   remoteHoldFlag(flag: Flag)
   {
+    if(flag.memory.enemies)
+    {
+      this.kernel.addProcessIfNotExist(RemoteDefenseManagementProcess, 'rdmp-' + flag.name, 45,  { flag: flag.name })
+    }
     //console.log('Hold Management Process ' + flag.name);
-    this.kernel.addProcessIfNotExist(HoldRoomManagementProcess, 'hrmp-' + flag.name, 30, {targetRoom: flag.pos.roomName, flagName: flag.name});
+    this.kernel.addProcessIfNotExist(HoldRoomManagementProcess, 'hrm-' + flag.pos.roomName, 30, {flagName: flag.name});
   }
 
   transferFlag(flag: Flag)
   {
-    this.kernel.addProcessIfNotExist(TransferProcess, 'transfer-' + flag.name, 25, {sourceRoom: flag.pos.roomName, destinationRoom: flag.name});
+    this.kernel.addProcessIfNotExist(TransferProcess, 'transfer-' + flag.name, 25, {flagName: flag.name});
   }
 
   run()

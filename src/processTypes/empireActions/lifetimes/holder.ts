@@ -23,17 +23,35 @@ export class HolderLifetimeProcess extends LifetimeProcess
       return;
     }
 
-    let room = Game.rooms[this.metaData.targetRoom];
+    let flag = Game.flags[this.metaData.flagName];
 
-    if(!room || (creep.pos.roomName != room.name))
+    if(!flag)
+    {
+      return;
+    }
+
+    if(creep.pos.roomName != flag.pos.roomName)
     {
       this.fork(MoveProcess, 'move-' + creep.name, this.priority - 1, {
         creep: creep.name,
-        pos: Game.flags[this.metaData.flagName].pos,
+        pos: flag.pos,
         range: 1
       });
 
       return;
+    }
+
+    if(creep.pos.roomName == flag.pos.roomName)
+    {
+      let enemies = flag.room.find(FIND_HOSTILE_CREEPS)
+      if(enemies.length > 1)
+      {
+        flag.memory.enemies = true;
+      }
+      else if (enemies.length == 0)
+      {
+        flag.memory.enemies = false;
+      }
     }
 
     this.fork(HoldProcess, 'hold-' + creep.name, this.priority - 1, {
