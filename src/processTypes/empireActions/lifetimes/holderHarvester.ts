@@ -25,7 +25,8 @@ export class HoldHarvesterLifetimeProcess extends LifetimeProcess
     }
 
     let enemies = flag.room.find(FIND_HOSTILE_CREEPS);
-    if(enemies.length > 1)
+    this.log('Enemies ' + enemies.length);
+    if(enemies.length > 0)
     {
       flag.memory.enemies = true;
     }

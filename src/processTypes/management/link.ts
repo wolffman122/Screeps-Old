@@ -37,7 +37,7 @@ export class LinkManagementProcess extends Process
       if(storageLink)
       {
         _.forEach(this.roomData().sourceLinks, (sl) => {
-          if(sl.cooldown == 0 && sl.energy > 700)
+          if(sl.cooldown == 0 && sl.energy > 700 && storageLink.energy < 100)
           {
             sl.transferEnergy(storageLink);
           }

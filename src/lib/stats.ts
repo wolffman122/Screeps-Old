@@ -87,6 +87,12 @@ export const Stats = {
           Memory.stats['rooms.' + roomName + '.storage.minerals'] = _.sum(room.storage.store) - room.storage.store.energy;
         }
 
+        if(room.terminal)
+        {
+          Memory.stats['rooms.' + roomName + '.terminal.energy'] = room.terminal.store.energy
+          Memory.stats['rooms.' + roomName + '.terminal.minerals'] = _.sum(room.terminal.store) - room.storage.store.energy;
+        }
+
         /*const ground_resources = <Resource[]>room.find(FIND_DROPPED_RESOURCES);
         const reduced_resources = _.reduce(ground_resources, (acc, res) => { acc[res.resourceType] = _.get(acc, [res.resourceType], 0) + res.amount; return acc; }, {});
         Memory.stats['rooms.' + roomName + '.ground_resources'] = ground_resources: reduced_resources*/

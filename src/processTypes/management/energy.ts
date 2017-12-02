@@ -57,7 +57,7 @@ export class EnergyManagementProcess extends Process{
           spawned = Utils.spawn(
             proc.kernel,
             proc.metaData.roomName,
-            'pureHarvester',
+            'harvester',
             creepName,
             {}
           )
@@ -124,13 +124,13 @@ export class EnergyManagementProcess extends Process{
     switch(this.metaData.roomName)
     {
       case 'E46S51':
-        upgraders = 1;
+        upgraders = 2;
         break;
       case 'E43S52':
-        upgraders = 1;
+        upgraders = 2;
         break;
       default:
-        upgraders = 1;
+        upgraders = 2;
         break;
     }
 
@@ -168,7 +168,9 @@ export class EnergyManagementProcess extends Process{
       }
     }
 
-    if(this.kernel.data.roomData[this.metaData.roomName].storageLink)
+    if(this.kernel.data.roomData[this.metaData.roomName].storageLink
+        &&
+       this.metaData.upgradeCreeps.length > 0)
     {
       let storageLink = this.kernel.data.roomData[this.metaData.roomName].storageLink
 

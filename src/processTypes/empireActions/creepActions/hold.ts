@@ -4,6 +4,7 @@ import { MoveProcess } from "processTypes/creepActions/move";
 interface HoldProcessMetaData
 {
   creep: string
+  flagName: string
 }
 
 export class HoldProcess extends Process
@@ -14,12 +15,26 @@ export class HoldProcess extends Process
   run()
   {
     let creep = Game.creeps[this.metaData.creep];
+    let flag = Game.flags[this.metaData.flagName];
 
-    if(!creep)
+    if(!creep || !flag)
     {
       this.completed = true;
       this.resumeParent();
       return;
+    }
+
+    if(Game.time % 10 == 0)
+    {
+      let enemies = flag.room.find(FIND_HOSTILE_CREEPS)
+      if(enemies.length > 1)
+      {
+        flag.memory.enemies = true;
+      }
+      else if (enemies.length == 0)
+      {
+        flag.memory.enemies = false;
+      }
     }
 
     if(!creep.pos.inRangeTo(creep.room.controller!, 1))

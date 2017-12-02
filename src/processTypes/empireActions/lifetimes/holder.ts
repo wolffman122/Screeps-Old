@@ -55,7 +55,8 @@ export class HolderLifetimeProcess extends LifetimeProcess
     }
 
     this.fork(HoldProcess, 'hold-' + creep.name, this.priority - 1, {
-      creep: creep.name
+      creep: creep.name,
+      flagName: flag.name
     });
   }
 }

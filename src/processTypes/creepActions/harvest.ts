@@ -19,7 +19,6 @@ export class HarvestProcess extends Process{
       return
     }
 
-    creep.fixMyRoad();
 
     let source = <Source>Game.getObjectById(this.metaData.source)
 
@@ -42,7 +41,15 @@ export class HarvestProcess extends Process{
         range: targetRange
       })
       this.suspend = creep.name + '-harvest-move'
-    }else{
+    }
+    else
+    {
+      let container = this.kernel.data.roomData[source.room.name].sourceContainerMaps[source.id];
+      if(_.sum(container.store) == container.storeCapacity)
+      {
+        this.suspend = 5;
+      }
+
       if(creep.harvest(source) === ERR_NOT_ENOUGH_RESOURCES){
         this.suspend = source.ticksToRegeneration
       }

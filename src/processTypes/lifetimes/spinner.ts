@@ -41,11 +41,11 @@ export class SpinnerLifetimeProcess extends LifetimeProcess
     {
       if(this.kernel.data.roomData[creep.room.name].sourceLinks.length > 0)
       {
-        if(creep.room.storage.store.energy < 500000)
+        if(creep.room.terminal.store.energy < 100000)
         {
           this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
             creep: creep.name,
-            target: creep.room.storage.id,
+            target: creep.room.terminal.id,
             resource: RESOURCE_ENERGY
           })
         }
@@ -53,7 +53,7 @@ export class SpinnerLifetimeProcess extends LifetimeProcess
         {
           this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
             creep: creep.name,
-            target: creep.room.terminal.id,
+            target: creep.room.storage.id,
             resource: RESOURCE_ENERGY
           })
         }

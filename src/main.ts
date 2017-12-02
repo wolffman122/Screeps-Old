@@ -1,6 +1,8 @@
-//global.SCRIPT_VERSION = require('./version')
 
+//global.SCRIPT_VERSION = require('./version')
+import "./lib/Traveler"
 import {Kernel} from './os/kernel'
+
 
 Creep.prototype.fixMyRoad = function()
 {
