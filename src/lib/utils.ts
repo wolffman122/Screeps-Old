@@ -121,7 +121,7 @@ export const Utils = {
     }
     else
     {
-      let max = room.controller!.level * 44000;
+      let max = room.controller!.level * 46000;
 
       let average = Math.ceil(_.sum(<never[]>kernel.data.roomData[roomName].ramparts, 'hits') / kernel.data.roomData[roomName].ramparts.length);
 

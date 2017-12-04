@@ -60,11 +60,26 @@ export class SpinnerLifetimeProcess extends LifetimeProcess
       }
       else
       {
-        this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
-          creep: creep.name,
-          target: this.kernel.data.roomData[creep.room.name].storageLink.id,
-          resource: RESOURCE_ENERGY
-        })
+        let storageLink = this.kernel.data.roomData[creep.room.name].storageLink;
+        if(storageLink.energy != storageLink.energyCapacity)
+        {
+          this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+            creep: creep.name,
+            target: storageLink.id,
+            resource: RESOURCE_ENERGY
+          })
+        }
+        else
+        {
+          if(creep.room.terminal.store.energy < 100000)
+          {
+            this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+              creep: creep.name,
+              target: creep.room.terminal.id,
+              resource: RESOURCE_ENERGY
+            })
+          }
+        }
       }
 
       return;

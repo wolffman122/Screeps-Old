@@ -25,6 +25,34 @@ export class UpgraderLifetimeProcess extends LifetimeProcess{
 
       if(targets.length > 0){*/
         //let target = creep.pos.findClosestByPath(targets)
+        if(this.kernel.data.roomData[creep.pos.roomName].controllerLink)
+        {
+          let controllerLink = this.kernel.data.roomData[creep.pos.roomName].controllerLink
+
+          if(controllerLink.energy > 500)
+          {
+            this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+              target: controllerLink.id,
+              creep: creep.name,
+              resource: RESOURCE_ENERGY
+            });
+
+            return;
+          }
+          else
+          {
+            let target = Utils.withdrawTarget(creep, this);
+
+            this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+              target: target.id,
+              creep: creep.name,
+              resource: RESOURCE_ENERGY
+            });
+
+            return;
+          }
+        }
+
         let target = Utils.withdrawTarget(creep, this);
 
         this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
