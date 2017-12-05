@@ -1,4 +1,3 @@
-import {MoveProcess} from './move'
 import {Process} from '../../os/process'
 
 interface CollectProcessMetaData{
@@ -27,18 +26,12 @@ export class CollectProcess extends Process{
       return
     }
 
-    if(!creep.pos.isNearTo(target)){
-      this.kernel.addProcess(MoveProcess, creep.name + '-collect-move', this.priority + 1, {
-        creep: creep.name,
-        pos: {
-          x: target.pos.x,
-          y: target.pos.y,
-          roomName: target.pos.roomName
-        },
-        range: 1
-      })
-      this.suspend = creep.name + '-collect-move'
-    }else{
+    if(!creep.pos.isNearTo(target))
+    {
+      creep.travelTo(target);
+    }
+    else
+    {
       creep.withdraw(target, this.metaData.resource)
       this.completed = true
       this.resumeParent()

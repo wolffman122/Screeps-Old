@@ -1,4 +1,3 @@
-import {MoveProcess} from './move'
 import {Process} from '../../os/process'
 
 interface BuildProcessMetaData{
@@ -25,16 +24,7 @@ export class BuildProcess extends Process{
     }
 
     if(!creep.pos.inRangeTo(site, 3)){
-      this.kernel.addProcess(MoveProcess, creep.name + '-build-move', this.priority + 1, {
-        creep: creep.name,
-        pos: {
-          x: site.pos.x,
-          y: site.pos.y,
-          roomName: site.pos.roomName
-        },
-        range: 3
-      })
-      this.suspend = creep.name + '-build-move'
+      creep.travelTo(site);
     }else{
       creep.build(site)
     }

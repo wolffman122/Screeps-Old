@@ -5,6 +5,7 @@ import {HarvesterLifetimeProcess} from '../lifetimes/harvester'
 import {DistroLifetimeProcess} from '../lifetimes/distro'
 import {UpgraderLifetimeProcess} from '../lifetimes/upgrader'
 import { SpinnerLifetimeProcess } from 'processTypes/lifetimes/spinner';
+import { LinkHarvesterLifetimeProcess } from 'processTypes/lifetimes/linkHarvester';
 
 export class EnergyManagementProcess extends Process{
   metaData: EnergyManagementMetaData
@@ -37,6 +38,7 @@ export class EnergyManagementProcess extends Process{
     let proc = this
     let sources = this.kernel.data.roomData[this.metaData.roomName].sources;
     let sourceContainers = this.kernel.data.roomData[this.metaData.roomName].sourceContainers;
+    let sourceLinks = this.kernel.data.roomData[this.metaData.roomName].sourceLinks;
 
     _.forEach(sources, function(source)
     {
@@ -79,11 +81,24 @@ export class EnergyManagementProcess extends Process{
       }
 
       _.forEach(creeps, function(creep){
-        if(!proc.kernel.hasProcess('hlf-' + creep.name)){
-          proc.kernel.addProcess(HarvesterLifetimeProcess, 'hlf-' + creep.name, 49, {
-            creep: creep.name,
-            source: source.id
-          })
+        if(sourceLinks.length == 2)
+        {
+          if(!proc.kernel.hasProcess('lhlf-' + creep.name))
+          {
+            proc.kernel.addProcess(LinkHarvesterLifetimeProcess, 'lhlf-' + creep.name, 49, {
+              creep: creep.name,
+              source: source.id
+            })
+          }
+        }
+        else
+        {
+          if(!proc.kernel.hasProcess('hlf-' + creep.name)){
+            proc.kernel.addProcess(HarvesterLifetimeProcess, 'hlf-' + creep.name, 49, {
+              creep: creep.name,
+              source: source.id
+            })
+          }
         }
       })
     })

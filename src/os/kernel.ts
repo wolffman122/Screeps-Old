@@ -62,12 +62,14 @@ import { HoldDistroLifetimeProcess } from 'processTypes/empireActions/lifetimes/
 import { LinkManagementProcess } from 'processTypes/management/link';
 import { SpinnerLifetimeProcess } from 'processTypes/lifetimes/spinner';
 import { HoldWorkerLifetimeProcess } from 'processTypes/empireActions/lifetimes/holdWorker';
+import { LinkHarvesterLifetimeProcess } from 'processTypes/lifetimes/linkHarvester';
 
 
 
 const processTypes = <{[type: string]: any}>{
   'harvest': HarvestProcess,
   'hlf': HarvesterLifetimeProcess,
+  'lhlf': LinkHarvesterLifetimeProcess,
   'collect': CollectProcess,
   'deliver': DeliverProcess,
   'dlf': DistroLifetimeProcess,

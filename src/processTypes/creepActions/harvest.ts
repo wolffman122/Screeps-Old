@@ -1,5 +1,4 @@
 import {Process} from '../../os/process'
-import {MoveProcess} from './move'
 
 interface HarvestMetaData{
   source: string
@@ -31,16 +30,7 @@ export class HarvestProcess extends Process{
     }
 
     if(!creep.pos.inRangeTo(targetPos, targetRange)){
-      this.kernel.addProcess(MoveProcess, creep.name + '-harvest-move', this.priority + 1, {
-        creep: creep.name,
-        pos: {
-          x: targetPos.x,
-          y: targetPos.y,
-          roomName: targetPos.roomName
-        },
-        range: targetRange
-      })
-      this.suspend = creep.name + '-harvest-move'
+      creep.travelTo(targetPos);
     }
     else
     {

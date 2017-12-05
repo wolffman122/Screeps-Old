@@ -1,4 +1,3 @@
-import {MoveProcess} from './move'
 import {Process} from '../../os/process'
 
 interface RepairProcessMetaData{
@@ -20,18 +19,12 @@ export class RepairProcess extends Process{
       return
     }
 
-    if(!creep.pos.inRangeTo(target, 3)){
-      this.kernel.addProcess(MoveProcess, creep.name + '-repair-move', this.priority + 1, {
-        creep: creep.name,
-        pos: {
-          x: target.pos.x,
-          y: target.pos.y,
-          roomName: target.pos.roomName
-        },
-        range: 3
-      })
-      this.suspend = creep.name + '-repair-move'
-    }else{
+    if(!creep.pos.inRangeTo(target, 3))
+    {
+      creep.moveTo(target);
+    }
+    else
+    {
       if(target.hits === target.hitsMax){
         this.completed = true
         this.resumeParent()

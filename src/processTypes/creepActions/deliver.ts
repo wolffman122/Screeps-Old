@@ -1,4 +1,3 @@
-import {MoveProcess} from './move'
 import {Process} from '../../os/process'
 
 export class DeliverProcess extends Process{
@@ -17,16 +16,7 @@ export class DeliverProcess extends Process{
     }
 
     if(!creep.pos.inRangeTo(target, 1)){
-      this.kernel.addProcess(MoveProcess, creep.name + '-deliver-move', this.priority + 1, {
-        creep: creep.name,
-        pos: {
-          x: target.pos.x,
-          y: target.pos.y,
-          roomName: target.pos.roomName
-        },
-        range: 1
-      })
-      this.suspend = creep.name + '-deliver-move'
+      creep.travelTo(target);
     }else{
       if(creep.transfer(target, (this.metaData.resource || RESOURCE_ENERGY)) == ERR_FULL){
         this.completed = true
