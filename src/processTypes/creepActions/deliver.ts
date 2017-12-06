@@ -15,8 +15,12 @@ export class DeliverProcess extends Process{
       return
     }
 
-    if(!creep.pos.inRangeTo(target, 1)){
-      creep.travelTo(target);
+    if(!creep.pos.inRangeTo(target, 1))
+    {
+      if(!creep.fixMyRoad())
+      {
+        creep.travelTo(target);
+      }
     }else{
       if(creep.transfer(target, (this.metaData.resource || RESOURCE_ENERGY)) == ERR_FULL){
         this.completed = true

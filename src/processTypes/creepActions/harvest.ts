@@ -35,9 +35,12 @@ export class HarvestProcess extends Process{
     else
     {
       let container = this.kernel.data.roomData[source.room.name].sourceContainerMaps[source.id];
-      if(_.sum(container.store) == container.storeCapacity)
+      if(container)
       {
-        this.suspend = 5;
+        if(_.sum(container.store) == container.storeCapacity)
+        {
+          this.suspend = 5;
+        }
       }
 
       if(creep.harvest(source) === ERR_NOT_ENOUGH_RESOURCES){

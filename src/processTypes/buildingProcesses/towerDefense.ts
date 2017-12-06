@@ -8,12 +8,26 @@ export class TowerDefenseProcess extends Process{
     let room = Game.rooms[this.metaData.roomName]
     let enemies = <Creep[]>room.find(FIND_HOSTILE_CREEPS)
 
-    if(enemies.length > 0){
-      _.forEach(this.kernel.data.roomData[this.metaData.roomName].towers, function(tower){
-        let rangedEnemies = tower.pos.findInRange(enemies,40)
+    if(enemies.length > 0)
+    {
+      _.forEach(this.kernel.data.roomData[this.metaData.roomName].towers, function(tower)
+      {
+        let rangedEnemies = tower.pos.findInRange(enemies,20)
         if(rangedEnemies.length > 0)
         {
-          tower.attack(rangedEnemies[0]);
+          let targets = _.filter(rangedEnemies, e => {
+            return (e.getActiveBodyparts(HEAL) > 0);
+          });
+
+          if(targets.length > 0)
+          {
+            tower.attack(targets[0]);
+          }
+          else
+          {
+            tower.attack(rangedEnemies[0]);
+          }
+
         }
       })
     }else{
