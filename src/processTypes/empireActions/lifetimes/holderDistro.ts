@@ -1,5 +1,4 @@
 import { LifetimeProcess } from "os/process";
-import { CollectProcess } from "processTypes/creepActions/collect";
 import { DeliverProcess } from "processTypes/creepActions/deliver";
 
 
@@ -20,21 +19,21 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
     {
       let sourceContainer = <Container>Game.getObjectById(this.metaData.sourceContainer);
 
-      if(sourceContainer.store.energy > creep.carryCapacity)
+      if(!creep.pos.inRangeTo(sourceContainer, 1))
       {
-        this.log('Go Collect')
-        this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
-          target: this.metaData.sourceContainer,
-          creep: creep.name,
-          resource: RESOURCE_ENERGY
-        });
-
-        return;
+        creep.moveTo(sourceContainer);
       }
       else
       {
-        this.log('Suspend');
-        this.suspend = 20;
+        if(sourceContainer.store.energy > creep.carryCapacity)
+        {
+          creep.withdraw(sourceContainer, RESOURCE_ENERGY);
+        }
+        else
+        {
+          this.log('Suspend');
+          this.suspend = 20;
+        }
       }
     }
 
@@ -49,11 +48,5 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
         resource: RESOURCE_ENERGY
       });
     }
-    else
-    {
-      this.suspend = 15
-    }
   }
-
-
 }

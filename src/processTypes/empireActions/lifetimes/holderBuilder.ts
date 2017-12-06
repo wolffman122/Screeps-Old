@@ -27,7 +27,7 @@ export class HoldBuilderLifetimeProcess extends LifetimeProcess
     if(flag.pos.roomName != creep.pos.roomName)
     {
       this.log('Go to the flag ' + creep.name);
-      creep.travelTo(flag);
+      creep.travelTo(new RoomPosition(25, 25, flag.pos.roomName));
     }
     else
     {
@@ -54,16 +54,21 @@ export class HoldBuilderLifetimeProcess extends LifetimeProcess
         }
         else
         {
-          if( this.kernel.data.roomData[creep.room.name].sources)
+          if(this.kernel.data.roomData[creep.pos.roomName].sources)
           {
-            let source = creep.pos.findClosestByRange( this.kernel.data.roomData[creep.room.name].sources);
+            let source = creep.pos.findClosestByRange( this.kernel.data.roomData[creep.pos.roomName].sources);
+            
+            if(!creep.pos.inRangeTo(source, 1))
+            {
+              creep.travelTo(source);
+            }
 
             creep.harvest(source);
           }
         }
       }
 
-      let target = creep.pos.findClosestByRange(this.kernel.data.roomData[creep.room.name].constructionSites);
+      let target = creep.pos.findClosestByRange(this.kernel.data.roomData[creep.pos.roomName].constructionSites);
 
       if(target)
       {
