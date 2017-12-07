@@ -3,7 +3,8 @@ import {Process} from '../../os/process'
 interface CollectProcessMetaData{
   creep: string
   target: string,
-  resource: string
+  resource: string,
+  collectAmount: number
 }
 
 export class CollectProcess extends Process{
@@ -32,7 +33,14 @@ export class CollectProcess extends Process{
     }
     else
     {
-      creep.withdraw(target, this.metaData.resource)
+      if(this.metaData.collectAmount)
+      {
+        creep.withdraw(target, this.metaData.resource, this.metaData.collectAmount)
+      }
+      else
+      {
+        creep.withdraw(target, this.metaData.resource)
+      }
       this.completed = true
       this.resumeParent()
     }

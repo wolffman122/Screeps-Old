@@ -21,11 +21,16 @@ export class DeliverProcess extends Process{
       {
         creep.travelTo(target);
       }
-    }else{
-      if(creep.transfer(target, (this.metaData.resource || RESOURCE_ENERGY)) == ERR_FULL){
+    }
+
+    if(creep.pos.inRangeTo(target, 1))
+    {
+      if(creep.transfer(target, (this.metaData.resource || RESOURCE_ENERGY)) == ERR_FULL)
+      {
         this.completed = true
         this.resumeParent()
       }
     }
+
   }
 }
