@@ -102,7 +102,7 @@ export const CreepBuilder = {
     'claimer': 2,
     'harvester': 13,
     'hold': 4,
-    'mover': 17,
+    'mover': 27,
     'worker': 16,
     'upgrader': 42,
     'defender': 26,

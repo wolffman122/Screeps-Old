@@ -63,6 +63,7 @@ import { LinkManagementProcess } from 'processTypes/management/link';
 import { SpinnerLifetimeProcess } from 'processTypes/lifetimes/spinner';
 import { HoldWorkerLifetimeProcess } from 'processTypes/empireActions/lifetimes/holdWorker';
 import { LinkHarvesterLifetimeProcess } from 'processTypes/lifetimes/linkHarvester';
+import { UpgradeDistroLifetimeProcess } from 'processTypes/lifetimes/upgradeDistro';
 
 
 
@@ -107,7 +108,8 @@ const processTypes = <{[type: string]: any}>{
   'transfer': TransferProcess,
   'lm': LinkManagementProcess,
   'slf': SpinnerLifetimeProcess,
-  'holdWorkerlf': HoldWorkerLifetimeProcess
+  'holdWorkerlf': HoldWorkerLifetimeProcess,
+  'udlf': UpgradeDistroLifetimeProcess
   /*
 
 
