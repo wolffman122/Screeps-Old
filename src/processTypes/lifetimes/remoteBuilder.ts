@@ -42,6 +42,17 @@ export class RemoteBuilderLifetimeProcess extends LifetimeProcess{
               return;
           }
         }
+        else
+        {
+          let source = site.pos.findClosestByRange(this.kernel.data.roomData[site.pos.roomName].sources)
+
+          this.fork(HarvestProcess, 'harvest-' + creep.name, this.priority - 1, {
+            creep: creep.name,
+            source: source.id
+          })
+
+          return
+        }
       }
       else
       {

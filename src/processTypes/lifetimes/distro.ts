@@ -84,7 +84,14 @@ export class DistroLifetimeProcess extends LifetimeProcess{
     )
 
     let deliverTargets = _.filter(targets, function(target: DeliveryTarget){
-      return (target.energy < target.energyCapacity)
+      if(target.structureType == STRUCTURE_TOWER)
+      {
+        return (target.energy < target.energyCapacity * .80)
+      }
+      else
+      {
+        return (target.energy < target.energyCapacity)
+      }
     })
 
 

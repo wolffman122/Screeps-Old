@@ -23,14 +23,10 @@ export class DeliverProcess extends Process{
       }
     }
 
-    if(creep.pos.inRangeTo(target, 1))
+    if(creep.transfer(target, (this.metaData.resource || RESOURCE_ENERGY)) == ERR_FULL)
     {
-      if(creep.transfer(target, (this.metaData.resource || RESOURCE_ENERGY)) == ERR_FULL)
-      {
-        this.completed = true
-        this.resumeParent()
-      }
+      this.completed = true
+      this.resumeParent()
     }
-
   }
 }

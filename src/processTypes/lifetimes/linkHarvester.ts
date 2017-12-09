@@ -29,7 +29,11 @@ export class LinkHarvesterLifetimeProcess extends LifetimeProcess
       }
 
       creep.harvest(source);
-      creep.transfer(link, RESOURCE_ENERGY);
+
+      if(_.sum(creep.carry) == creep.carryCapacity)
+      {
+        creep.transfer(link, RESOURCE_ENERGY);
+      }
 
     }
     else

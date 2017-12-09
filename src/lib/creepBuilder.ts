@@ -14,8 +14,9 @@ export const CreepBuilder = {
     let creepCount = _.filter(Game.creeps, function(creep){
       return creep.room.name === room.name
     }).length
-    let emergancy = (creepType === 'harvester' && creepCount === 0)
+    let emergancy = (creepType === 'harvester' && creepCount < 2) || (creepType === 'mover' && creepCount < 4)
 
+    console.log('Emergency status ' + emergancy + ' creepType ' + creepType + ' creep count ' + creepCount);
     if(emergancy){
       spendCap = 300
     }else{
@@ -80,7 +81,7 @@ export const CreepBuilder = {
     'upgrader': [WORK, CARRY, MOVE],
     'defender': [MOVE,MOVE,MOVE,ATTACK,ATTACK],
     'spinner': [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
-    'holdmover': [CARRY,CARRY,MOVE,MOVE,WORK],
+    'holdmover': [CARRY,CARRY,CARRY,MOVE,MOVE,WORK],
     'bigHarvester': [WORK, WORK, CARRY, MOVE, MOVE],
   },
 
@@ -102,12 +103,12 @@ export const CreepBuilder = {
     'claimer': 2,
     'harvester': 13,
     'hold': 4,
-    'mover': 27,
+    'mover': 36,
     'worker': 16,
     'upgrader': 42,
     'defender': 26,
     'spinner': 14,
-    'holdmover': 35,
+    'holdmover': 43,
     'bigHarvester': 15
   }
 }

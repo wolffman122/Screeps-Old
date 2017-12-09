@@ -33,6 +33,22 @@ export const Stats = {
     Memory.stats['processes.types.init'] = 0
     Memory.stats['processes.types.flagWatcher'] = 0
 
+    /*let processCounts = _.reduce(kernel.execOrder, (types, item: {type: string}) => {
+      if(!types[item.type])
+      {
+        types[item.type] = {type: item.type, count: 0};
+      }
+
+      types[item.type].count++;
+      return types;
+    }, {})
+
+    console.log('Trying to get process count');
+
+    _.forEach(processCounts, function(p: {type: string, count: number}) {
+      console.log(p.type + ' ' + p.count);
+    })*/
+    
     _.forEach(kernel.execOrder, function(execed: {type: string, cpu: number}){
       Memory.stats['processes.types.' + execed.type] += execed.cpu
     })

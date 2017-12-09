@@ -6,6 +6,7 @@ import {DistroLifetimeProcess} from '../lifetimes/distro'
 import {UpgraderLifetimeProcess} from '../lifetimes/upgrader'
 import { SpinnerLifetimeProcess } from 'processTypes/lifetimes/spinner';
 import { LinkHarvesterLifetimeProcess } from 'processTypes/lifetimes/linkHarvester';
+import { UpgradeDistroLifetimeProcess } from 'processTypes/lifetimes/upgradeDistro';
 
 export class EnergyManagementProcess extends Process{
   metaData: EnergyManagementMetaData
@@ -24,6 +25,9 @@ export class EnergyManagementProcess extends Process{
 
     if(!this.metaData.spinCreeps)
       this.metaData.spinCreeps = []
+
+    if(!this.metaData.upgradeDistroCreeps)
+      this.metaData.upgradeDistroCreeps = []
   }
 
   run(){
@@ -39,6 +43,8 @@ export class EnergyManagementProcess extends Process{
     let sources = this.kernel.data.roomData[this.metaData.roomName].sources;
     let sourceContainers = this.kernel.data.roomData[this.metaData.roomName].sourceContainers;
     let sourceLinks = this.kernel.data.roomData[this.metaData.roomName].sourceLinks;
+
+    this.log('EM Troubles *************************');
 
     _.forEach(sources, function(source)
     {
@@ -81,7 +87,7 @@ export class EnergyManagementProcess extends Process{
       }
 
       _.forEach(creeps, function(creep){
-        if(sourceLinks.length == 2)
+        if(sourceLinks.length === 2  && sourceContainers.length === 2)
         {
           if(!proc.kernel.hasProcess('lhlf-' + creep.name))
           {
@@ -185,13 +191,15 @@ export class EnergyManagementProcess extends Process{
 
     if(this.kernel.data.roomData[this.metaData.roomName].storageLink
         &&
-       this.metaData.upgradeCreeps.length > 0)
+       this.metaData.upgradeCreeps.length > 0
+        &&
+       Object.keys(this.metaData.distroCreeps).length == 2)
     {
       let storageLink = this.kernel.data.roomData[this.metaData.roomName].storageLink
 
       this.metaData.spinCreeps = Utils.clearDeadCreeps(this.metaData.spinCreeps)
 
-      if(this.metaData.spinCreeps.length < 1 && (this.kernel.data.roomData[this.metaData.roomName].sourceLinks.length > 1 || this.roomData().controllerLink))
+      if(this.metaData.spinCreeps.length < 1 && (this.kernel.data.roomData[this.metaData.roomName].sourceLinks.length > 1))
       {
         let creepName = 'em-s-' + proc.metaData.roomName + '-' + Game.time;
         let spawned = Utils.spawn(
@@ -211,6 +219,32 @@ export class EnergyManagementProcess extends Process{
           })
         }
       }
+    }
+
+    if(this.kernel.data.roomData[this.metaData.roomName].controllerContainer)
+    {
+      this.metaData.upgradeDistroCreeps = Utils.clearDeadCreeps(this.metaData.upgradeDistroCreeps);
+
+      if(this.metaData.upgradeDistroCreeps.length < 1)
+      {
+        let creepName = 'em-ud-' + proc.metaData.roomName + '-' + Game.time;
+        let spawned = Utils.spawn(
+          proc.kernel,
+          proc.metaData.roomName,
+          'mover',
+          creepName,
+          {}
+        )
+
+        if(spawned)
+        {
+          this.metaData.upgradeDistroCreeps.push(creepName);
+          this.kernel.addProcess(UpgradeDistroLifetimeProcess, 'udlf-' + creepName, 25, {
+            creep: creepName
+          })
+        }
+      }
+
     }
   }
 }

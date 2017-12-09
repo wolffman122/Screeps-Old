@@ -45,6 +45,7 @@ interface RoomData{
   sourceLinkMaps: {[id: string]: StructureLink}
   storageLink: StructureLink | undefined
   controllerLink: StructureLink | undefined
+  controllerContainer: StructureContainer | undefined
 }
 
 interface IPCMessage{
@@ -81,6 +82,7 @@ interface EnergyManagementMetaData{
   }
   upgradeCreeps: string[]
   spinCreeps: string[]
+  upgradeDistroCreeps: string[]
 }
 
 interface HoldRoomManagementProcessMetaData

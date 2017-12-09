@@ -40,8 +40,12 @@ export class CollectProcess extends Process{
           creep.withdraw(target, this.metaData.resource, this.metaData.collectAmount)
         }
       }
+      else
+      {
+        creep.withdraw(target, RESOURCE_ENERGY);
+      }
 
-      creep.withdraw(target, this.metaData.resource)
+
 
       this.completed = true
       this.resumeParent()

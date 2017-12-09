@@ -31,23 +31,11 @@ export class UpgradeDistroLifetimeProcess extends LifetimeProcess
       }
     }
 
-    let targets = [].concat(
-      <never[]>this.kernel.data.roomData[creep.room.name].generalContainers
-    )
 
-    let deliverTargets = _.filter(targets, (t: DeliveryTarget) => {
-      if(t.pos.inRangeTo(t.room.controller, 4))
-      {
-        if(t.store)
-        {
-          return (_.sum(t.store) < t.storeCapacity);
-        }
-      }
-    });
 
-    let target = creep.pos.findClosestByPath(deliverTargets);
+    let target = this.kernel.data.roomData[creep.room.name].controllerContainer;
 
-    if(target)
+    if(target && _.sum(target.store) < target.storeCapacity)
     {
       this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
         creep: creep.name,

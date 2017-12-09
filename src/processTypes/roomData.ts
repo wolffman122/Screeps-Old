@@ -24,7 +24,7 @@ export class RoomDataProcess extends Process{
   ]
 
   singleFields = [
-    'extractor', 'mineral', 'storageLink', 'controllerLink'
+    'extractor', 'mineral', 'storageLink', 'controllerLink', 'controllerContainer'
   ]
 
   run(){
@@ -80,8 +80,14 @@ export class RoomDataProcess extends Process{
       return (sources.length != 0)
     })
 
+    let controllerContainers = _.filter(containers, function(container){
+      return (container.pos.inRangeTo(container.room.controller, 4));
+    });
+
     let generalContainers = _.filter(containers, function(container){
-      let matchContainers = <StructureContainer[]>[].concat(<never[]>sourceContainers)
+      let matchContainers = <StructureContainer[]>[].concat(
+        <never[]>sourceContainers,
+        <never[]>controllerContainers)
 
       var matched = _.filter(matchContainers, function(mc){
         return (mc.id == container.id)
@@ -89,6 +95,13 @@ export class RoomDataProcess extends Process{
 
       return (matched.length == 0)
     })
+
+    let controllerContainer = undefined;
+
+    if(controllerContainers.length > 0)
+    {
+      controllerContainer = controllerContainers[0];
+    }
 
     let links = <StructureLink[]>_.filter(myStructures, (s) => {
       return (s.structureType === STRUCTURE_LINK);
@@ -165,7 +178,8 @@ export class RoomDataProcess extends Process{
       sourceLinks: sourceLinks,
       sourceLinkMaps: sourceLinkMaps,
       storageLink: storageLink,
-      controllerLink: controllerLink
+      controllerLink: controllerLink,
+      controllerContainer: controllerContainer
     }
 
     this.kernel.data.roomData[this.metaData.roomName] = roomData
@@ -232,7 +246,8 @@ export class RoomDataProcess extends Process{
       sourceLinks: [],
       sourceLinkMaps: <{[id: string]: StructureLink}>{},
       storageLink: undefined,
-      controllerLink: undefined
+      controllerLink: undefined,
+      controllerContainer: undefined
     }
     let run = true
     let i = 0
