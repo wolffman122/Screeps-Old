@@ -228,13 +228,28 @@ export class EnergyManagementProcess extends Process{
       if(this.metaData.upgradeDistroCreeps.length < 1)
       {
         let creepName = 'em-ud-' + proc.metaData.roomName + '-' + Game.time;
-        let spawned = Utils.spawn(
-          proc.kernel,
-          proc.metaData.roomName,
-          'mover',
-          creepName,
-          {}
-        )
+        let spawned = false;
+
+        if(this.kernel.data.roomData[this.metaData.roomName].extensions.length < 20 || Game.rooms[this.metaData.roomName].storage.store.energy < 150000)
+        {
+          spawned = Utils.spawn(
+            proc.kernel,
+            proc.metaData.roomName,
+            'mover',
+            creepName,
+            {}
+          )
+        }
+        else
+        {
+          spawned = Utils.spawn(
+            proc.kernel,
+            proc.metaData.roomName,
+            'bigMover',
+            creepName,
+            {}
+          )
+        }
 
         if(spawned)
         {
