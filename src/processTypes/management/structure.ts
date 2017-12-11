@@ -39,7 +39,10 @@ export class StructureManagementProcess extends Process{
       return
     }
 
-    let numBuilders = _.min([Math.ceil(this.kernel.data.roomData[this.metaData.roomName].constructionSites.length / 10), 3, this.kernel.data.roomData[this.metaData.roomName].constructionSites.length])
+    let constructionSites = _.filter(this.kernel.data.roomData[this.metaData.roomName].constructionSites, (cs) => {
+      return (cs.structureType != STRUCTURE_RAMPART);
+    })
+    let numBuilders = _.min([Math.ceil(constructionSites.length / 10), 3, constructionSites.length])
 
     this.metaData.buildCreeps = Utils.clearDeadCreeps(this.metaData.buildCreeps)
     this.metaData.repairCreeps = Utils.clearDeadCreeps(this.metaData.repairCreeps)
