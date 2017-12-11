@@ -34,6 +34,14 @@ export class HoldProcess extends Process
       {
         flag.memory.enemies = false;
       }
+
+      let dropped = flag.room.find(FIND_DROPPED_RESOURCES);
+
+      let droppedEnergy = _.filter(dropped, (d: Resource) => {
+        return (d.resourceType == RESOURCE_ENERGY && d.amount > 500);
+      })
+
+      
     }
 
     if(!creep.pos.inRangeTo(creep.room.controller!, 1))
