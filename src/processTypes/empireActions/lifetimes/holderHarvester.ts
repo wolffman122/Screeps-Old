@@ -23,7 +23,13 @@ export class HoldHarvesterLifetimeProcess extends LifetimeProcess
     if(Game.time % 10 === 5)
     {
       let enemies = flag.room.find(FIND_HOSTILE_CREEPS);
+
+      enemies = _.filter(enemies, (e: Creep)=> {
+        return (e.getActiveBodyparts(ATTACK) > 0 || e.getActiveBodyparts(RANGED_ATTACK) > 0);
+      });
+      
       this.log('Enemies ' + enemies.length);
+
       if(enemies.length > 0)
       {
         flag.memory.enemies = true;
