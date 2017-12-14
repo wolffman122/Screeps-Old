@@ -198,16 +198,15 @@ export class HoldRoomManagementProcess extends Process
       }
 
       _.forEach(this.kernel.data.roomData[flag.pos.roomName].sourceContainers, function(container){
-        if(proc.metaData.distroCreeps[container.id])
+        if(!proc.metaData.distroCreeps[container.id])
         {
-          let creep = Game.creeps[proc.metaData.distroCreeps[container.id]];
-          if(!creep)
-          {
-            delete proc.metaData.distroCreeps[container.id];
-            return;
-          }
+          proc.metaData.distroCreeps[container.id] = [];
         }
-        else
+
+        proc.metaData.distroCreeps[container.id] = Utils.clearDeadCreeps(proc.metaData.distroCreeps[container.id]);
+
+
+        //////////////// Need to make a distance rate for a second distroCreep use pos.getRangeTo() returns linear range to object
         {
           let creepName = 'hrm-m-' + flag.pos.roomName + '-' + Game.time;
           let spawned = Utils.spawn(
