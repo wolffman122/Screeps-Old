@@ -21,7 +21,7 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
 
       if(!creep.pos.inRangeTo(sourceContainer, 1))
       {
-        creep.moveTo(sourceContainer);
+        creep.travelTo(sourceContainer);
       }
       else
       {

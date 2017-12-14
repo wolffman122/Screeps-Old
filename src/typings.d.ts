@@ -93,7 +93,7 @@ interface HoldRoomManagementProcessMetaData
     [source: string]: string[]
   }
   distroCreeps: {
-    [container: string]: string[]
+    [container: string]: string
   }
   builderCreeps: string[]
   workerCreeps: string[]

@@ -111,7 +111,7 @@ export const CreepBuilder = {
     'upgrader': 42,
     'defender': 26,
     'spinner': 14,
-    'holdmover': 43,
+    'holdmover': 49,
     'bigHarvester': 15
   }
 }
