@@ -25,7 +25,13 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
       }
       else
       {
-        if(sourceContainer.store.energy > creep.carryCapacity)
+        let resource = <Resource[]>sourceContainer.pos.lookFor(RESOURCE_ENERGY)
+
+        if(resource[0].amount > creep.carryCapacity)
+        {
+          creep.pickup(resource[0]);
+        }
+        else if(sourceContainer.store.energy > creep.carryCapacity)
         {
           creep.withdraw(sourceContainer, RESOURCE_ENERGY);
         }

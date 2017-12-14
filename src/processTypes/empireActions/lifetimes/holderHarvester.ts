@@ -27,7 +27,7 @@ export class HoldHarvesterLifetimeProcess extends LifetimeProcess
       enemies = _.filter(enemies, (e: Creep)=> {
         return (e.getActiveBodyparts(ATTACK) > 0 || e.getActiveBodyparts(RANGED_ATTACK) > 0);
       });
-      
+
       this.log('Enemies ' + enemies.length);
 
       if(enemies.length > 0)
@@ -52,7 +52,7 @@ export class HoldHarvesterLifetimeProcess extends LifetimeProcess
 
       creep.harvest(source);
 
-      if(container.hits <= container.hitsMax * .9 && _.sum(creep.carry) > 0)
+      if(container.hits <= container.hitsMax * .95 && _.sum(creep.carry) > 0)
       {
         creep.repair(container);
       }

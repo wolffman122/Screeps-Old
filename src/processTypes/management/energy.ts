@@ -44,8 +44,6 @@ export class EnergyManagementProcess extends Process{
     let sourceContainers = this.kernel.data.roomData[this.metaData.roomName].sourceContainers;
     let sourceLinks = this.kernel.data.roomData[this.metaData.roomName].sourceLinks;
 
-    this.log('EM Troubles *************************');
-
     _.forEach(sources, function(source)
     {
       if(!proc.metaData.harvestCreeps[source.id])
@@ -149,6 +147,9 @@ export class EnergyManagementProcess extends Process{
         break;
       case 'E43S52':
         upgraders = 2;
+        break;
+      case 'E46S52':
+        upgraders = 3;
         break;
       default:
         upgraders = 2;
