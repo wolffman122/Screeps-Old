@@ -43,6 +43,33 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
       }
     }
 
+    if(this.kernel.data.roomData[this.metaData.spawnRoom].links)
+    {
+      let links = _.filter(this.kernel.data.roomData[this.metaData.spawnRoom].links, (l) =>{
+        return (l.energy < l.energyCapacity);
+      });
+
+      if(links.length > 0)
+      {
+        let link = creep.pos.findClosestByPath(links);
+
+        if(link)
+        {
+          this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+            creep: creep.name,
+            target: link.id,
+            resource: RESOURCE_ENERGY
+          });
+
+          return;
+        }
+      }
+      else
+      {
+        this.suspend = 2;
+      }
+    }
+
     // creep is filled
     if(Game.rooms[this.metaData.spawnRoom].storage)
     {
