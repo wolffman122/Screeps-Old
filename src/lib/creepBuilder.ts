@@ -82,7 +82,7 @@ export const CreepBuilder = {
     'upgrader': [WORK, CARRY, MOVE],
     'defender': [MOVE,MOVE,MOVE,ATTACK,ATTACK],
     'spinner': [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
-    'holdmover': [CARRY,CARRY,CARRY,MOVE,MOVE,WORK],
+    'holdmover': [CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,WORK],
     'bigHarvester': [WORK, WORK, CARRY, MOVE, MOVE],
   },
 
@@ -111,7 +111,7 @@ export const CreepBuilder = {
     'upgrader': 42,
     'defender': 26,
     'spinner': 14,
-    'holdmover': 49,
+    'holdmover': 50,
     'bigHarvester': 15
   }
 }
