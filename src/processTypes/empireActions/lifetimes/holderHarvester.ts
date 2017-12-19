@@ -28,8 +28,6 @@ export class HoldHarvesterLifetimeProcess extends LifetimeProcess
         return (e.getActiveBodyparts(ATTACK) > 0 || e.getActiveBodyparts(RANGED_ATTACK) > 0);
       });
 
-      this.log('Enemies ' + enemies.length);
-
       if(enemies.length > 0)
       {
         flag.memory.enemies = true;

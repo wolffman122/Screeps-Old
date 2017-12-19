@@ -44,5 +44,20 @@ export class LinkManagementProcess extends Process
         });
       }
     }
+
+    if(this.roomData().links.length > 0)
+    {
+      let storageLink = this.roomData().storageLink;
+
+      if(storageLink)
+      {
+        _.forEach(this.roomData().links, (l) => {
+          if(l.cooldown == 0 && l.energy > 200 && storageLink.energy < 100)
+          {
+            l.transferEnergy(storageLink);
+          }
+        })
+      }
+    }
   }
 }

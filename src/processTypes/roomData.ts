@@ -120,6 +120,45 @@ export class RoomDataProcess extends Process{
       return (sources.length != 0);
     });
 
+    let storageLink = undefined;
+    if(room.storage)
+    {
+      storageLink = <StructureLink>room.storage.pos.findInRange(links, 2)[0];
+    }
+
+    let controllerLink = <StructureLink>room.controller.pos.findInRange(links, 2)[0];
+
+    this.log('General Links');
+
+    let generalLinks = _.filter(links, function(l){
+      let matchedLinks = [].concat(
+        <never[]>sourceLinks)
+
+        if(storageLink)
+        {
+          matchedLinks = [].concat(
+            <never[]>matchedLinks,
+            [storageLink]
+          );
+        }
+
+        if(controllerLink)
+        {
+          matchedLinks = [].concat(
+            <never[]>matchedLinks,
+            controllerLink
+          )
+        }
+
+        let matched = _.filter(matchedLinks, function(ml){
+          return (ml.id == l.id);
+        });
+
+        return (matched.length == 0);
+    });
+
+    this.log('General Links' + generalLinks.length);
+
     let roads = <StructureRoad[]>_.filter(structures, function(structure){
       return (structure.structureType === STRUCTURE_ROAD)
     })
@@ -128,13 +167,9 @@ export class RoomDataProcess extends Process{
       return (structure.structureType === STRUCTURE_LAB)
     })
 
-    let storageLink = undefined;
-    if(room.storage)
-    {
-      storageLink = <StructureLink>room.storage.pos.findInRange(links, 2)[0];
-    }
 
-    let controllerLink = <StructureLink>room.controller.pos.findInRange(links, 2)[0];
+
+
 
     let roomData: RoomData = {
       constructionSites: <ConstructionSite[]>room.find(FIND_CONSTRUCTION_SITES),
@@ -174,7 +209,7 @@ export class RoomDataProcess extends Process{
       ramparts: <StructureRampart[]>_.filter(myStructures, function(s){
         return (s.structureType === STRUCTURE_RAMPART);
       }),
-      links: links,
+      links: generalLinks,
       sourceLinks: sourceLinks,
       sourceLinkMaps: sourceLinkMaps,
       storageLink: storageLink,

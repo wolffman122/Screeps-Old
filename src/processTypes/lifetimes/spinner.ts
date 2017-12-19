@@ -15,6 +15,16 @@ export class SpinnerLifetimeProcess extends LifetimeProcess
       return;
     }
 
+    let flag = Game.flags['DJ-' + creep.pos.roomName];
+
+    if(flag)
+    {
+      if(!creep.pos.inRangeTo(flag, 0))
+      {
+        creep.travelTo(flag); 
+      }
+    }
+
     if(_.sum(creep.carry) === 0)
     {
       if(this.kernel.data.roomData[creep.room.name].sourceLinks.length > 0)

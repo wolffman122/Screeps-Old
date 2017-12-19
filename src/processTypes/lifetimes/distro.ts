@@ -11,7 +11,7 @@ export class DistroLifetimeProcess extends LifetimeProcess{
 
     if(!creep){ return }
 
-    if(_.sum(creep.carry) === 0)
+    if(_.sum(creep.carry) === 0 && creep.ticksToLive > 50)
     {
       if(this.kernel.data.roomData[creep.pos.roomName].sourceLinks.length == 2)
       {
@@ -110,14 +110,14 @@ export class DistroLifetimeProcess extends LifetimeProcess{
       })
     }
 
-    if(deliverTargets.length === 0 && creep.room.storage && this.kernel.data.roomData[creep.pos.roomName].sourceLinks.length < 2)
+    if(deliverTargets.length === 0 && creep.room.storage)
     {
       let targets = [].concat(
         <never[]>[creep.room.storage]
       );
 
       deliverTargets = _.filter(targets, (t) => {
-        return (_.sum(t.store))
+        return (t.structureType == STRUCTURE_STORAGE)
       })
     }
 
@@ -130,8 +130,22 @@ export class DistroLifetimeProcess extends LifetimeProcess{
         resource: RESOURCE_ENERGY
       })
     }else{
-      this.suspend = 15
-      //this.suspend = 5
+      //this.suspend = 15
+      this.suspend = 5
+    }
+
+    if(creep.ticksToLive < 60 && _.sum(creep.carry) > 0)
+    {
+      if(creep.room.storage)
+      {
+        this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+          creep: creep.name,
+          target: target.id,
+          resource: RESOURCE_ENERGY
+        });
+
+        return;
+      }
     }
   }
 }

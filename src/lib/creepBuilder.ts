@@ -16,7 +16,7 @@ export const CreepBuilder = {
     }).length
     let emergancy = (creepType === 'harvester' && creepCount < 2) || (creepType === 'mover' && creepCount < 4)
 
-    console.log('Emergency status ' + emergancy + ' creepType ' + creepType + ' creep count ' + creepCount);
+    
     if(emergancy){
       spendCap = 300
     }else{

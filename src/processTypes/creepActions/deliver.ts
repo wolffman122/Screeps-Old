@@ -15,6 +15,10 @@ export class DeliverProcess extends Process{
       return
     }
 
+    if(creep.name == 'hrm-m-E43S56-4646210')
+    {
+      this.log('found creep ' + target)
+    }
     if(!creep.pos.inRangeTo(target, 1))
     {
       if(!creep.fixMyRoad())
