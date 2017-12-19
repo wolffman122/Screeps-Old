@@ -30,12 +30,10 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
         {
           let withdrawAmount = creep.carryCapacity - _.sum(creep.carry) - resource[0].amount;
 
-          if(withdrawAmount < 0)
+          if(withdrawAmount >= 0)
           {
-            withdrawAmount = 0;
+            creep.withdraw(sourceContainer, RESOURCE_ENERGY, withdrawAmount);
           }
-
-          creep.withdraw(sourceContainer, RESOURCE_ENERGY, withdrawAmount);
 
           creep.pickup(resource[0]);
           /*creep.pickup(resource[0]);
