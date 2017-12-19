@@ -1,5 +1,4 @@
 import { LifetimeProcess } from "os/process";
-import { DeliverProcess } from "processTypes/creepActions/deliver";
 
 
 export class HoldDistroLifetimeProcess extends LifetimeProcess
@@ -18,10 +17,9 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
     if(_.sum(creep.carry) === 0 && creep.ticksToLive > 100)
     {
       let sourceContainer = <Container>Game.getObjectById(this.metaData.sourceContainer);
-      this.log('range');
+
       if(!creep.pos.inRangeTo(sourceContainer, 1))
       {
-        this.log('need to move');
         creep.travelTo(sourceContainer);
         return;
       }
@@ -30,18 +28,28 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
         let resource = <Resource[]>sourceContainer.pos.lookFor(RESOURCE_ENERGY)
         if(resource.length > 0)
         {
-          if(resource[0].amount > creep.carryCapacity)
+          let withdrawAmount = creep.carryCapacity - _.sum(creep.carry) - resource[0].amount;
+
+          if(withdrawAmount < 0)
           {
-            creep.pickup(resource[0]);
+            withdrawAmount = 0;
           }
-          else if(sourceContainer.store.energy > creep.carryCapacity)
+
+          creep.withdraw(sourceContainer, RESOURCE_ENERGY, withdrawAmount);
+
+          creep.pickup(resource[0]);
+          /*creep.pickup(resource[0]);
+
+          let remainingRoom = creep.carryCapacity - resource[0].amount
+
+          if(sourceContainer.store.energy > remainingRoom)
           {
             creep.withdraw(sourceContainer, RESOURCE_ENERGY)
           }
           else
           {
             this.suspend = 10;
-          }
+          }*/
         }
         else if(sourceContainer.store.energy > creep.carryCapacity)
         {
@@ -68,27 +76,54 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
       }
       else
       {
-        let links = _.filter(this.kernel.data.roomData[this.metaData.spawnRoom].links, (l) => {
-          return (l.energy < l.energyCapacity);
-        });
+        let links = this.kernel.data.roomData[this.metaData.spawnRoom].links
 
         links = creep.pos.findInRange(links, 6);
 
-        let link = creep.pos.findClosestByPath(links);
-
-        if(link.energy < link.energyCapacity)
+        if(links.length > 0)
         {
-          this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
-            creep: creep.name,
-            target: link.id,
-            resource: RESOURCE_ENERGY
-          });
+          let link = creep.pos.findClosestByPath(links);
 
-          return;
+          if(link.energy < link.energyCapacity)
+          {
+            if(!creep.pos.inRangeTo(link, 1))
+            {
+              if(!creep.fixMyRoad())
+              {
+                creep.travelTo(link);
+              }
+            }
+
+            if(creep.transfer(link, (this.metaData.resource || RESOURCE_ENERGY)) == ERR_FULL)
+            {
+              return;
+            }
+          }
+          else
+          {
+            this.suspend = 2;
+          }
         }
         else
         {
-          this.suspend = 2;
+          if(Game.rooms[this.metaData.spawnRoom].storage)
+          {
+            this.log('Doing sotrage route');
+            let target = Game.rooms[this.metaData.spawnRoom].storage;
+
+            if(!creep.pos.inRangeTo(target, 1))
+            {
+              if(!creep.fixMyRoad())
+              {
+                creep.travelTo(target);
+              }
+            }
+
+            if(creep.transfer(target, (this.metaData.resource || RESOURCE_ENERGY)) == ERR_FULL)
+            {
+              return;
+            }
+          }
         }
       }
     }
@@ -100,11 +135,18 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
         this.log('Doing sotrage route');
         let target = Game.rooms[this.metaData.spawnRoom].storage;
 
-        this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
-          creep: creep.name,
-          target: target.id,
-          resource: RESOURCE_ENERGY
-        });
+        if(!creep.pos.inRangeTo(target, 1))
+        {
+          if(!creep.fixMyRoad())
+          {
+            creep.travelTo(target);
+          }
+        }
+
+        if(creep.transfer(target, (this.metaData.resource || RESOURCE_ENERGY)) == ERR_FULL)
+        {
+          return;
+        }
       }
     }
   }
