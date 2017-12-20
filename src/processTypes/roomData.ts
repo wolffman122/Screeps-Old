@@ -5,6 +5,7 @@ import {Process} from '../os/process'
 import {SpawnRemoteBuilderProcess} from './system/spawnRemoteBuilder'
 import {TowerDefenseProcess} from './buildingProcesses/towerDefense'
 import {TowerRepairProcess} from './buildingProcesses/towerRepair'
+import { MineralManagementProcess } from 'processTypes/management/mineral';
 
 interface RoomDataMeta{
   roomName: string
@@ -24,7 +25,7 @@ export class RoomDataProcess extends Process{
   ]
 
   singleFields = [
-    'extractor', 'mineral', 'storageLink', 'controllerLink', 'controllerContainer'
+    'extractor', 'mineral', 'storageLink', 'controllerLink', 'controllerContainer', 'mineralContainer'
   ]
 
   run(){
@@ -41,11 +42,14 @@ export class RoomDataProcess extends Process{
       }
     }
 
-    //if(room.controller && room.controller.my && this.roomData().mineral && this.roomData().mineral!.mineralAmount > 0 && this.roomData().extractor){
-      //this.kernel.addProcessIfNotExist(MineralManagementProcess, 'minerals-' + this.metaData.roomName, 20, {
-//        roomName: room.name
-  //    })
-    //}
+    
+    if(room.name == 'E43S52' && room.controller && room.controller.my && this.roomData().mineral && this.roomData().mineral!.mineralAmount > 0 && this.roomData().extractor)
+    {
+      this.log('Mineral Process');
+      this.kernel.addProcessIfNotExist(MineralManagementProcess, 'minerals-' + this.metaData.roomName, 20, {
+        roomName: room.name
+      })
+    }
 
     if(room.controller!.my){
       /*this.kernel.addProcessIfNotExist(RoomLayoutProcess, 'room-layout-' + room.name, 20, {
@@ -84,10 +88,17 @@ export class RoomDataProcess extends Process{
       return (container.pos.inRangeTo(container.room.controller, 4));
     });
 
+    let mineral = <Mineral>room.find(FIND_MINERALS)[0];
+
+    let mineralContainers = _.filter(containers, function(container) {
+      return (container.pos.inRangeTo(mineral, 2));
+    })
+
     let generalContainers = _.filter(containers, function(container){
       let matchContainers = <StructureContainer[]>[].concat(
         <never[]>sourceContainers,
-        <never[]>controllerContainers)
+        <never[]>controllerContainers,
+        <never[]>mineralContainers)
 
       var matched = _.filter(matchContainers, function(mc){
         return (mc.id == container.id)
@@ -101,6 +112,13 @@ export class RoomDataProcess extends Process{
     if(controllerContainers.length > 0)
     {
       controllerContainer = controllerContainers[0];
+    }
+
+    let mineralContainer = undefined;
+
+    if(mineralContainers.length > 0)
+    {
+      mineralContainer = mineralContainers[0];
     }
 
     let links = <StructureLink[]>_.filter(myStructures, (s) => {
@@ -214,7 +232,8 @@ export class RoomDataProcess extends Process{
       sourceLinkMaps: sourceLinkMaps,
       storageLink: storageLink,
       controllerLink: controllerLink,
-      controllerContainer: controllerContainer
+      controllerContainer: controllerContainer,
+      mineralContainer: mineralContainer
     }
 
     this.kernel.data.roomData[this.metaData.roomName] = roomData
@@ -282,7 +301,8 @@ export class RoomDataProcess extends Process{
       sourceLinkMaps: <{[id: string]: StructureLink}>{},
       storageLink: undefined,
       controllerLink: undefined,
-      controllerContainer: undefined
+      controllerContainer: undefined,
+      mineralContainer: undefined
     }
     let run = true
     let i = 0

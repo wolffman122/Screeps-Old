@@ -46,6 +46,7 @@ interface RoomData{
   storageLink: StructureLink | undefined
   controllerLink: StructureLink | undefined
   controllerContainer: StructureContainer | undefined
+  mineralContainer: StructureContainer | undefined
 }
 
 interface IPCMessage{

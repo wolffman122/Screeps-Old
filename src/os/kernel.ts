@@ -64,6 +64,10 @@ import { SpinnerLifetimeProcess } from 'processTypes/lifetimes/spinner';
 import { HoldWorkerLifetimeProcess } from 'processTypes/empireActions/lifetimes/holdWorker';
 import { LinkHarvesterLifetimeProcess } from 'processTypes/lifetimes/linkHarvester';
 import { UpgradeDistroLifetimeProcess } from 'processTypes/lifetimes/upgradeDistro';
+import { MineralManagementProcess } from 'processTypes/management/mineral';
+import { MineralHarvesterLifetimeProcess } from 'processTypes/lifetimes/mineralHarvester';
+import { MineralHarvest } from 'processTypes/creepActions/mineralHarvest';
+import { MineralDistroLifetimeProcess } from 'processTypes/lifetimes/mineralDistro';
 
 
 
@@ -109,7 +113,11 @@ const processTypes = <{[type: string]: any}>{
   'lm': LinkManagementProcess,
   'slf': SpinnerLifetimeProcess,
   'holdWorkerlf': HoldWorkerLifetimeProcess,
-  'udlf': UpgradeDistroLifetimeProcess
+  'udlf': UpgradeDistroLifetimeProcess,
+  'minerals': MineralManagementProcess,
+  'mhlf' : MineralHarvesterLifetimeProcess,
+  'mineral-harvest': MineralHarvest,
+  'mdlf': MineralDistroLifetimeProcess
   /*
 
 
