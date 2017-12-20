@@ -86,6 +86,13 @@ interface EnergyManagementMetaData{
   upgradeDistroCreeps: string[]
 }
 
+interface MineralManagementMetaData
+{
+  roomName: string
+  mineralHarvesters: string[]
+  mineralHaulers: string[]
+}
+
 interface HoldRoomManagementProcessMetaData
 {
   roomName: string

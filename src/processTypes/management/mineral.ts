@@ -16,20 +16,42 @@ export class MineralManagementProcess extends Process
       return;
     }
 
+    this.log('Before Extractor checks');
+
     let proc = this;
     let extractor = this.kernel.data.roomData[this.metaData.roomName].extractor;
     let mineral = this.kernel.data.roomData[this.metaData.roomName].mineral;
     let container = this.kernel.data.roomData[this.metaData.roomName].mineralContainer;
-
     if(!mineral || !extractor)
     {
       this.completed = true;
       return;
     }
 
-    this.metaData.mineralHarvesters = Utils.clearDeadCreeps(this.metaData.mineralHarvesters);
+    this.log('After extractor checks');
 
-    if(this.metaData.mineralHarvesters.lenth < 1) // Need to find a way of how many creeps can mine a mineral
+    this.metaData.mineralHarvesters = Utils.clearDeadCreeps(this.metaData.mineralHarvesters);
+    this.metaData.mineralHaulers = Utils.clearDeadCreeps(this.metaData.mineralHaulers);
+
+    let harvesters = 0;
+
+    switch(proc.metaData.roomName)
+    {
+      case 'E44S51':
+        harvesters = 1;
+        break;
+      case 'E43S52':
+        harvesters = 2;
+        break;
+      case 'E43S53':
+        harvesters = 3;
+        break;
+      default:
+        harvesters = 0;
+        break;
+    }
+
+    if(this.metaData.mineralHarvesters.length < harvesters) // Need to find a way of how many creeps can mine a mineral
     {
       let creepName = 'min-h-' + proc.metaData.roomName + '-' + Game.time;
       let spawned = Utils.spawn(

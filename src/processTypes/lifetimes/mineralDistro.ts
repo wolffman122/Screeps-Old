@@ -36,7 +36,7 @@ export class MineralDistroLifetimeProcess extends LifetimeProcess
     }
 
     this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
-      target: creep.room.storage,
+      target: creep.room.storage.id,
       creep: creep.name,
       resource: this.metaData.mineralType
     });
