@@ -24,6 +24,15 @@ export class MineralHarvesterLifetimeProcess extends LifetimeProcess
       return;
     }
 
+    if(mineral.mineralAmount === 0 && _.sum(creep.carry) > 0)
+    {
+      this.fork(DeliverProcess, creep.name + '-deliver', this.priority - 1, {
+        creep: creep.name,
+        target: container.id,
+        resource: mineral.mineralType
+      })
+    }
+
     if(_.sum(creep.carry) === 0)
     {
       this.fork(MineralHarvest, 'mineral-harvest-' + creep.name, this.priority = 1, {

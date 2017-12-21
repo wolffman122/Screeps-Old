@@ -26,6 +26,13 @@ export class MineralHarvest extends Process
     let mineral = <Mineral>Game.getObjectById(this.metaData.mineral);
     let extractor = <StructureExtractor>Game.getObjectById(this.metaData.extractor);
 
+    if(mineral.mineralAmount === 0)
+    {
+      this.completed = true;
+      this.resume();
+      return;
+    }
+
     if(!creep.pos.inRangeTo(extractor, 1))
     {
       creep.travelTo(extractor);

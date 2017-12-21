@@ -16,7 +16,7 @@ export const CreepBuilder = {
     }).length
     let emergancy = (creepType === 'harvester' && creepCount < 2) || (creepType === 'mover' && creepCount < 4)
 
-    
+
     if(emergancy){
       spendCap = 300
     }else{
@@ -84,6 +84,7 @@ export const CreepBuilder = {
     'spinner': [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
     'holdmover': [CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,WORK],
     'bigHarvester': [WORK, WORK, CARRY, MOVE, MOVE],
+    'mineralHarvester': [MOVE,WORK,WORK,CARRY,CARRY]
   },
 
   typeExtends: <PartList>{
@@ -98,7 +99,8 @@ export const CreepBuilder = {
     'defender': [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,ATTACK,ATTACK],
     'spinner': [CARRY],
     'holdmover': [CARRY,CARRY,MOVE],
-    'bigHarvester': [WORK, WORK]
+    'bigHarvester': [WORK, WORK],
+    'mineralHarvester': [WORK,WORK,MOVE]
   },
 
   typeLengths: <{[name: string]: number}>{
@@ -112,6 +114,7 @@ export const CreepBuilder = {
     'defender': 26,
     'spinner': 14,
     'holdmover': 50,
-    'bigHarvester': 15
+    'bigHarvester': 15,
+    'mineralHarvester': 17
   }
 }
