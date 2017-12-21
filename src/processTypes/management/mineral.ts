@@ -16,10 +16,11 @@ export class MineralManagementProcess extends Process
     }
 
     let proc = this;
-    let extractor = this.kernel.data.roomData[this.metaData.roomName].extractor;
+
     let mineral = this.kernel.data.roomData[this.metaData.roomName].mineral;
     let container = this.kernel.data.roomData[this.metaData.roomName].mineralContainer;
-    if(!mineral || !extractor)
+
+    if(!mineral || !container)
     {
       this.completed = true;
       return;
