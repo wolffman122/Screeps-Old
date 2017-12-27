@@ -73,7 +73,7 @@ export const CreepBuilder = {
   },
 
   typeStarts: <PartList>{
-    'claimer': [CLAIM, MOVE],
+    'claimer': [TOUGH, MOVE, MOVE, CLAIM],
     'harvester': [WORK, WORK, CARRY, MOVE],
     'hold': [CLAIM, MOVE],
     'mover': [CARRY, MOVE],
@@ -84,7 +84,9 @@ export const CreepBuilder = {
     'spinner': [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
     'holdmover': [CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,WORK],
     'bigHarvester': [WORK, WORK, CARRY, MOVE, MOVE],
-    'mineralHarvester': [MOVE,WORK,WORK,CARRY,CARRY]
+    'mineralHarvester': [MOVE,WORK,WORK,CARRY,CARRY],
+    'remoteWorker': [TOUGH, TOUGH, WORK, CARRY, MOVE, MOVE],
+    'upgrader1': [WORK, CARRY, MOVE,MOVE],
   },
 
   typeExtends: <PartList>{
@@ -100,12 +102,14 @@ export const CreepBuilder = {
     'spinner': [CARRY],
     'holdmover': [CARRY,CARRY,MOVE],
     'bigHarvester': [WORK, WORK],
-    'mineralHarvester': [WORK,WORK,MOVE]
+    'mineralHarvester': [WORK,WORK,MOVE],
+    'remoteWorker': [CARRY, WORK, MOVE, MOVE],
+    'upgrader1': [WORK, WORK, MOVE],
   },
 
   typeLengths: <{[name: string]: number}>{
-    'claimer': 2,
-    'harvester': 13,
+    'claimer': 4,
+    'harvester': 14,
     'hold': 4,
     'mover': 32,
     'bigMover': 42,
@@ -115,6 +119,8 @@ export const CreepBuilder = {
     'spinner': 14,
     'holdmover': 50,
     'bigHarvester': 15,
-    'mineralHarvester': 17
+    'mineralHarvester': 17,
+    'remoteWorker': 18,
+    'upgrader1': 17 ,
   }
 }

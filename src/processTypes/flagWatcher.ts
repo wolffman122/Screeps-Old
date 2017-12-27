@@ -8,11 +8,11 @@ import {TransferProcess} from '../processTypes/empireActions/transfer'
 
 import { HoldRoomManagementProcess } from 'processTypes/management/holdRoom';
 import { RemoteDefenseManagementProcess } from 'processTypes/management/remoteDefense';
+import { AttackControllerManagementProcess } from 'processTypes/management/attackController';
 
 export class FlagWatcherProcess extends Process
 {
   type='flagWatcher';
-
 
   remoteMiningFlag(flag: Flag)
   {
@@ -27,6 +27,12 @@ remoteDismantleFlag(flag: Flag)
   {
     this.kernel.addProcessIfNotExist(DismantleManagementProcess, 'dmp' + flag.name, 40, {flag: flag.name});
   }
+
+  AttackController(flag: Flag)
+  {
+    this.kernel.addProcessIfNotExist(AttackControllerManagementProcess, 'acmp-' + flag.name, 30, {flag: flag.name});
+  }
+
 
   claimFlag(flag: Flag)
   {
@@ -81,7 +87,9 @@ remoteDismantleFlag(flag: Flag)
         case COLOR_ORANGE:
           proc.transferFlag(flag);
           break;
-
+        case COLOR_GREEN:
+          proc.AttackController(flag);
+          break;
       }
     })
   }

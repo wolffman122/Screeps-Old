@@ -17,17 +17,39 @@ export class UpgradeDistroLifetimeProcess extends LifetimeProcess
 
     if(_.sum(creep.carry) === 0)
     {
-      let storage = creep.room.storage;
-
-      if(storage.store.energy > creep.carryCapacity)
+      if(creep.room.storage)
       {
-        this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
-          target: storage.id,
-          creep: creep.name,
-          resource: RESOURCE_ENERGY
-        })
+        let storage = creep.room.storage;
 
-        return;
+        if(storage.store.energy > creep.carryCapacity)
+        {
+          this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+            target: storage.id,
+            creep: creep.name,
+            resource: RESOURCE_ENERGY
+          })
+
+          return;
+        }
+      }
+      else if(this.kernel.data.roomData[creep.pos.roomName].generalContainers.length > 0)
+      {
+        let containers = _.filter(this.kernel.data.roomData[creep.pos.roomName].generalContainers, (gc) => {
+          return (gc.store.energy > 0);
+        });
+
+        if(containers.length > 0)
+        {
+          let container = creep.pos.findClosestByPath(containers);
+
+          this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+            target: container.id,
+            creep: creep.name,
+            resource: RESOURCE_ENERGY
+          });
+
+          return;
+        }
       }
     }
 

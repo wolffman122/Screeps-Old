@@ -54,7 +54,13 @@ export class EnergyManagementProcess extends Process{
       let creeps = Utils.inflateCreeps(creepNames)
       let workRate = Utils.workRate(creeps, 2)
 
-      if(workRate < source.energyCapacity / 300) //300
+      let dividend = 300
+      if(Game.rooms[proc.metaData.roomName].controller.level < 3)
+      {
+        dividend = 150;
+      }
+
+      if(workRate < source.energyCapacity / dividend) //300
       {
         let creepName = 'em-' + proc.metaData.roomName + '-' + Game.time
         let spawned = false;
@@ -151,6 +157,9 @@ export class EnergyManagementProcess extends Process{
       case 'E46S52':
         upgraders = 2;
         break;
+      case 'E45S57':
+        upgraders = 2;
+        break;
       default:
         upgraders = 2;
         break;
@@ -160,13 +169,13 @@ export class EnergyManagementProcess extends Process{
     {
       let creepName = 'em-u-' + proc.metaData.roomName + '-' + Game.time
       let spawned = false;
-      if(this.kernel.data.roomData[this.metaData.roomName].extensions.length < 20 || Game.rooms[this.metaData.roomName].storage.store.energy < 150000)
+      if(this.kernel.data.roomData[this.metaData.roomName].controllerContainer)
       {
 
         spawned = Utils.spawn(
           proc.kernel,
           proc.metaData.roomName,
-          'worker',
+          'upgrader1',
           creepName,
           {}
         )
@@ -176,7 +185,7 @@ export class EnergyManagementProcess extends Process{
         spawned = Utils.spawn(
           proc.kernel,
           proc.metaData.roomName,
-          'upgrader',
+          'worker',
           creepName,
           {}
         );
@@ -231,7 +240,7 @@ export class EnergyManagementProcess extends Process{
         let creepName = 'em-ud-' + proc.metaData.roomName + '-' + Game.time;
         let spawned = false;
 
-        if(this.kernel.data.roomData[this.metaData.roomName].extensions.length < 20 || Game.rooms[this.metaData.roomName].storage.store.energy < 150000)
+        if(!this.kernel.data.roomData[this.metaData.roomName].controllerContainer)
         {
           spawned = Utils.spawn(
             proc.kernel,

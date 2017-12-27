@@ -43,7 +43,7 @@ export class RoomDataProcess extends Process{
     }
 
 
-    if((room.name == 'E43S52' || room.name == 'E44S51' || room.name == 'E43S53' || room.name == 'E46S51')
+    if((room.name == 'E43S52' || room.name == 'E44S51' || room.name == 'E43S53' || room.name == 'E46S51' || room.name == 'E46S52')
       && room.controller && room.controller.my && this.roomData().mineral && this.roomData().mineral!.mineralAmount > 0 && this.roomData().extractor)
     {
       this.log('Mineral Process');

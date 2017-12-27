@@ -23,7 +23,7 @@ export class BuilderLifetimeProcess extends LifetimeProcess{
 
         return
       }else{
-        if(creep.room.controller.level <= 2)
+        if(creep.room.controller.level <= 3)
         {
           this.suspend = 2
         }

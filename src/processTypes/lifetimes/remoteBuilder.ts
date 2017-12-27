@@ -23,14 +23,14 @@ export class RemoteBuilderLifetimeProcess extends LifetimeProcess{
       {
         let targets = site.room.find(FIND_HOSTILE_STRUCTURES);
         targets = <Structure[]>_.filter(targets, (s: Structure) => {
-          return (s.structureType == STRUCTURE_STORAGE || s.structureType == STRUCTURE_TERMINAL);
+          return (s.structureType == STRUCTURE_TOWER || s.structureType == STRUCTURE_EXTENSION || s.structureType == STRUCTURE_LAB);
         });
 
         console.log('Remote Builder ', targets.length)
         if(targets.length > 0)
         {
           let target = <Structure>creep.pos.findClosestByPath(targets);
-
+          this.log('Target ' + target.structureType);
           if(target)
           {
               this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {

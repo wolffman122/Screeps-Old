@@ -55,13 +55,16 @@ export class InitProcess extends Process{
         })
       }
 
-      if(Game.rooms[room.name].controller.my)
+      if(Game.rooms[room.name].controller)
       {
-        if(!proc.kernel.hasProcess('lm-' + room.name))
+        if(Game.rooms[room.name].controller.my)
         {
-          proc.kernel.addProcess(LinkManagementProcess, 'lm-' + room.name, 60, {
-            roomName: room.name
-          });
+          if(!proc.kernel.hasProcess('lm-' + room.name))
+          {
+            proc.kernel.addProcess(LinkManagementProcess, 'lm-' + room.name, 60, {
+              roomName: room.name
+            });
+          }
         }
       }
     })

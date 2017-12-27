@@ -9,11 +9,12 @@ export class SpawnRemoteBuilderProcess extends Process{
   run(){
     let site = this.metaData.site
 
+
     if(!this.kernel.hasProcess('rblf-rb-' + site)){
       let spawned = Utils.spawn(
         this.kernel,
         Utils.nearestRoom(this.metaData.roomName, 500),
-        'worker',
+        'remoteWorker',
         'rb-' + Game.time,
         {}
       )
