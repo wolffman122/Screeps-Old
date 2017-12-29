@@ -121,6 +121,6 @@ export const CreepBuilder = {
     'bigHarvester': 15,
     'mineralHarvester': 17,
     'remoteWorker': 18,
-    'upgrader1': 17 ,
+    'upgrader1': 25,
   }
 }

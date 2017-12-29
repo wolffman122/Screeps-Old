@@ -106,7 +106,6 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
         {
           if(Game.rooms[this.metaData.spawnRoom].storage)
           {
-            this.log('Doing sotrage route');
             let target = Game.rooms[this.metaData.spawnRoom].storage;
 
             if(!creep.pos.inRangeTo(target, 1))
@@ -130,7 +129,6 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
       // creep is filled
       if(Game.rooms[this.metaData.spawnRoom].storage)
       {
-        this.log('Doing sotrage route');
         let target = Game.rooms[this.metaData.spawnRoom].storage;
 
         if(!creep.pos.inRangeTo(target, 1))

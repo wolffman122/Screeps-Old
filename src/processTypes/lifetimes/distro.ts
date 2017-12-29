@@ -85,9 +85,17 @@ export class DistroLifetimeProcess extends LifetimeProcess{
     // If the creep has been refilled
     let targets = [].concat(
       <never[]>this.kernel.data.roomData[creep.room.name].spawns,
-      <never[]>this.kernel.data.roomData[creep.room.name].extensions,
-      <never[]>this.kernel.data.roomData[creep.room.name].towers
+      <never[]>this.kernel.data.roomData[creep.room.name].extensions
     )
+
+    if(creep.room.energyAvailable > creep.room.energyCapacityAvailable * .75)
+    {
+      targets = [].concat(
+        <never[]>this.kernel.data.roomData[creep.room.name].spawns,
+        <never[]>this.kernel.data.roomData[creep.room.name].extensions,
+        <never[]>this.kernel.data.roomData[creep.room.name].towers
+      )
+    }
 
     let deliverTargets = _.filter(targets, function(target: DeliveryTarget){
       if(target.structureType == STRUCTURE_TOWER)

@@ -2,7 +2,7 @@ import { LifetimeProcess } from "os/process";
 import { CollectProcess } from "processTypes/creepActions/collect";
 import { DeliverProcess } from "processTypes/creepActions/deliver";
 
-export class SpinnerLifetimeProcess extends LifetimeProcess
+export class  SpinnerLifetimeProcess extends LifetimeProcess
 {
   type = 'slf';
 
@@ -21,7 +21,7 @@ export class SpinnerLifetimeProcess extends LifetimeProcess
     {
       if(!creep.pos.inRangeTo(flag, 0))
       {
-        creep.travelTo(flag); 
+        creep.travelTo(flag);
       }
     }
 
