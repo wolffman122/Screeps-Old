@@ -16,6 +16,7 @@ export class  SpinnerLifetimeProcess extends LifetimeProcess
     }
 
     let flag = Game.flags['DJ-' + creep.pos.roomName];
+    let mineral = <Mineral>creep.room.find(FIND_MINERALS)[0];
 
     if(flag)
     {
@@ -59,6 +60,14 @@ export class  SpinnerLifetimeProcess extends LifetimeProcess
             });
           }
         }
+        else if(mineral && creep.room.storage.store[mineral.mineralType] > 200000)
+        {
+          this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+            target: creep.room.storage.id,
+            creep: creep.name,
+            resource: mineral.mineralType
+          })
+        }
         else
         {
           this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
@@ -75,7 +84,15 @@ export class  SpinnerLifetimeProcess extends LifetimeProcess
     {
       if(this.kernel.data.roomData[creep.room.name].sourceLinks.length > 0)
       {
-        if(creep.room.terminal.store.energy < 100000)
+        if(creep.carry[mineral.mineralType] > 0)
+        {
+          this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+            creep: creep.name,
+            target: creep.room.terminal.id,
+            resource: mineral.mineralType
+          });
+        }
+        else if(creep.room.terminal.store.energy < 100000)
         {
           this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
             creep: creep.name,

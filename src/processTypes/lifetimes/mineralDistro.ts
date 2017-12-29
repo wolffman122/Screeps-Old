@@ -39,10 +39,21 @@ export class MineralDistroLifetimeProcess extends LifetimeProcess
       }
     }
 
-    this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
-      target: creep.room.storage.id,
-      creep: creep.name,
-      resource: this.metaData.mineralType
-    });
+    if(creep.room.storage.store[this.metaData.mineralType] > 70000)
+    {
+      this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+        target: creep.room.terminal.id,
+        creep: creep.name,
+        resource: this.metaData.mineralType
+      });
+    }
+    else
+    {
+      this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+        target: creep.room.storage.id,
+        creep: creep.name,
+        resource: this.metaData.mineralType
+      });
+    }
   }
 }
