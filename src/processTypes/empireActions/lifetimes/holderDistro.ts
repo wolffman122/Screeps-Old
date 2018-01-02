@@ -77,6 +77,9 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
         let links = this.kernel.data.roomData[this.metaData.spawnRoom].links
 
         links = creep.pos.findInRange(links, 6);
+        links = _.filter(links, (l) => {
+          return (l.energy == 0);
+        });
 
         if(links.length > 0)
         {

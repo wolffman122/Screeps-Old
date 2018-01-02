@@ -3,6 +3,7 @@ import {Process} from '../../os/process'
 interface DismantleMetaData
 {
   creep: string
+  flagName: string
 }
 
 export class DismantleProcess extends Process
@@ -13,7 +14,7 @@ export class DismantleProcess extends Process
   run()
   {
     let creep = Game.creeps[this.metaData.creep];
-
+    let flag = Game.flags[this.metaData.flagName];
     if(!creep)
     {
       this.completed = true;
@@ -21,16 +22,36 @@ export class DismantleProcess extends Process
       return;
     }
 
-    let spawn = this.kernel.data.roomData[creep.pos.roomName].enemySpawns[0];
-    let targetPos = spawn.pos;
+    let targets = <Structure[]>flag.pos.lookFor(LOOK_STRUCTURES);
 
-    if(!creep.pos.inRangeTo(targetPos, 1))
+    this.log('Targets ' + targets.length);
+    if(targets.length == 0)
     {
-      creep.travelTo(targetPos);
+      let spawn = this.kernel.data.roomData[creep.pos.roomName].enemySpawns[0];
+      let targetPos = spawn.pos;
+
+      if(!creep.pos.inRangeTo(targetPos, 1))
+      {
+        creep.travelTo(targetPos);
+      }
+      else
+      {
+        creep.dismantle(spawn);
+      }
     }
     else
     {
-      creep.dismantle(spawn);
+      let target = targets[0];
+      let targetPos = targets[0].pos;
+
+      if(!creep.pos.inRangeTo(targetPos, 1))
+      {
+        creep.travelTo(targetPos);
+      }
+      else
+      {
+        creep.dismantle(target);
+      }
     }
   }
 }

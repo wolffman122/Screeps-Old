@@ -60,7 +60,7 @@ export class  SpinnerLifetimeProcess extends LifetimeProcess
             });
           }
         }
-        else if(mineral && creep.room.storage.store[mineral.mineralType] > 200000)
+        else if(mineral && creep.room.storage.store[mineral.mineralType] > 70000)
         {
           this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
             target: creep.room.storage.id,

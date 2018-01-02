@@ -19,25 +19,7 @@ export class MarketManagementProcess extends Process
         let terminal = room.terminal;
         let storage = room.storage;
 
-        if(mineral)
-        {
-          if(terminal && terminal.cooldown == 0)
-          {
-            let minOrders = Game.market.getAllOrders({resourceType: mineral.mineralType, type: ORDER_BUY});
-
-            _.sortBy(minOrders, ['price']);
-
-            if(terminal.store[mineral.mineralType] > 100000)
-            {
-              let amount = terminal.store[mineral.mineralType] - 100000;
-              if(Game.market.deal(minOrders[0].id, amount, room.name) == OK)
-              {
-                console.log('Deal ' + room.name + ' ' + mineral.mineralType);
-              }
-            }
-          }
-        }
-        else if(storage && (_.sum(storage.store) >= storage.storeCapacity * .8))
+        if(storage && (_.sum(storage.store) >= storage.storeCapacity * .8))
         {
           if(terminal && terminal.cooldown == 0 && terminal.store.energy > 80000)
           {
@@ -46,6 +28,25 @@ export class MarketManagementProcess extends Process
             Game.market.deal(buyOrders[0].id, dealAmount, room.name)
           }
         }
+        else if(mineral)
+        {
+          if(terminal && terminal.cooldown == 0)
+          {
+            let minOrders = Game.market.getAllOrders({resourceType: mineral.mineralType, type: ORDER_BUY});
+
+            _.sortBy(minOrders, ['price']);
+
+            if(terminal.store[mineral.mineralType] > 0)
+            {
+              let amount = terminal.store[mineral.mineralType];
+              if(Game.market.deal(minOrders[0].id, amount, room.name) == OK)
+              {
+                console.log('Deal ' + room.name + ' ' + mineral.mineralType);
+              }
+            }
+          }
+        }
+
       })
     }
   }

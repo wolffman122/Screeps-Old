@@ -148,24 +148,25 @@ export class EnergyManagementProcess extends Process{
     let upgraders = 0;
     switch(this.metaData.roomName)
     {
+      case 'E45S57':
       case 'E46S51':
         upgraders = 2;
         break;
       case 'E43S52':
-        upgraders = 2;
-        break;
-      case 'E46S52':
-        upgraders = 2;
-        break;
-      case 'E45S57':
-        upgraders = 1;
-        break;
-      case 'E44S51':
-        upgraders = 1;
+      case 'E43S53':
+      case 'E43S55':
+        upgraders = 3;
         break;
       default:
         upgraders = 2;
         break;
+    }
+
+    let room = Game.rooms[this.metaData.roomName];
+
+    if(room && room.controller.level == 8)
+    {
+      upgraders = 1;
     }
 
     if(this.metaData.upgradeCreeps.length < upgraders && this.kernel.data.roomData[this.metaData.roomName].generalContainers.length > 0)
