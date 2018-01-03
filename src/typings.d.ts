@@ -28,6 +28,7 @@ interface RoomData{
   containers: StructureContainer[]
   extensions: StructureExtension[]
   extractor: StructureExtractor | undefined
+  nuker: StructureNuker | undefined
   generalContainers: StructureContainer[]
   mineral: Mineral | undefined
   labs: StructureLab[]

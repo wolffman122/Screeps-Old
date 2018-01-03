@@ -25,7 +25,8 @@ export class RoomDataProcess extends Process{
   ]
 
   singleFields = [
-    'extractor', 'mineral', 'storageLink', 'controllerLink', 'controllerContainer', 'mineralContainer'
+    'extractor', 'mineral', 'storageLink', 'controllerLink', 'controllerContainer', 'mineralContainer',
+    'nuker'
   ]
 
   run(){
@@ -199,6 +200,9 @@ export class RoomDataProcess extends Process{
       extractor: <StructureExtractor>_.filter(myStructures, function(structure){
         return (structure.structureType === STRUCTURE_EXTRACTOR)
       })[0],
+      nuker: <StructureNuker>_.filter(myStructures, function(structure){
+        return (structure.structureType === STRUCTURE_NUKER);
+      })[0],
       generalContainers: generalContainers,
       mineral: <Mineral>room.find(FIND_MINERALS)[0],
       labs: labs,
@@ -285,6 +289,7 @@ export class RoomDataProcess extends Process{
       containers: [],
       extensions: [],
       extractor: undefined,
+      nuker: undefined,
       generalContainers: [],
       mineral: undefined,
       labs: [],

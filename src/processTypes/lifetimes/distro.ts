@@ -112,7 +112,7 @@ export class DistroLifetimeProcess extends LifetimeProcess{
     if(deliverTargets.length === 0){
       targets = [].concat(
         <never[]>this.kernel.data.roomData[creep.room.name].labs,
-        <never[]>this.kernel.data.roomData[creep.room.name].generalContainers
+        <never[]>this.kernel.data.roomData[creep.room.name].generalContainers,
       )
 
       deliverTargets = _.filter(targets, function(target: DeliveryTarget){
@@ -122,6 +122,15 @@ export class DistroLifetimeProcess extends LifetimeProcess{
           return (target.energy < target.energyCapacity)
         }
       })
+    }
+
+    if(deliverTargets.length === 0 && this.kernel.data.roomData[creep.room.name].nuker)
+    {
+      let nuker = this.kernel.data.roomData[creep.room.name].nuker;
+      if(nuker.energy < nuker.energyCapacity)
+      {
+        deliverTargets = [nuker];
+      }
     }
 
     if(deliverTargets.length === 0 && creep.room.storage)
