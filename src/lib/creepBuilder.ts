@@ -7,7 +7,7 @@ interface WeightList{
 }
 
 export const CreepBuilder = {
-  design: function(creepType: string, room: Room){
+  design: function(creepType: string, room: Room, memory: any){
     let body = <string[]>[].concat(<never[]>CreepBuilder.typeStarts[creepType])
     let spendCap
 
@@ -30,11 +30,16 @@ export const CreepBuilder = {
       var creepCost = CreepBuilder.bodyCost(body)
 
       var nextPart = CreepBuilder.typeExtends[creepType][extendIndex]
+      let maximum = CreepBuilder.typeLengths[creepType];
+      if(memory.max)
+      {
+        maximum = memory.max;
+      }
 
       if(
         creepCost + BODYPART_COST[nextPart] > spendCap
         ||
-        body.length === CreepBuilder.typeLengths[creepType]
+        body.length === maximum
       ){
         add = false
       }else{
@@ -120,7 +125,7 @@ export const CreepBuilder = {
     'holdmover': 50,
     'bigHarvester': 15,
     'mineralHarvester': 17,
-    'remoteWorker': 18,
+    'remoteWorker': 42,
     'upgrader1': 25,
   }
 }

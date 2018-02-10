@@ -78,7 +78,7 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
 
         links = creep.pos.findInRange(links, 6);
         links = _.filter(links, (l) => {
-          return (l.energy == 0);
+          return (l.energy == 0 || l.cooldown == 0);
         });
 
         if(links.length > 0)

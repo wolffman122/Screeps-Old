@@ -70,6 +70,7 @@ import { MineralHarvest } from 'processTypes/creepActions/mineralHarvest';
 import { MineralDistroLifetimeProcess } from 'processTypes/lifetimes/mineralDistro';
 import { AttackControllerManagementProcess } from 'processTypes/management/attackController';
 import { MarketManagementProcess } from 'processTypes/management/market';
+import { TerminalManagementProcess } from 'processTypes/buildingProcesses/terminal';
 
 
 
@@ -121,7 +122,8 @@ const processTypes = <{[type: string]: any}>{
   'mineral-harvest': MineralHarvest,
   'mdlf': MineralDistroLifetimeProcess,
   'acmp': AttackControllerManagementProcess,
-  'mmp': MarketManagementProcess
+  'mmp': MarketManagementProcess,
+  'terminal' : TerminalManagementProcess
   /*
 
 

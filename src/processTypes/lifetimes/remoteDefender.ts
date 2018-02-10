@@ -1,5 +1,5 @@
 import {LifetimeProcess} from '../../os/process'
-import {MoveProcess} from '../creepActions/move'
+//import {MoveProcess} from '../creepActions/move'
 import {DefendProcess} from '../creepActions/defend'
 
 export class RemoteDefenderLifetimeProcess extends LifetimeProcess
@@ -25,10 +25,10 @@ export class RemoteDefenderLifetimeProcess extends LifetimeProcess
 
     if(flag.memory.enemies == true)
     {
+      let enemies = <Creep[]>flag.room.find(FIND_HOSTILE_CREEPS);
+
       if(creep.pos.roomName == flag.pos.roomName)
       {
-        let enemies = <Creep[]>flag.room.find(FIND_HOSTILE_CREEPS);
-
         if(enemies.length > 0)
         {
           let enemy = creep.pos.findClosestByRange(enemies);
@@ -44,15 +44,24 @@ export class RemoteDefenderLifetimeProcess extends LifetimeProcess
       }
       else
       {
-        this.fork(MoveProcess, 'move-' + creep.name, this.priority - 1, {
-          creep: creep.name,
-          pos: {
-            x: flag.pos.x,
-            y: flag.pos.y,
-            roomName: flag.pos.roomName
-          },
-          range: 5
-        });
+        let roomEnemies = <Creep[]>creep.room.find(FIND_HOSTILE_CREEPS);
+        if(roomEnemies.length > 0)
+        {
+          let enemy = creep.pos.findClosestByRange(roomEnemies);
+
+          this.fork(DefendProcess, 'defend-' + creep.name, this.priority -1,{
+            creep: creep.name,
+            target: enemy.id
+          });
+
+          return;
+        }
+        else
+        {
+
+          let retValue = creep.travelTo(flag.pos)
+          this.log('RD retvalue ' + retValue);
+        }
 
         return;
       }

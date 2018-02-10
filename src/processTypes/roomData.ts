@@ -16,7 +16,7 @@ export class RoomDataProcess extends Process{
 
   metaData: RoomDataMeta
   fields = [
-    'constructionSites', 'containers', 'extensions', 'generalContainers', 'labs', 'roads', 'spawns', 'sources', 'sourceContainers', 'towers', 'ramparts',
+    'constructionSites', 'containers', 'extensions', 'generalContainers', 'labs', 'roads', 'spawns', 'sources', 'sourceContainers', 'towers', 'ramparts', 'walls',
     'enemySpawns', 'enemyExtensions', 'links', 'sourceLinks'
   ]
 
@@ -44,7 +44,7 @@ export class RoomDataProcess extends Process{
     }
 
 
-    if((room.name == 'E43S52' || room.name == 'E44S51' || room.name == 'E43S53' || room.name == 'E46S51' || room.name == 'E46S52')
+    if((room.name ==='E45S57' || room.name == 'E43S52' || room.name == 'E44S51' || room.name == 'E43S53' || room.name == 'E46S51' || room.name == 'E46S52')
       && room.controller && room.controller.my && this.roomData().mineral && this.roomData().mineral!.mineralAmount > 0 && this.roomData().extractor)
     {
       this.log('Mineral Process');
@@ -232,6 +232,9 @@ export class RoomDataProcess extends Process{
       ramparts: <StructureRampart[]>_.filter(myStructures, function(s){
         return (s.structureType === STRUCTURE_RAMPART);
       }),
+      walls: <StructureWall[]>_.filter(structures, function(s){
+        return (s.structureType === STRUCTURE_WALL);
+      }),
       links: generalLinks,
       sourceLinks: sourceLinks,
       sourceLinkMaps: sourceLinkMaps,
@@ -302,6 +305,7 @@ export class RoomDataProcess extends Process{
       enemySpawns: [],
       enemyExtensions: [],
       ramparts: [],
+      walls: [],
       links: [],
       sourceLinks: [],
       sourceLinkMaps: <{[id: string]: StructureLink}>{},

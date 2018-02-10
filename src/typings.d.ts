@@ -41,6 +41,7 @@ interface RoomData{
   enemySpawns: StructureSpawn[]
   enemyExtensions: StructureExtension[]
   ramparts: StructureRampart[]
+  walls: StructureWall[]
   links: StructureLink[]
   sourceLinks: StructureLink[]
   sourceLinkMaps: {[id: string]: StructureLink}

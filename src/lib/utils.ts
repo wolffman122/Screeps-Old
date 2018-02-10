@@ -31,7 +31,7 @@ export const Utils = {
   },
 
   spawn(kernel: Kernel, roomName: string, creepType: string, name: string, memory: any): boolean{
-    let body = CreepBuilder.design(creepType, Game.rooms[roomName])
+    let body = CreepBuilder.design(creepType, Game.rooms[roomName], memory)
     let spawns = kernel.data.roomData[roomName].spawns
     let outcome = false
 
@@ -121,9 +121,35 @@ export const Utils = {
     }
     else
     {
-      let max = room.controller!.level * 56000;
+      let max = room.controller!.level * 64000;
 
       let average = Math.ceil(_.sum(<never[]>kernel.data.roomData[roomName].ramparts, 'hits') / kernel.data.roomData[roomName].ramparts.length);
+
+      let target = average + 10000;
+      if(target > max)
+      {
+        return max;
+      }
+      else
+      {
+        return target;
+      }
+    }
+  },
+
+  wallHealth(kernel: Kernel, roomName: string)
+  {
+    let room = Game.rooms[roomName];
+
+    if(room.controller!.level < 8)
+    {
+      return 0;
+    }
+    else
+    {
+      let max = room.controller!.level * 72000;
+
+      let average = Math.ceil(_.sum(<never[]>kernel.data.roomData[roomName].walls, 'hits') / kernel.data.roomData[roomName].walls.length);
 
       let target = average + 10000;
       if(target > max)

@@ -148,15 +148,14 @@ export class EnergyManagementProcess extends Process{
     let upgraders = 0;
     switch(this.metaData.roomName)
     {
+      case 'E48S57':
       case 'E45S57':
-        upgraders = 1;
-        break;
-      case 'E43S52':
-      case 'E46S51':
-        upgraders = 2;
+      case 'E45S48':
+        upgraders = 4;
         break;
       case 'E43S53':
       case 'E43S55':
+      case 'E46S52':
         upgraders = 3;
         break;
       default:
@@ -209,7 +208,7 @@ export class EnergyManagementProcess extends Process{
         &&
        this.metaData.upgradeCreeps.length > 0
         &&
-       Object.keys(this.metaData.distroCreeps).length == 2)
+       Object.keys(this.metaData.distroCreeps).length >= 2)
     {
       let storageLink = this.kernel.data.roomData[this.metaData.roomName].storageLink
 
@@ -241,7 +240,19 @@ export class EnergyManagementProcess extends Process{
     {
       this.metaData.upgradeDistroCreeps = Utils.clearDeadCreeps(this.metaData.upgradeDistroCreeps);
 
-      if(this.metaData.upgradeDistroCreeps.length < 1)
+      let upgradeDistroAmount = 1;
+
+      switch(this.metaData.roomName)
+      {
+        case 'E45S48':
+          upgradeDistroAmount = 2;
+          break;
+        default:
+          upgradeDistroAmount = 1;
+          break;
+      }
+
+      if(this.metaData.upgradeDistroCreeps.length < upgradeDistroAmount)
       {
         let creepName = 'em-ud-' + proc.metaData.roomName + '-' + Game.time;
         let spawned = false;
@@ -258,13 +269,26 @@ export class EnergyManagementProcess extends Process{
         }
         else
         {
-          spawned = Utils.spawn(
-            proc.kernel,
-            proc.metaData.roomName,
-            'bigMover',
-            creepName,
-            {}
-          )
+          if(upgraders == 4)
+          {
+            spawned = Utils.spawn(
+              proc.kernel,
+              proc.metaData.roomName,
+              'bigMover',
+              creepName,
+              {max: 48}
+            )
+          }
+          else
+          {
+            spawned = Utils.spawn(
+              proc.kernel,
+              proc.metaData.roomName,
+              'bigMover',
+              creepName,
+              {}
+            )
+          }
         }
 
         if(spawned)

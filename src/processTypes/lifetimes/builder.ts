@@ -14,6 +14,15 @@ export class BuilderLifetimeProcess extends LifetimeProcess{
 
     if(_.sum(creep.carry) === 0){
       let target = Utils.withdrawTarget(creep, this)
+
+      if(!target)
+      {
+        if(creep.room.terminal)
+        {
+          target = creep.room.terminal;
+        }
+      }
+      
       if(target){
         this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
           creep: creep.name,

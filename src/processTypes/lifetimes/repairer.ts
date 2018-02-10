@@ -31,7 +31,7 @@ export class RepairerLifetimeProcess extends LifetimeProcess{
     }
 
     let rampartSites = _.filter(this.kernel.data.roomData[this.metaData.roomName].constructionSites, (cs) => {
-      return (cs.structureType == STRUCTURE_RAMPART);
+      return (cs.structureType === STRUCTURE_RAMPART || cs.structureType === STRUCTURE_WALL);
     });
 
     if(rampartSites.length > 0)
@@ -53,7 +53,8 @@ export class RepairerLifetimeProcess extends LifetimeProcess{
       // If the creep has been refilled
       let repairableObjects = <StructureRoad[]>[].concat(
         <never[]>this.kernel.data.roomData[this.metaData.roomName].containers,
-        <never[]>this.kernel.data.roomData[this.metaData.roomName].ramparts
+        <never[]>this.kernel.data.roomData[this.metaData.roomName].ramparts,
+        <never[]>this.kernel.data.roomData[this.metaData.roomName].walls
       )
 
       let shortestDecay = 100
@@ -66,14 +67,16 @@ export class RepairerLifetimeProcess extends LifetimeProcess{
           shortestDecay = object.ticksToDecay
         }
 
-        if(object.structureType != STRUCTURE_RAMPART)
+        switch (object.structureType)
         {
-          return (object.hits < object.hitsMax);
+          case STRUCTURE_RAMPART:
+            return (object.hits < Utils.rampartHealth(proc.kernel, proc.metaData.roomName));
+          case STRUCTURE_WALL:
+            return (object.hits < Utils.wallHealth(proc.kernel, proc.metaData.roomName));
+          default:
+            return (object.hits < object.hitsMax);
         }
-        else
-        {
-          return (object.hits < Utils.rampartHealth(proc.kernel, proc.metaData.roomName));
-        }
+
       });
 
 

@@ -144,6 +144,15 @@ export class DistroLifetimeProcess extends LifetimeProcess{
       })
     }
 
+    if(creep.carry.energy == creep.carryCapacity && deliverTargets.length === 0 && this.kernel.data.roomData[creep.room.name].controllerContainer.store.energy < this.kernel.data.roomData[creep.room.name].controllerContainer.storeCapacity)
+    {
+      let targets = [].concat(
+        <never[]>[this.kernel.data.roomData[creep.room.name].controllerContainer]
+      )
+
+      deliverTargets = targets;
+    }
+
     let target = creep.pos.findClosestByPath(deliverTargets)
 
     if(target){
@@ -189,7 +198,7 @@ export class DistroLifetimeProcess extends LifetimeProcess{
 
         if(creep.transfer(target, (this.metaData.resource || RESOURCE_ENERGY)) == ERR_FULL)
         {
-          return;
+          this.suspend = creep.ticksToLive;
         }
       }
     }

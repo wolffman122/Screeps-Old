@@ -14,6 +14,8 @@ export class AttackControllerManagementProcess extends Process
 
   run()
   {
+    this.log('Attack Management');
+    
     let flag = Game.flags[this.metaData.flagName];
     let creep = Game.creeps[this.metaData.creep];
 
@@ -60,7 +62,15 @@ export class AttackControllerManagementProcess extends Process
 
         if(spawns.length > 0)
         {
-          creep.attack(spawns[0]);
+          let spawn = creep.pos.findClosestByPath(spawns);
+          if(!creep.pos.inRangeTo(spawn, 1))
+          {
+            creep.travelTo(spawn);
+          }
+          else
+          {
+            creep.attack(spawn);
+          }
         }
       }
     }

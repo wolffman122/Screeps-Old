@@ -36,9 +36,9 @@ export class MarketManagementProcess extends Process
 
             _.sortBy(minOrders, ['price']);
 
-            if(terminal.store[mineral.mineralType] > 0)
+            if(terminal.store[mineral.mineralType] > 10000)
             {
-              let amount = terminal.store[mineral.mineralType];
+              let amount = terminal.store[mineral.mineralType] - 10000;
               if(Game.market.deal(minOrders[0].id, amount, room.name) == OK)
               {
                 console.log('Deal ' + room.name + ' ' + mineral.mineralType);

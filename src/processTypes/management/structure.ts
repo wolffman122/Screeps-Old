@@ -77,25 +77,60 @@ export class StructureManagementProcess extends Process{
       return (object.hits < object.hitsMax)
     })
 
-    if(repairTargets.length > 0){
-      if(this.metaData.repairCreeps.length == 0){
-        if(this.metaData.spareCreeps.length === 0){
-          let creepName = 'sm-' + this.metaData.roomName + '-' + Game.time
-          let spawned = Utils.spawn(this.kernel, this.metaData.roomName, 'worker', creepName, {})
-          if(spawned){
+    if(repairTargets.length > 0)
+    {
+      if(Game.rooms[this.metaData.roomName].controller.level === 8)
+      {
+        if(this.metaData.repairCreeps.length < 2)
+        {
+          if(this.metaData.spareCreeps.length === 0)
+          {
+            let creepName = 'sm-' + this.metaData.roomName + '-' + Game.time
+            let spawned = Utils.spawn(this.kernel, this.metaData.roomName, 'worker', creepName, {})
+            if(spawned){
+              this.metaData.repairCreeps.push(creepName)
+              this.kernel.addProcess(RepairerLifetimeProcess, 'rlf-' + creepName, 29, {
+                creep: creepName,
+                roomName: this.metaData.roomName
+              })
+            }
+          }
+          else
+          {
+            let creepName = <string>this.metaData.spareCreeps.pop()
             this.metaData.repairCreeps.push(creepName)
             this.kernel.addProcess(RepairerLifetimeProcess, 'rlf-' + creepName, 29, {
               creep: creepName,
               roomName: this.metaData.roomName
             })
           }
-        }else{
-          let creepName = <string>this.metaData.spareCreeps.pop()
-          this.metaData.repairCreeps.push(creepName)
-          this.kernel.addProcess(RepairerLifetimeProcess, 'rlf-' + creepName, 29, {
-            creep: creepName,
-            roomName: this.metaData.roomName
-          })
+        }
+      }
+      else
+      {
+        if(this.metaData.repairCreeps.length == 0)
+        {
+          if(this.metaData.spareCreeps.length === 0)
+          {
+            let creepName = 'sm-' + this.metaData.roomName + '-' + Game.time
+            let spawned = Utils.spawn(this.kernel, this.metaData.roomName, 'worker', creepName, {})
+            if(spawned){
+              this.metaData.repairCreeps.push(creepName)
+              this.kernel.addProcess(RepairerLifetimeProcess, 'rlf-' + creepName, 29, {
+                creep: creepName,
+                roomName: this.metaData.roomName
+              })
+            }
+          }
+          else
+          {
+            let creepName = <string>this.metaData.spareCreeps.pop()
+            this.metaData.repairCreeps.push(creepName)
+            this.kernel.addProcess(RepairerLifetimeProcess, 'rlf-' + creepName, 29, {
+              creep: creepName,
+              roomName: this.metaData.roomName
+            })
+          }
         }
       }
     }
