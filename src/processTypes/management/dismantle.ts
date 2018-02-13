@@ -26,7 +26,7 @@ export class DismantleManagementProcess extends Process
       let spawned = Utils.spawn(
         this.kernel,
         deliverRoom,
-        'worker',
+        'dismantler',
         'dm-' + flag.pos.roomName + '-' + Game.time,
         {}
       )

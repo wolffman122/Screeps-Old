@@ -176,14 +176,26 @@ export class EnergyManagementProcess extends Process{
       let spawned = false;
       if(this.kernel.data.roomData[this.metaData.roomName].controllerContainer)
       {
-
-        spawned = Utils.spawn(
-          proc.kernel,
-          proc.metaData.roomName,
-          'upgrader1',
-          creepName,
-          {}
-        )
+        if(Game.rooms[proc.metaData.roomName].controller.level === 8)
+        {
+          spawned = Utils.spawn(
+            proc.kernel,
+            proc.metaData.roomName,
+            'upgrader1',
+            creepName,
+            {}
+          );
+        }
+        else
+        {
+          spawned = Utils.spawn(
+            proc.kernel,
+            proc.metaData.roomName,
+            'upgrader',
+            creepName,
+            {}
+          );
+        }
       }
       else
       {

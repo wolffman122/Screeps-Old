@@ -9,6 +9,8 @@ import {TransferProcess} from '../processTypes/empireActions/transfer'
 import { HoldRoomManagementProcess } from 'processTypes/management/holdRoom';
 import { RemoteDefenseManagementProcess } from 'processTypes/management/remoteDefense';
 import { AttackControllerManagementProcess } from 'processTypes/management/attackController';
+import { BounceAttackProcess } from 'processTypes/management/bounceAttack';
+import { HealAttackProcess } from 'processTypes/management/healAttack';
 
 export class FlagWatcherProcess extends Process
 {
@@ -30,7 +32,7 @@ remoteDismantleFlag(flag: Flag)
 
   AttackController(flag: Flag)
   {
-    this.kernel.addProcessIfNotExist(AttackControllerManagementProcess, 'acmp-' + flag.name, 30, {flag: flag.name});
+    this.kernel.addProcessIfNotExist(AttackControllerManagementProcess, 'acmp-' + flag.name, 30, {flagName: flag.name});
   }
 
 
@@ -60,6 +62,15 @@ remoteDismantleFlag(flag: Flag)
     this.kernel.addProcessIfNotExist(TransferProcess, 'transfer-' + flag.name, 25, {flagName: flag.name});
   }
 
+  BounceAttack(flag)
+  {
+    this.kernel.addProcessIfNotExist(BounceAttackProcess, 'bounce-' + flag.name, 31, {flagName: flag.name});
+  }
+
+  HealAttack(flag)
+  {
+    this.kernel.addProcessIfNotExist(HealAttackProcess, 'healAttack-' + flag.name, 29, {flagName: flag.name});
+  }
   run()
   {
     this.completed = true;
@@ -89,6 +100,17 @@ remoteDismantleFlag(flag: Flag)
           break;
         case COLOR_GREEN:
           proc.AttackController(flag);
+          break;
+        case COLOR_BROWN:
+          switch(flag.secondaryColor)
+          {
+            case COLOR_BROWN:
+              proc.BounceAttack(flag);
+              break;
+            case COLOR_GREY:
+              proc.HealAttack(flag);
+              break;
+          }
           break;
       }
     })

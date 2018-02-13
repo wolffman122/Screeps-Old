@@ -43,25 +43,29 @@ export class RoomDataProcess extends Process{
       }
     }
 
-
-    if((room.name ==='E45S57' || room.name == 'E43S52' || room.name == 'E44S51' || room.name == 'E43S53' || room.name == 'E46S51' || room.name == 'E46S52')
-      && room.controller && room.controller.my && this.roomData().mineral && this.roomData().mineral!.mineralAmount > 0 && this.roomData().extractor)
+    if(room)
     {
-      this.log('Mineral Process');
-      this.kernel.addProcessIfNotExist(MineralManagementProcess, 'minerals-' + this.metaData.roomName, 20, {
-        roomName: room.name
-      })
+      if((room.name ==='E45S57' || room.name == 'E43S52' || room.name == 'E44S51' || room.name == 'E43S53' || room.name == 'E46S51' || room.name == 'E46S52')
+        && room.controller && room.controller.my && this.roomData().mineral && this.roomData().mineral!.mineralAmount > 0 && this.roomData().extractor)
+      {
+        this.log('Mineral Process');
+        this.kernel.addProcessIfNotExist(MineralManagementProcess, 'minerals-' + this.metaData.roomName, 20, {
+          roomName: room.name
+        })
+      }
     }
 
-    if(room.controller!.my){
+    if(room && room.controller!.my){
       /*this.kernel.addProcessIfNotExist(RoomLayoutProcess, 'room-layout-' + room.name, 20, {
         roomName: room.name
       })*/
     }
 
-    this.enemyDetection(room)
-    this.repairDetection(room);
-
+    if(room)
+    {
+      this.enemyDetection(room)
+      this.repairDetection(room);
+    }
     this.completed = true
   }
 
@@ -246,12 +250,7 @@ export class RoomDataProcess extends Process{
 
     this.kernel.data.roomData[this.metaData.roomName] = roomData
 
-    if(room.name == 'E42S53')
-    {
-      this.log('E43S52 roomdata ' + roomData);
-    }
-
-      room.memory.cache = {}
+    room.memory.cache = {}
 
     let proc = this
     _.forEach(this.fields, function(field){
@@ -282,9 +281,12 @@ export class RoomDataProcess extends Process{
 
   /** Import the room data from memory */
   importFromMemory(room: Room){
-    if(!room.memory.cache){
-      this.build(room)
-      return
+    if(room)
+    {
+      if(!room.memory.cache){
+        this.build(room)
+        return
+      }
     }
 
     let roomData: RoomData = {
@@ -317,27 +319,33 @@ export class RoomDataProcess extends Process{
     let run = true
     let i = 0
 
-    if(room.memory.numSites != Object.keys(Game.constructionSites).length){
-      delete room.memory.cache.constructionSites
-      room.memory.numSites = Object.keys(Game.constructionSites).length
+    if(room)
+    {
+      if(room.memory.numSites != Object.keys(Game.constructionSites).length){
+        delete room.memory.cache.constructionSites
+        room.memory.numSites = Object.keys(Game.constructionSites).length
+      }
     }
 
     while(run){
       let field = this.fields[i]
 
-      if(room.memory.cache[field]){
-        let inflation = this.inflate(room.memory.cache[field])
-        if(inflation.rebuild){
+      if(room)
+      {
+        if(room.memory.cache[field]){
+          let inflation = this.inflate(room.memory.cache[field])
+          if(inflation.rebuild){
+            run = false
+            this.build(room)
+            return
+          }else{
+            roomData[field] = inflation.result
+          }
+        }else{
           run = false
           this.build(room)
           return
-        }else{
-          roomData[field] = inflation.result
         }
-      }else{
-        run = false
-        this.build(room)
-        return
       }
 
       i += 1
@@ -350,23 +358,26 @@ export class RoomDataProcess extends Process{
     while(run){
       let field = this.mapFields[i]
 
-      if(room.memory.cache[field]){
-        let keys = Object.keys(room.memory.cache[field])
-        _.forEach(keys, function(key){
-          let structure = Game.getObjectById(room.memory.cache[field][key])
+      if(room)
+      {
+        if(room.memory.cache[field]){
+          let keys = Object.keys(room.memory.cache[field])
+          _.forEach(keys, function(key){
+            let structure = Game.getObjectById(room.memory.cache[field][key])
 
-          if(structure){
-            roomData[field][key] = structure
-          }else{
-            run = false
-            proc.build(room)
-            return
-          }
-        })
-      }else{
-        run = false
-        this.build(room)
-        return
+            if(structure){
+              roomData[field][key] = structure
+            }else{
+              run = false
+              proc.build(room)
+              return
+            }
+          })
+        }else{
+          run = false
+          this.build(room)
+          return
+        }
       }
 
       i += 1
@@ -378,15 +389,18 @@ export class RoomDataProcess extends Process{
     while(run){
       let field = this.singleFields[i]
 
-      if(room.memory.cache[field]){
-        let object = Game.getObjectById(room.memory.cache[field])
+      if(room)
+      {
+        if(room.memory.cache[field]){
+          let object = Game.getObjectById(room.memory.cache[field])
 
-        if(object){
-          roomData[field] = object
-        }else{
-          run = false
-          this.build(room)
-          return
+          if(object){
+            roomData[field] = object
+          }else{
+            run = false
+            this.build(room)
+            return
+          }
         }
       }
 

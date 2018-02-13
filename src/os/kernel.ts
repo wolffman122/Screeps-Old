@@ -71,6 +71,9 @@ import { MineralDistroLifetimeProcess } from 'processTypes/lifetimes/mineralDist
 import { AttackControllerManagementProcess } from 'processTypes/management/attackController';
 import { MarketManagementProcess } from 'processTypes/management/market';
 import { TerminalManagementProcess } from 'processTypes/buildingProcesses/terminal';
+import { BounceAttackProcess } from 'processTypes/management/bounceAttack';
+import { HealAttackProcess } from 'processTypes/management/healAttack';
+import { ControllerAttackLifetimeProcess } from 'processTypes/lifetimes/controllerAttack';
 
 
 
@@ -123,7 +126,10 @@ const processTypes = <{[type: string]: any}>{
   'mdlf': MineralDistroLifetimeProcess,
   'acmp': AttackControllerManagementProcess,
   'mmp': MarketManagementProcess,
-  'terminal' : TerminalManagementProcess
+  'terminal' : TerminalManagementProcess,
+  'bounce' : BounceAttackProcess,
+  'healAttack' : HealAttackProcess,
+  'calf' : ControllerAttackLifetimeProcess
   /*
 
 

@@ -84,7 +84,7 @@ export const CreepBuilder = {
     'mover': [CARRY, MOVE],
     'bigMover': [CARRY, MOVE],
     'worker': [WORK, CARRY, MOVE, MOVE],
-    'upgrader': [WORK, CARRY, MOVE],
+    'upgrader': [WORK,WORK, CARRY,CARRY, MOVE],
     'defender': [MOVE,MOVE,MOVE,ATTACK,ATTACK],
     'spinner': [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
     'holdmover': [CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,WORK],
@@ -92,6 +92,11 @@ export const CreepBuilder = {
     'mineralHarvester': [MOVE,WORK,WORK,CARRY,CARRY],
     'remoteWorker': [TOUGH, TOUGH, WORK, CARRY, MOVE, MOVE],
     'upgrader1': [WORK, CARRY, MOVE,MOVE],
+    'toughDefender': [TOUGH,TOUGH,MOVE],
+    'healer': [HEAL, HEAL, MOVE],
+    'attack': [TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE],
+    'attackController': [CLAIM, MOVE],
+    'dismantler': [WORK,WORK, WORK, MOVE,MOVE]
   },
 
   typeExtends: <PartList>{
@@ -102,7 +107,7 @@ export const CreepBuilder = {
     'bigMover': [CARRY, CARRY, MOVE],
     //'worker': [WORK, CARRY, MOVE, MOVE]
     'worker': [CARRY, WORK, MOVE, MOVE],
-    'upgrader': [CARRY, WORK, MOVE],
+    'upgrader': [WORK, WORK, MOVE],
     'defender': [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,ATTACK,ATTACK],
     'spinner': [CARRY],
     'holdmover': [CARRY,CARRY,MOVE],
@@ -110,6 +115,11 @@ export const CreepBuilder = {
     'mineralHarvester': [WORK,WORK,MOVE],
     'remoteWorker': [CARRY, WORK, MOVE, MOVE],
     'upgrader1': [WORK, WORK, MOVE],
+    'toughDefender': [TOUGH, TOUGH, MOVE],
+    'healer': [HEAL, HEAL, MOVE],
+    'attack': [TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE],
+    'attackController': [CLAIM, MOVE],
+    'dismantler': [WORK, WORK, MOVE]
   },
 
   typeLengths: <{[name: string]: number}>{
@@ -119,7 +129,7 @@ export const CreepBuilder = {
     'mover': 32,
     'bigMover': 42,
     'worker': 16,
-    'upgrader': 42,
+    'upgrader': 32,
     'defender': 26,
     'spinner': 14,
     'holdmover': 50,
@@ -127,5 +137,10 @@ export const CreepBuilder = {
     'mineralHarvester': 17,
     'remoteWorker': 42,
     'upgrader1': 25,
+    'toughDefender': 48,
+    'healer': 39,
+    'attack': 30,
+    'attackController': 10,
+    'dismantler': 50
   }
 }

@@ -38,6 +38,7 @@ export class TowerRepairProcess extends Process
       <never[]>containers,
       <never[]>sourceContainers,
       <never[]>[this.roomData().controllerContainer],
+      <never[]>[this.roomData().mineralContainer],
       <never[]>roads
     ), 'hits')
     let usedTowers = <{[towerId: string]: boolean}>{}
