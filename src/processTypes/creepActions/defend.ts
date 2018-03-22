@@ -25,7 +25,7 @@ export class DefendProcess extends Process
 
     if(!creep.pos.inRangeTo(enemy, 1))
     {
-      creep.travelTo(enemy);
+      creep.moveTo(enemy);
     }
     else
     {

@@ -29,7 +29,7 @@ export class CollectProcess extends Process{
 
     if(!creep.pos.isNearTo(target))
     {
-      creep.travelTo(target);
+      creep.moveTo(target);
     }
     else
     {

@@ -49,7 +49,6 @@ export class RoomDataProcess extends Process{
        room.name == 'E46S52' || room.name == 'E48S57' || room.name == 'E45S48')
         && room.controller && room.controller.my && this.roomData().mineral && this.roomData().mineral!.mineralAmount > 0 && this.roomData().extractor)
       {
-        this.log('Mineral Process');
         this.kernel.addProcessIfNotExist(MineralManagementProcess, 'minerals-' + this.metaData.roomName, 20, {
           roomName: room.name
         })

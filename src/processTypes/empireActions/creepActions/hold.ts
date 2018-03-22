@@ -30,7 +30,7 @@ export class HoldProcess extends Process
       enemies = _.filter(enemies, (e: Creep)=> {
         return (e.getActiveBodyparts(ATTACK) > 0 || e.getActiveBodyparts(RANGED_ATTACK) > 0);
       });
-      
+
       if(enemies.length > 1)
       {
         flag.memory.enemies = true;
@@ -59,7 +59,7 @@ export class HoldProcess extends Process
 
     if(!creep.pos.inRangeTo(creep.room.controller!, 1))
     {
-      creep.travelTo(creep.room.controller!)
+      creep.moveTo(creep.room.controller!)
     }
     else
     {

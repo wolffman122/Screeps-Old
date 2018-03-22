@@ -32,7 +32,7 @@ export class DismantleProcess extends Process
 
       if(!creep.pos.inRangeTo(targetPos, 1))
       {
-        creep.travelTo(targetPos);
+        creep.moveTo(targetPos);
       }
       else
       {
@@ -46,7 +46,7 @@ export class DismantleProcess extends Process
 
       if(!creep.pos.inRangeTo(targetPos, 1))
       {
-        creep.travelTo(targetPos);
+        creep.moveTo(targetPos);
       }
       else
       {

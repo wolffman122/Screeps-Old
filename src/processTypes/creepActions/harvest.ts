@@ -30,7 +30,7 @@ export class HarvestProcess extends Process{
     }
 
     if(!creep.pos.inRangeTo(targetPos, targetRange)){
-      creep.travelTo(targetPos);
+      creep.moveTo(targetPos);
     }
     else
     {

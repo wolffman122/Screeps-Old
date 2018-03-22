@@ -35,7 +35,7 @@ export class MineralHarvest extends Process
 
     if(!creep.pos.inRangeTo(extractor, 1))
     {
-      creep.travelTo(extractor);
+      creep.moveTo(extractor);
     }
     else
     {

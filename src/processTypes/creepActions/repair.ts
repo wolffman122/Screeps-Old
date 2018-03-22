@@ -21,7 +21,7 @@ export class RepairProcess extends Process{
 
     if(!creep.pos.inRangeTo(target, 3))
     {
-      creep.travelTo(target);
+      creep.moveTo(target);
     }
     else
     {

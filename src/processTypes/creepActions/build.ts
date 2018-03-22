@@ -1,17 +1,17 @@
-import {Process} from '../../os/process'
+import {Process} from "../../os/process"
 
 interface BuildProcessMetaData{
-  creep: string
-  site: string
+  creep: string;
+  site: string;
 }
 
-export class BuildProcess extends Process{
-  metaData: BuildProcessMetaData
-  type = 'build'
+export class BuildProcess extends Process {
+  metaData: BuildProcessMetaData;
+  type = 'build';
 
-  run(){
-    let creep = Game.creeps[this.metaData.creep]
-    let site = <ConstructionSite>Game.getObjectById(this.metaData.site)
+  run() {
+    let creep = Game.creeps[this.metaData.creep];
+    let site = <ConstructionSite>Game.getObjectById(this.metaData.site);
 
     if(creep && !site){
       Memory.rooms[creep.room.name] = {}
@@ -24,7 +24,7 @@ export class BuildProcess extends Process{
     }
 
     if(!creep.pos.inRangeTo(site, 3)){
-      creep.travelTo(site);
+      creep.moveTo(site);
     }else{
       creep.build(site)
     }

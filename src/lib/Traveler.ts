@@ -5,10 +5,65 @@
 
 export class Traveler {
 
+      public static activeStructureMatrixCache: {[roomName: string]: CostMatrix} = {};
+      public  static creepMatrixCache: {[roomName: string]: CostMatrix} = {};
+
+
+      /**
+       * build a cost matrix based on structures in the room. Will be cached for more than one tick. Requires vision.
+       * @param room
+       * @param freshMatrix
+       * @returns {any}
+       */
+
+      public static getStructureMatrix(room: Room, freshMatrix?: boolean): CostMatrix {
+        let matrix;
+        if (!this.activeStructureMatrixCache) {
+            this.activeStructureMatrixCache = {};
+        }
+
+        if ((!this.structureMatrixCache[room.name] && !this.activeStructureMatrixCache[room.name]) ||
+         (freshMatrix && Game.time !== this.structureMatrixTick[room.name])) {
+            this.structureMatrixTick[room.name] = Game.time;
+            matrix = new PathFinder.CostMatrix();
+            matrix = Traveler.addStructuresToMatrix(room, matrix, 1);
+            this.activeStructureMatrixCache[room.name] = matrix;
+            this.structureMatrixCache[room.name] = matrix.serialize();
+            return matrix;
+        }
+
+        if (this.activeStructureMatrixCache[room.name]) {
+            return this.activeStructureMatrixCache[room.name];
+        }
+
+        matrix = PathFinder.CostMatrix.deserialize(this.structureMatrixCache[room.name]);
+        this.activeStructureMatrixCache[room.name] = matrix;
+        return matrix;
+      }
+
+      /**
+       * build a cost matrix based on creeps and structures in the room. Will be cached for one tick. Requires vision.
+       * @param room
+       * @returns {any}
+       */
+
+      public static getCreepMatrix(room: Room) {
+        if (!this.creepMatrixCache)
+        {
+            this.creepMatrixCache = {};
+        }
+
+        if (!this.creepMatrixCache[room.name])
+        {
+            this.creepMatrixCache[room.name] = Traveler.addCreepsToMatrix(room, this.getStructureMatrix(room, true).clone());
+        }
+
+        return this.creepMatrixCache[room.name];
+      }
+
+
       private static structureMatrixCache: {[roomName: string]: CostMatrix} = {};
-      private static creepMatrixCache: {[roomName: string]: CostMatrix} = {};
-      private static creepMatrixTick: number;
-      private static structureMatrixTick: number;
+      private static structureMatrixTick: {[roomName: string]: number} = {};
 
       /**
        * move creep to destination
@@ -275,7 +330,7 @@ export class Traveler {
               } else if (!options.allowHostile && Traveler.checkAvoid(roomName)
                   && roomName !== destRoomName && roomName !== originRoomName) {
                   return false;
-              } 
+              }
 
               let matrix;
               let room = Game.rooms[roomName];
@@ -441,37 +496,6 @@ export class Traveler {
           if (allowedRooms) {
               return Object.keys(allowedRooms).length;
           }
-      }
-
-      /**
-       * build a cost matrix based on structures in the room. Will be cached for more than one tick. Requires vision.
-       * @param room
-       * @param freshMatrix
-       * @returns {any}
-       */
-
-      public static getStructureMatrix(room: Room, freshMatrix?: boolean): CostMatrix {
-          if (!this.structureMatrixCache[room.name] || (freshMatrix && Game.time !== this.structureMatrixTick)) {
-              this.structureMatrixTick = Game.time;
-              let matrix = new PathFinder.CostMatrix();
-              this.structureMatrixCache[room.name] = Traveler.addStructuresToMatrix(room, matrix, 1);
-          }
-          return this.structureMatrixCache[room.name];
-      }
-
-      /**
-       * build a cost matrix based on creeps and structures in the room. Will be cached for one tick. Requires vision.
-       * @param room
-       * @returns {any}
-       */
-
-      public static getCreepMatrix(room: Room) {
-          if (!this.creepMatrixCache[room.name] || Game.time !== this.creepMatrixTick) {
-              this.creepMatrixTick = Game.time;
-              this.creepMatrixCache[room.name] = Traveler.addCreepsToMatrix(room,
-                  this.getStructureMatrix(room, true).clone());
-          }
-          return this.creepMatrixCache[room.name];
       }
 
       /**

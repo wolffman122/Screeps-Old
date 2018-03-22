@@ -28,7 +28,7 @@ export class HoldBuilderLifetimeProcess extends LifetimeProcess
     if(flag.pos.roomName != creep.pos.roomName)
     {
       this.log('Go to the flag ' + creep.name);
-      creep.travelTo(new RoomPosition(25, 25, flag.pos.roomName));
+      creep.moveTo(new RoomPosition(25, 25, flag.pos.roomName));
     }
     else
     {

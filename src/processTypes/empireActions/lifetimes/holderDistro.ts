@@ -20,7 +20,7 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
 
       if(!creep.pos.inRangeTo(sourceContainer, 1))
       {
-        creep.travelTo(sourceContainer);
+        creep.moveTo(sourceContainer);
         return;
       }
       else
@@ -91,7 +91,7 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
             {
               if(!creep.fixMyRoad())
               {
-                creep.travelTo(link);
+                creep.moveTo(link);
               }
             }
 
@@ -115,7 +115,7 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
             {
               if(!creep.fixMyRoad())
               {
-                creep.travelTo(target);
+                creep.moveTo(target);
               }
             }
 
@@ -138,7 +138,7 @@ export class HoldDistroLifetimeProcess extends LifetimeProcess
         {
           if(!creep.fixMyRoad())
           {
-            creep.travelTo(target);
+            creep.moveTo(target);
           }
         }
 

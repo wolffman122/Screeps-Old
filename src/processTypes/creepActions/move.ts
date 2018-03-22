@@ -34,7 +34,7 @@ export class MoveProcess extends Process{
       {
         if(!creep.fixMyRoad())
         {
-          creep.travelTo(target)
+          creep.moveTo(target)
         }
       }
     }else{

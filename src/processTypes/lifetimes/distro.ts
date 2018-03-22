@@ -38,7 +38,6 @@ export class DistroLifetimeProcess extends LifetimeProcess{
 
         if(storage.store.energy > 0)
         {
-          this.log('Go get from storage .........')
           this.fork(CollectProcess, 'collect-' + creep.name, this.priority -1, {
             target: storage.id,
             creep: creep.name,
@@ -160,7 +159,7 @@ export class DistroLifetimeProcess extends LifetimeProcess{
       {
         if(!creep.fixMyRoad())
         {
-          creep.travelTo(target);
+          creep.moveTo(target);
         }
       }
 
@@ -192,7 +191,7 @@ export class DistroLifetimeProcess extends LifetimeProcess{
         {
           if(!creep.fixMyRoad())
           {
-            creep.travelTo(target);
+            creep.moveTo(target);
           }
         }
 

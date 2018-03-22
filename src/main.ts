@@ -2,6 +2,7 @@
 //global.SCRIPT_VERSION = require('./version')
 import "./lib/Traveler"
 import {Kernel} from './os/kernel'
+import { Traveler } from "./lib/Traveler";
 
 
 
@@ -60,7 +61,8 @@ module.exports.loop = function(){
   // Tear down the OS
   kernel.teardown()
 
-
+  Traveler.activeStructureMatrixCache = undefined;
+  Traveler.creepMatrixCache = undefined;
   //Traveler.resetStructureMatrix();
   //Traveler.resetCreepMatrix();
 

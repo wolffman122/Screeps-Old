@@ -59,7 +59,7 @@ export class RemoteDefenderLifetimeProcess extends LifetimeProcess
         else
         {
 
-          let retValue = creep.travelTo(flag.pos)
+          let retValue = creep.moveTo(flag.pos)
           this.log('RD retvalue ' + retValue);
         }
 

@@ -16,6 +16,9 @@
       "check-format",
       "allow-pascal-case",
       "allow-leading-underscore"
-    ]
+    ],
+    "quotemark": [false],
+    "one-line": [false],
+    "member-access": [false],
   }
 }

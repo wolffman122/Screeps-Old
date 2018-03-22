@@ -14,12 +14,12 @@ export class DeliverProcess extends Process{
       this.resumeParent()
       return
     }
-    
+
     if(!creep.pos.inRangeTo(target, 1))
     {
       if(!creep.fixMyRoad())
       {
-        creep.travelTo(target);
+        creep.moveTo(target);
       }
     }
 

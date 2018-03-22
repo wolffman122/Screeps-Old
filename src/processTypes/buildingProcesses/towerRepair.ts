@@ -53,7 +53,7 @@ export class TowerRepairProcess extends Process
         return !usedTowers[tower.id];
       });
 
-      if(towers.length > 0)
+      if(towers.length > 0 && rampart)
       {
         let tower = rampart.pos.findClosestByRange(towers);
 

@@ -15,17 +15,20 @@ export class LinkManagementProcess extends Process
 
       if(storageLink)
       {
-        if(storageLink.cooldown == 0 && storageLink.energy > 700 && controllerLink.energy < 450)
+        if(controllerLink)
         {
-          let ret = storageLink.transferEnergy(controllerLink);
-          if(ret == ERR_FULL)
+          if(storageLink.cooldown == 0 && storageLink.energy > 700 && controllerLink.energy < 450)
           {
-            this.suspend = 15;
+            let ret = storageLink.transferEnergy(controllerLink);
+            if(ret == ERR_FULL)
+            {
+              this.suspend = 15;
+            }
           }
-        }
-        else
-        {
-          this.suspend = 10;
+          else
+          {
+            this.suspend = 10;
+          }
         }
       }
     }

@@ -45,7 +45,7 @@ export class HoldHarvesterLifetimeProcess extends LifetimeProcess
       let container = this.kernel.data.roomData[source.room.name].sourceContainerMaps[source.id];
       if(!creep.pos.inRangeTo(container, 0))
       {
-        creep.travelTo(container);
+        creep.moveTo(container);
       }
 
       creep.harvest(source);
