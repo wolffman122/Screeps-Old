@@ -9,6 +9,7 @@ import {FlagWatcherProcess} from '../flagWatcher'
 import { LinkManagementProcess } from 'processTypes/management/link';
 import { MarketManagementProcess } from 'processTypes/management/market';
 import { TerminalManagementProcess } from 'processTypes/buildingProcesses/terminal';
+import { MinetalTerminalManagementProcess } from '../buildingProcesses/mineralTerminal';
 
 /*
 
@@ -75,6 +76,7 @@ export class InitProcess extends Process{
     this.kernel.addProcess(FlagWatcherProcess, 'flag-watcher', 98, {})
     this.kernel.addProcess(MarketManagementProcess, 'market', 20, {});
     this.kernel.addProcess(TerminalManagementProcess, 'terminal', 15, {});
+    this.kernel.addProcess(MinetalTerminalManagementProcess, 'mineralTerminal', 14,  {});
 
     this.completed = true
   }

@@ -7,6 +7,9 @@ declare namespace NodeJS{
     roomData: {
       [key: string]: RoomData
     }
+    keepAmount: Number
+    spreadAmount: Number
+    sellAbove: Number
   }
 }
 

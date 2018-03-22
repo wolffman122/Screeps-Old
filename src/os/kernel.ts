@@ -74,6 +74,7 @@ import { TerminalManagementProcess } from 'processTypes/buildingProcesses/termin
 import { BounceAttackProcess } from 'processTypes/management/bounceAttack';
 import { HealAttackProcess } from 'processTypes/management/healAttack';
 import { ControllerAttackLifetimeProcess } from 'processTypes/lifetimes/controllerAttack';
+import { MinetalTerminalManagementProcess } from 'processTypes/buildingProcesses/mineralTerminal';
 
 
 
@@ -129,7 +130,8 @@ const processTypes = <{[type: string]: any}>{
   'terminal' : TerminalManagementProcess,
   'bounce' : BounceAttackProcess,
   'healAttack' : HealAttackProcess,
-  'calf' : ControllerAttackLifetimeProcess
+  'calf' : ControllerAttackLifetimeProcess,
+  'mineralTerminal': MinetalTerminalManagementProcess 
   /*
 
 

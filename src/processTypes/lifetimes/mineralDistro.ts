@@ -39,7 +39,7 @@ export class MineralDistroLifetimeProcess extends LifetimeProcess
       }
     }
 
-    if(creep.room.storage.store[this.metaData.mineralType] > 70000)
+    if(creep.room.storage.store[this.metaData.mineralType] > 60000)
     {
       this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
         target: creep.room.terminal.id,

@@ -88,7 +88,7 @@ export class DistroLifetimeProcess extends LifetimeProcess{
       <never[]>this.kernel.data.roomData[creep.room.name].extensions
     )
 
-    if(creep.room.energyAvailable > creep.room.energyCapacityAvailable * .75)
+    if(creep.room.energyAvailable > creep.room.energyCapacityAvailable * .95)
     {
       targets = [].concat(
         <never[]>this.kernel.data.roomData[creep.room.name].spawns,

@@ -109,6 +109,14 @@ export class  SpinnerLifetimeProcess extends LifetimeProcess
             });
           }
         }
+        else
+        {
+          this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+            target: creep.room.storage.id,
+            creep: creep.name,
+            resource: RESOURCE_ENERGY,
+          });
+        }
       }
 
       return;
@@ -145,11 +153,22 @@ export class  SpinnerLifetimeProcess extends LifetimeProcess
       }
       else
       {
-        this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
-          creep: creep.name,
-          target: creep.room.storage.id,
-          resource: RESOURCE_ENERGY
-        })
+        if(creep.room.terminal.store.energy < 100000)
+        {
+          this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+            creep: creep.name,
+            target: creep.room.terminal.id,
+            resource: RESOURCE_ENERGY
+          })
+        }
+        else
+        {
+          this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+            creep: creep.name,
+            target: creep.room.storage.id,
+            resource: RESOURCE_ENERGY
+          })
+        }
       }
       return;
     }

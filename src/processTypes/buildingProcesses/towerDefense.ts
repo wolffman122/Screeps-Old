@@ -36,7 +36,7 @@ export class TowerDefenseProcess extends Process{
     {
       _.forEach(this.kernel.data.roomData[this.metaData.roomName].towers, function(tower)
       {
-        let rangeDamage = tower.pos.findInRange(damagedCreeps, 10);
+        let rangeDamage = tower.pos.findInRange(damagedCreeps, 30);
         if(rangeDamage.length > 0)
         {
           let target = tower.pos.findClosestByPath(rangeDamage);

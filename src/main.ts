@@ -4,6 +4,7 @@ import "./lib/Traveler"
 import {Kernel} from './os/kernel'
 
 
+
 Creep.prototype.fixMyRoad = function()
 {
   if(this.carry.energy === 0)
@@ -43,6 +44,9 @@ module.exports.loop = function(){
     global.roomData = {}
   }
   global.lastTick = Game.time
+  global.keepAmount = 20000;
+  global.spreadAmount = 2000;
+  global.sellAbove = 30000;
 
   // Create a new Kernel
   let kernel = new Kernel
@@ -55,4 +59,9 @@ module.exports.loop = function(){
 
   // Tear down the OS
   kernel.teardown()
+
+
+  //Traveler.resetStructureMatrix();
+  //Traveler.resetCreepMatrix();
+
 }

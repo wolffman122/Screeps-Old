@@ -74,7 +74,6 @@ remoteDismantleFlag(flag: Flag)
   run()
   {
     this.completed = true;
-
     let proc = this;
 
     _.forEach(Game.flags, (flag) => {

@@ -48,13 +48,21 @@ export class LinkManagementProcess extends Process
     if(this.roomData().links.length > 0)
     {
       let storageLink = this.roomData().storageLink;
+      if(storageLink.room.name == 'E43S52')
+      {
+        this.log('Link trouble')
+      }
 
       if(storageLink)
       {
         _.forEach(this.roomData().links, (l) => {
           if(l.cooldown == 0 && l.energy > 200 && storageLink.energy < 100)
           {
-            l.transferEnergy(storageLink);
+            let retValue = l.transferEnergy(storageLink);
+            if(storageLink.room.name == 'E43S52')
+            {
+              console.log('Why not sending ' + retValue);
+            }
           }
         })
       }

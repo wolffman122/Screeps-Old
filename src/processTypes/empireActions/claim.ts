@@ -57,7 +57,7 @@ export class ClaimProcess extends Process{
       {
         creep.travelTo(creep.room.controller);
       }
-      
+
       creep.claimController(creep.room.controller!)
       this.completed = true
       flag.remove()
