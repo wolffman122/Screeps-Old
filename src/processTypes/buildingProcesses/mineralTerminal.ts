@@ -11,8 +11,8 @@ export class MinetalTerminalManagementProcess extends Process
 
     this.log('Minteral Terminal');
 
-    let minerals: Mineral[] = [];
-    let recievableRooms: Room[] = [];
+    let roomsExtraMinerals: Room[] = [];
+    let recievableRooms: { [name: string]: string[]; } = {};
 
     _.forEach(Game.rooms, (r) => {
       if(r.controller.my && r.terminal && r.controller.level >= 7)
@@ -23,39 +23,36 @@ export class MinetalTerminalManagementProcess extends Process
           if(mineral.room.storage && mineral.room.terminal.store[mineral.mineralType] >= keepAmount)
           {
             //console.log('Room ' + mineral.room.name + ' storage ' + mineral.room.storage.store[mineral.mineralType])
-            minerals.push(mineral);
+            roomsExtraMinerals.push(mineral.room);
+          }
+
+          let lowest = r.terminal.storeCapacity;
+          let roomName = "";
+          for(let mineralType of MINERALS_RAW)
+          {
+            if(r.terminal.store[mineralType] < lowest && mineralType != mineral.mineralType)
+            {
+              lowest = r.terminal.store[mineralType];
+              roomName = r.name;
+            }
           }
         }
-
-        if(r.terminal && r.terminal.my)
-        {
-          recievableRooms.push(r);
-        }
-
       }
     });
 
-   _.forEach(minerals, (m) => {
+   _.forEach(roomsExtraMinerals, (m) => {
       let sent = false;
 
-      if(m.room.terminal.cooldown === 0)
+      if(m.terminal.cooldown === 0)
       {
-        _.forEach(recievableRooms, (r) => {
+        let mineral = <Mineral>r.find(FIND_MINERALS)[0];
 
-          if(m.room.name != r.name && !sent)
-          {
-            if(r.terminal && r.terminal.my &&
-              r.storage &&
-              (r.storage.store[m.mineralType] < spreadAmount || !r.storage.store[m.mineralType]))
-            {
-              /*if(m.room.terminal.send(m.mineralType, spreadAmount, r.name) === OK)
-              {
-                sent = true;
-              }*/
-            }
-          }
+        _.find(recievableRooms, (rr) => {
+
         })
       }
     })
   }
 }
+
+export const MINERALS_RAW = ["H", "O", "Z", "U", "K", "L", "X"];
