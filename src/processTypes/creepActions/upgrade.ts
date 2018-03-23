@@ -18,16 +18,7 @@ export class UpgradeProcess extends Process{
     }
 
     if (!creep.pos.inRangeTo(creep.room.controller!, 3)){
-      if (creep.room.name === 'E51S49')
-      {
-        this.log('Traveler problems');
-        creep.travelTo(creep.room.controller!);
-      }
-      else
-      {
-        creep.moveTo(creep.room.controller!);
-      }
-
+      creep.travelTo(creep.room.controller!);
     }else{
       creep.upgradeController(creep.room.controller!);
     }
