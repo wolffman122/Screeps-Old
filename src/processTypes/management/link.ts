@@ -51,10 +51,6 @@ export class LinkManagementProcess extends Process
     if(this.roomData().links.length > 0)
     {
       let storageLink = this.roomData().storageLink;
-      if(storageLink.room.name == 'E43S52')
-      {
-        this.log('Link trouble')
-      }
 
       if(storageLink)
       {

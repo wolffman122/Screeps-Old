@@ -152,8 +152,6 @@ export class RoomDataProcess extends Process{
 
     let controllerLink = <StructureLink>room.controller.pos.findInRange(links, 2)[0];
 
-    this.log('General Links');
-
     let generalLinks = _.filter(links, function(l){
       let matchedLinks = [].concat(
         <never[]>sourceLinks)
@@ -180,8 +178,6 @@ export class RoomDataProcess extends Process{
 
         return (matched.length == 0);
     });
-
-    this.log('General Links' + generalLinks.length);
 
     let roads = <StructureRoad[]>_.filter(structures, function(structure){
       return (structure.structureType === STRUCTURE_ROAD)
