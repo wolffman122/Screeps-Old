@@ -70,7 +70,7 @@ export class HealAttackProcess extends Process
       {
         if(creep.heal(heal) == ERR_NOT_IN_RANGE)
         {
-          creep.moveTo(heal);
+          creep.travelTo(heal);
         }
       }
     }

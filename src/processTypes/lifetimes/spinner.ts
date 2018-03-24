@@ -22,7 +22,7 @@ export class  SpinnerLifetimeProcess extends LifetimeProcess
     {
       if(!creep.pos.inRangeTo(flag, 0))
       {
-        creep.moveTo(flag);
+        creep.travelTo(flag);
       }
     }
 

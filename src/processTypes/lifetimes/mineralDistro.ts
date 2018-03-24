@@ -31,7 +31,7 @@ export class MineralDistroLifetimeProcess extends LifetimeProcess
       }
       else if(!creep.pos.inRangeTo(container, 1))
       {
-        creep.moveTo(container);
+        creep.travelTo(container);
       }
       else
       {

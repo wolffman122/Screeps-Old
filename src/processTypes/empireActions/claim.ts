@@ -55,7 +55,7 @@ export class ClaimProcess extends Process{
 
       if(!creep.pos.inRangeTo(creep.room.controller, 1))
       {
-        creep.moveTo(creep.room.controller);
+        creep.travelTo(creep.room.controller);
       }
 
       creep.claimController(creep.room.controller!)

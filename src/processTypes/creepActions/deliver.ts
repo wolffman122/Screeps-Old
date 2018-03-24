@@ -19,7 +19,7 @@ export class DeliverProcess extends Process{
     {
       if(!creep.fixMyRoad())
       {
-        creep.moveTo(target);
+        creep.travelTo(target);
       }
     }
 

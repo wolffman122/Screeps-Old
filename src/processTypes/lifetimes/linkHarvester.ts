@@ -25,7 +25,7 @@ export class LinkHarvesterLifetimeProcess extends LifetimeProcess
 
       if(!creep.pos.inRangeTo(container, 0))
       {
-        creep.moveTo(container);
+        creep.travelTo(container);
       }
 
       creep.harvest(source);

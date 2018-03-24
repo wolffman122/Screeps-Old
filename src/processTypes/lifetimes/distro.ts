@@ -159,7 +159,7 @@ export class DistroLifetimeProcess extends LifetimeProcess{
       {
         if(!creep.fixMyRoad())
         {
-          creep.moveTo(target);
+          creep.travelTo(target);
         }
       }
 
@@ -191,7 +191,7 @@ export class DistroLifetimeProcess extends LifetimeProcess{
         {
           if(!creep.fixMyRoad())
           {
-            creep.moveTo(target);
+            creep.travelTo(target);
           }
         }
 

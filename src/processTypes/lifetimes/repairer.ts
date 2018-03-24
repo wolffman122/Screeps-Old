@@ -42,7 +42,7 @@ export class RepairerLifetimeProcess extends LifetimeProcess{
       {
         if(!creep.pos.inRangeTo(rampartSite, 3))
         {
-          creep.moveTo(rampartSite);
+          creep.travelTo(rampartSite);
         }
 
         creep.build(rampartSite);

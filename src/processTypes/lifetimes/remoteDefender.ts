@@ -8,7 +8,6 @@ export class RemoteDefenderLifetimeProcess extends LifetimeProcess
 
   run()
   {
-    this.log('Remote defender Lifetime');
     let creep  = this.getCreep();
     if(!creep)
     {
@@ -59,7 +58,7 @@ export class RemoteDefenderLifetimeProcess extends LifetimeProcess
         else
         {
 
-          let retValue = creep.moveTo(flag.pos)
+          let retValue = creep.travelTo(flag.pos)
           this.log('RD retvalue ' + retValue);
         }
 

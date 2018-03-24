@@ -24,7 +24,7 @@ export class BuildProcess extends Process {
     }
 
     if(!creep.pos.inRangeTo(site, 3)){
-      creep.moveTo(site);
+      creep.travelTo(site);
     }else{
       creep.build(site)
     }
