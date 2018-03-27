@@ -1,0 +1,14 @@
+Ordering System
+
+1.  Check for Order
+  - Order comprises of room name, mineral compound, amount
+2.  Add order to upgrade distro creep to deliver to lab
+    - Need way to identify start of lab area with flag and rotation of labs
+    - Need way to then tell distro where to put materials in which lab
+3.  Run reaction
+4.  Fork
+    4.a. UnBoosted Creep go to lab to be boosted
+    4.b. Bring mineral compound to building
+      - Nuker
+      - Terminal
+      - Storage
