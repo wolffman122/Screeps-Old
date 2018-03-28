@@ -10,6 +10,7 @@ import { LinkManagementProcess } from 'processTypes/management/link';
 import { MarketManagementProcess } from 'processTypes/management/market';
 import { TerminalManagementProcess } from 'processTypes/buildingProcesses/terminal';
 import { MinetalTerminalManagementProcess } from '../buildingProcesses/mineralTerminal';
+import { LabManagementProcess } from 'processTypes/management/lab';
 
 /*
 
@@ -67,6 +68,19 @@ export class InitProcess extends Process{
             proc.kernel.addProcess(LinkManagementProcess, 'lm-' + room.name, 60, {
               roomName: room.name
             });
+          }
+
+          if(Game.rooms[room.name].controller.level >= 8)
+          {
+            if(room.name == 'E45S48')
+            {
+              if(!proc.kernel.hasProcess('labm-' + room.name))
+              {
+                proc.kernel.addProcess(LabManagementProcess, 'labm-' + room.name, 30, {
+                  roomName: room.name
+                });
+              }
+            }
           }
         }
       }

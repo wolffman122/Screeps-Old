@@ -130,3 +130,24 @@ interface BunkerLayout{
 interface Creep {
   fixMyRoad(): boolean;
 }
+
+interface Shortage {
+  mineralType: string;
+  amount: number;
+}
+
+interface LabProcess {
+  targetShortage: Shortage;
+  currentShortage: Shortage;
+  reagentLoads: {[mineralType: string]: number};
+  loadProgress: number;
+}
+
+interface LabManagementProcessMetaData
+{
+  roomName: string,
+  reagentLabIds: string[],
+  productLabIds: string[],
+  labProcess: LabProcess,
+  checkProcessTick: number
+}
