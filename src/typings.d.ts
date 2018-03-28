@@ -143,11 +143,19 @@ interface LabProcess {
   loadProgress: number;
 }
 
-interface LabManagementProcessMetaData
+interface LabDistroLifetimeProcessMetaData
 {
   roomName: string,
   reagentLabIds: string[],
   productLabIds: string[],
   labProcess: LabProcess,
-  checkProcessTick: number
+  checkProcessTick: number,
+
+}
+
+
+interface LabManagementProcessMetaData
+{
+  roomName: string,
+  labDistros: string[],
 }
