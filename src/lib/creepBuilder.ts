@@ -96,7 +96,8 @@ export const CreepBuilder = {
     'healer': [HEAL, HEAL, MOVE],
     'attack': [TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE],
     'attackController': [CLAIM, MOVE],
-    'dismantler': [WORK,WORK, WORK, MOVE,MOVE]
+    'dismantler': [WORK,WORK, WORK, MOVE,MOVE],
+    'labDistro': [CARRY,MOVE,MOVE],
   },
 
   typeExtends: <PartList>{
@@ -119,7 +120,8 @@ export const CreepBuilder = {
     'healer': [HEAL, HEAL, MOVE],
     'attack': [TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE],
     'attackController': [CLAIM, MOVE],
-    'dismantler': [WORK, WORK, MOVE]
+    'dismantler': [WORK, WORK, MOVE],
+    'labDistro': [CARRY,MOVE,MOVE]
   },
 
   typeLengths: <{[name: string]: number}>{
@@ -141,6 +143,7 @@ export const CreepBuilder = {
     'healer': 39,
     'attack': 30,
     'attackController': 10,
-    'dismantler': 50
+    'dismantler': 50,
+    'labDistro': 30
   }
 }

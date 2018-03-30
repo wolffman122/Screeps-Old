@@ -145,17 +145,27 @@ interface LabProcess {
 
 interface LabDistroLifetimeProcessMetaData
 {
+  creep: string,
   roomName: string,
   reagentLabIds: string[],
   productLabIds: string[],
   labProcess: LabProcess,
+  command: Command,
+  lastCommandTick
   checkProcessTick: number,
 
 }
-
 
 interface LabManagementProcessMetaData
 {
   roomName: string,
   labDistros: string[],
+}
+
+interface Command {
+  origin: string;
+  destination: string;
+  resourceType: string;
+  amount?: number;
+  reduceLoad?: boolean;
 }

@@ -76,6 +76,7 @@ import { HealAttackProcess } from 'processTypes/management/healAttack';
 import { ControllerAttackLifetimeProcess } from 'processTypes/lifetimes/controllerAttack';
 import { MinetalTerminalManagementProcess } from 'processTypes/buildingProcesses/mineralTerminal';
 import { LabManagementProcess } from 'processTypes/management/lab';
+import { LabDistroLifetimeProcess } from 'processTypes/lifetimes/labDistro';
 
 
 
@@ -133,7 +134,8 @@ const processTypes = <{[type: string]: any}>{
   'healAttack' : HealAttackProcess,
   'calf' : ControllerAttackLifetimeProcess,
   'mineralTerminal': MinetalTerminalManagementProcess,
-  'labm': LabManagementProcess
+  'labm': LabManagementProcess,
+  'labdlf': LabDistroLifetimeProcess
   /*
 
 

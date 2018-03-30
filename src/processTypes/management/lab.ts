@@ -35,7 +35,9 @@ export class LabManagementProcess extends Process
       {
         this.metaData.labDistros.push(creepName);
         this.kernel.addProcess(LabDistroLifetimeProcess, 'labdlf-' + creepName, 35, {
-          creep: creepName
+          creep: creepName,
+          roomName: this.metaData.roomName
+
         });
       }
     }

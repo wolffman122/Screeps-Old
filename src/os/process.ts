@@ -104,12 +104,12 @@ export class Process{
 
 export class LifetimeProcess extends Process{
   /** Returns the creep if it is alive, or completes the process */
-  getCreep(): Creep | false{
+  getCreep(): Creep{
     if(Game.creeps[this.metaData.creep]){
       return Game.creeps[this.metaData.creep]
     }else{
       this.completed = true
-      return false
+      return undefined
     }
   }
 }
