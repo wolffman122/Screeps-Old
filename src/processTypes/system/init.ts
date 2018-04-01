@@ -72,7 +72,8 @@ export class InitProcess extends Process{
 
           if(Game.rooms[room.name].controller.level >= 8)
           {
-            if(room.name == 'E45S48')
+            if(room.name == 'E45S48' || room.name === 'E48S49' || room.name === 'E43S52' ||
+              room.name == 'E45S57')
             {
               if(!proc.kernel.hasProcess('labm-' + room.name))
               {

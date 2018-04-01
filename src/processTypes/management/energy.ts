@@ -151,11 +151,8 @@ export class EnergyManagementProcess extends Process{
       case 'E48S49':
         upgraders = 7;
         break;
-      case 'E41S49':
-        upgraders = 3;
-        break;
       default:
-        upgraders = 3;
+        upgraders = 4;
         break;
     }
 
@@ -261,6 +258,11 @@ export class EnergyManagementProcess extends Process{
         default:
           upgradeDistroAmount = 1;
           break;
+      }
+
+      if(Game.rooms[this.metaData.roomName].controller.level >= 8)
+      {
+        upgradeDistroAmount = 1;
       }
 
       if(this.metaData.upgradeDistroCreeps.length < upgradeDistroAmount)

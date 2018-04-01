@@ -44,12 +44,19 @@ export class LabDistroLifetimeProcess extends LifetimeProcess
 
     this.labProcess = this.findLabProcess();
 
-    console.log("Lab Process Current Shortage", this.labProcess.currentShortage.mineralType, this.labProcess.currentShortage.amount,
-                "load progress", this.labProcess.loadProgress,
-                "reagentLoads", this.labProcess.reagentLoads,
-                "target shortage", this.labProcess.targetShortage.mineralType, this.labProcess.targetShortage.amount);
-
+    if(this.labProcess)
+    {
+      console.log("Lab Process Current Shortage", this.labProcess.currentShortage.mineralType, this.labProcess.currentShortage.amount,
+                  "load progress", this.labProcess.loadProgress,
+                  "reagentLoads", this.labProcess.reagentLoads,
+                  "target shortage", this.labProcess.targetShortage.mineralType, this.labProcess.targetShortage.amount);
+    }
     this.actions();
+
+    if(this.labProcess)
+    {
+      this.doSynthesis();
+    }
 
   }
 
@@ -250,7 +257,7 @@ export class LabDistroLifetimeProcess extends LifetimeProcess
       if(store[compound] >= PRODUCTION_AMOUNT)
         continue;
 
-      return this.generateProcess( {mineralType: compound, amount: PRODUCTION_AMOUNT - (this.terminal.store[compound] || 0) });
+      return this.generateProcess( {mineralType: compound, amount: PRODUCTION_AMOUNT + this.creep.carryCapacity - (this.terminal.store[compound] || 0) });
     }
   }
 
@@ -349,66 +356,68 @@ export class LabDistroLifetimeProcess extends LifetimeProcess
 
   private actions()
   {
-    this.log('Action')
     let command = this.accessCommand();
     if(!command)
     {
-      let flag = Game.flags['pattern'];
-      if (!this.creep.pos.inRangeTo(flag, 1)) {
-          this.creep.travelTo(flag);
-      }
-    }
-
-    this.log('Action 2')
-    if(_.sum(this.creep.carry) === 0)
-    {
-      this.log('Collect')
-      let origin = <Structure>Game.getObjectById(command.origin);
-      if(this.creep.pos.isNearTo(origin))
+      let flag = Game.flags['pattern-'+this.creep.room.name];
+      if(flag)
       {
-        this.log('Collect 1')
-        if(origin instanceof StructureTerminal)
-        {
-          this.log('Collect 2')
-          if(!origin.store[command.resourceType])
-          {
-            console.log("Lab Creep can't find that resource in terminal", this.name);
-            this.metaData.command = undefined;
-          }
-        }
-        this.log('Collect 3')
-        this.creep.withdraw(origin, command.resourceType, command.amount);
-        let destination = <Structure>Game.getObjectById(command.destination);
-
-        if(!this.creep.pos.isNearTo(destination))
-        {
-          this.log('Collect 4')
-          this.creep.travelTo(destination);
+        if (!this.creep.pos.inRangeTo(flag, 1)) {
+            this.creep.travelTo(flag);
         }
       }
-      else
-      {
-        this.log('Collect 5')
-        this.creep.travelTo(origin);
-      }
-      this.log('Collect 6')
-      return; // early
-    }
-
-    this.log('Action 3')
-    let destination = <Structure>Game.getObjectById(command.destination);
-    if(this.creep.pos.isNearTo(destination))
-    {
-      let outcome = this.creep.transfer(destination, command.resourceType, command.amount);
-      if(outcome === OK && command.reduceLoad && this.labProcess)
-      {
-        this.labProcess.reagentLoads[command.resourceType] -= command.amount;
-      }
-      this.metaData.command = undefined;
     }
     else
     {
-      this.creep.travelTo(destination);
+
+      this.log('Action 1')
+      if(_.sum(this.creep.carry) === 0)
+      {
+        let origin = <Structure>Game.getObjectById(command.origin);
+        this.log('Action 2')
+        if(this.creep.pos.isNearTo(origin))
+        {
+          if(origin instanceof StructureTerminal)
+          {
+            this.log('Action 3')
+            if(!origin.store[command.resourceType])
+            {
+              console.log("Lab Creep can't find that resource in terminal", this.name);
+              this.metaData.command = undefined;
+            }
+          }
+          this.creep.withdraw(origin, command.resourceType, command.amount);
+          let destination = <Structure>Game.getObjectById(command.destination);
+
+          if(!this.creep.pos.isNearTo(destination))
+          {
+            this.log('Action 4')
+            this.creep.travelTo(destination);
+          }
+        }
+        else
+        {
+          this.log('Action 5')
+          this.creep.travelTo(origin);
+        }
+        return; // early
+      }
+
+      this.log('Action 6')
+      let destination = <Structure>Game.getObjectById(command.destination);
+      if(this.creep.pos.isNearTo(destination))
+      {
+        let outcome = this.creep.transfer(destination, command.resourceType, command.amount);
+        if(outcome === OK && command.reduceLoad && this.labProcess)
+        {
+          this.labProcess.reagentLoads[command.resourceType] -= command.amount;
+        }
+        this.metaData.command = undefined;
+      }
+      else
+      {
+        this.creep.travelTo(destination);
+      }
     }
   }
 
@@ -456,6 +465,18 @@ export class LabDistroLifetimeProcess extends LifetimeProcess
     if(command)
     {
       return command;
+    }
+
+    if(this.roomData().nuker.ghodium < this.roomData().nuker.ghodiumCapacity)
+    {
+      if(this.terminal.store[RESOURCE_GHODIUM] > 0)
+      {
+        let amount = Math.min(this.roomData().nuker.ghodiumCapacity - this.roomData().nuker.ghodium, this.creep.carryCapacity);
+        if(amount > 0)
+        {
+          return { origin: this.terminal.id, destination: this.roomData().nuker.id, resourceType: RESOURCE_GHODIUM, amount: amount };
+        }
+      }
     }
   }
 
@@ -521,6 +542,26 @@ export class LabDistroLifetimeProcess extends LifetimeProcess
       {
         // store the product in terminal
         return {origin: lab.id, destination: this.terminal.id, resourceType: lab.mineralType };
+      }
+    }
+  }
+
+  private doSynthesis()
+  {
+    for(let i = 0; i < this.productLabs.length; i++)
+    {
+      if(Game.time % 10 !== i)
+      {
+        continue;
+      }
+      let lab = this.productLabs[i];
+      if(lab.pos.lookFor(LOOK_FLAGS).length > 0)
+      {
+        continue;
+      }
+      if(!lab.mineralType || lab.mineralType === this.labProcess.currentShortage.mineralType)
+      {
+        lab.runReaction(this.reagentLabs[0], this.reagentLabs[1]);
       }
     }
   }

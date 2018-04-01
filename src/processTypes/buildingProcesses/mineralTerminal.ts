@@ -84,7 +84,7 @@ export class MinetalTerminalManagementProcess extends Process
 }
 
 export const MINERALS_RAW = ["H", "O", "Z", "U", "K", "L", "X"];
-export const PRODUCT_LIST = [ "G"];
+export const PRODUCT_LIST = ["XGH2O", "G"];
 export const PRODUCTION_AMOUNT = 5000;
 
 export const REAGENT_LIST = {
