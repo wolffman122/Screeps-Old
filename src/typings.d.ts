@@ -169,3 +169,12 @@ interface Command {
   amount?: number;
   reduceLoad?: boolean;
 }
+
+interface BoostRequests
+{
+  [resourceType: string]:
+  {
+    flagName: string;
+    requesterIds: string[];
+  };
+}

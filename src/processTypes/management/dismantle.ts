@@ -12,6 +12,7 @@ export class DismantleManagementProcess extends Process
   {
     let flag = Game.flags[this.metaData.flag];
 
+    this.log('Dismantle ' + flag);
     if(!flag)
     {
       this.completed = true;

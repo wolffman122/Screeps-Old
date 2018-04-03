@@ -58,6 +58,7 @@ export class LabDistroLifetimeProcess extends LifetimeProcess
       this.doSynthesis();
     }
 
+    this.checkBoostRequests();
   }
 
   private findReagentLabs(): StructureLab[]
@@ -455,7 +456,13 @@ export class LabDistroLifetimeProcess extends LifetimeProcess
 
   private findCommand(): Command
   {
-    let command = this.checkReagentLabs();
+    let command = this.checkPullFlags()
+    if(command)
+    {
+      return command;
+    }
+
+    command = this.checkReagentLabs();
     if(command)
     {
       return command;
@@ -562,6 +569,110 @@ export class LabDistroLifetimeProcess extends LifetimeProcess
       if(!lab.mineralType || lab.mineralType === this.labProcess.currentShortage.mineralType)
       {
         lab.runReaction(this.reagentLabs[0], this.reagentLabs[1]);
+      }
+    }
+  }
+
+  private checkBoostRequests()
+  {
+    if(!this.room.memory.boostRequests)
+    {
+      this.room.memory.boostRequests = {};
+    }
+
+    let requests = this.room.memory.boostRequests as BoostRequests;
+
+    for(let resourceType in requests)
+    {
+      let request = requests[resourceType];
+
+      for(let id of request.requesterIds)
+      {
+        let creep = Game.getObjectById(id);
+        if(!creep)
+        {
+          request.requesterIds = _.pull(request.requesterIds, id);
+        }
+      }
+
+      let flag = Game.flags[request.flagName];
+
+      if(request.requesterIds.length === 0 && flag)
+      {
+        console.log("Removing boost flag:", flag.name);
+        flag.remove();
+        requests[resourceType] = undefined;
+      }
+
+      if(request.requesterIds.length > 0 && !flag)
+      {
+        request.flagName = this.placePullFlag(resourceType);
+      }
+    }
+  }
+
+  private placePullFlag(resourceType: string)
+  {
+    let existingFlag = Game.flags[this.name + "-" + resourceType];
+    if(existingFlag)
+    {
+      return existingFlag.name;
+    }
+
+    let labs = _.filter(this.productLabs, (l: StructureLab) => l.pos.lookFor(LOOK_FLAGS).length === 0);
+    if(labs.length === 0)
+    {
+      return; // early
+    }
+
+    let closestToSpawn = this.roomData().spawns[0].pos.findClosestByRange(labs);
+    if(this.productLabs.length > 1)
+    {
+      this.productLabs = _.pull(this.productLabs, closestToSpawn);
+    }
+
+    let outcome = closestToSpawn.pos.createFlag(this.name + "-" + resourceType);
+    if(_.isString(outcome))
+    {
+      console.log("Placing boost flag:", outcome);
+      return outcome;
+    }
+  }
+
+  private checkPullFlags(): Command
+  {
+    if(!this.productLabs)
+    {
+      return;
+    }
+
+    for(let lab of this.productLabs)
+    {
+      if(this.terminal.store.energy >= this.creep.carryCapacity && lab.energy < this.creep.carryCapacity)
+      {
+        // restore boosting energy to lab
+        return { origin: this.terminal.id, destination: lab.id, resourceType: RESOURCE_ENERGY };
+      }
+
+      let flag = <Flag>lab.pos.lookFor(LOOK_FLAGS)[0];
+      if(!flag)
+      {
+        return;
+      }
+
+      let mineralType = flag.name.substring(flag.name.indexOf("-") + 1);
+      if(!_.includes(PRODUCT_LIST, mineralType))
+      {
+        console.log("Error: invalide lab request:", flag.name);
+        return; //early
+      }
+      if(lab.mineralType && lab.mineralType !== mineralType)
+      {
+        return { origin: lab.id, destination: this.terminal.id, resourceType: lab.mineralType };
+      }
+      else if(LAB_MINERAL_CAPACITY - lab.mineralAmount >= this.creep.carryCapacity && this.terminal.store[mineralType] >= this.creep.carryCapacity)
+      {
+        return { origin: this.terminal.id, destination: lab.id, resourceType: mineralType };
       }
     }
   }
