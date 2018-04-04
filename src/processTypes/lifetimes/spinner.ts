@@ -60,7 +60,7 @@ export class  SpinnerLifetimeProcess extends LifetimeProcess
             });
           }
         }
-        else if(mineral && creep.room.storage.store[mineral.mineralType] > 60000)
+        else if(mineral && creep.room.storage.store[mineral.mineralType] > 40000)
         {
           this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
             target: creep.room.storage.id,
@@ -109,6 +109,14 @@ export class  SpinnerLifetimeProcess extends LifetimeProcess
             });
           }
         }
+        else if(mineral && creep.room.storage.store[mineral.mineralType] > 40000)
+        {
+          this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
+            target: creep.room.storage.id,
+            creep: creep.name,
+            resource: mineral.mineralType
+          })
+        }
         else
         {
           this.fork(CollectProcess, 'collect-' + creep.name, this.priority - 1, {
@@ -153,7 +161,15 @@ export class  SpinnerLifetimeProcess extends LifetimeProcess
       }
       else
       {
-        if(creep.room.terminal.store.energy < 100000)
+        if(creep.carry[mineral.mineralType] > 0)
+        {
+          this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
+            creep: creep.name,
+            target: creep.room.terminal.id,
+            resource: mineral.mineralType
+          });
+        }
+        else if(creep.room.terminal.store.energy < 100000)
         {
           this.fork(DeliverProcess, 'deliver-' + creep.name, this.priority - 1, {
             creep: creep.name,
